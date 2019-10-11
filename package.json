@@ -1,0 +1,44 @@
+{
+    "name": "mi-projekt",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node src/backend/app.js",
+        "build": "webpack --mode production",
+        "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+        "frontend": "webpack-dev-server --mode development --devtool inline-source-map --hot",
+        "backend": "nodemon src/backend/app.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mustafa89de/mi-projekt-repo.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/mustafa89de/mi-projekt-repo/issues"
+    },
+    "homepage": "https://github.com/mustafa89de/mi-projekt-repo#readme",
+    "devDependencies": {
+        "clean-webpack-plugin": "^3.0.0",
+        "concurrently": "^5.0.0",
+        "css-loader": "^3.2.0",
+        "html-webpack-plugin": "^3.2.0",
+        "node-sass": "^4.12.0",
+        "nodemon": "^1.19.3",
+        "sass-loader": "^8.0.0",
+        "vue": "^2.6.10",
+        "vue-loader": "^15.7.1",
+        "vue-style-loader": "^4.1.2",
+        "vue-template-compiler": "^2.6.10",
+        "webpack": "^4.41.0",
+        "webpack-cli": "^3.3.9",
+        "webpack-dev-server": "^3.8.2"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "vue-router": "^3.1.3"
+    }
+}
