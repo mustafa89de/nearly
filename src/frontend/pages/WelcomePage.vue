@@ -16,6 +16,6 @@ export default {
 
 <style scoped lang="scss">
   h1 {
-    color: purple;
+    color: teal;
   }
 </style>
