@@ -9,7 +9,7 @@
         "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
         "frontend": "webpack-dev-server --mode development --devtool inline-source-map --hot",
         "backend": "nodemon src/backend/app.js",
-        "test": "jest"
+        "test": "MODE=TEST jest"
     },
     "repository": {
         "type": "git",
@@ -34,6 +34,7 @@
         "node-sass": "^4.12.0",
         "nodemon": "^1.19.3",
         "sass-loader": "^8.0.0",
+        "supertest": "^4.0.2",
         "vue": "^2.6.10",
         "vue-jest": "^3.0.5",
         "vue-loader": "^15.7.1",
