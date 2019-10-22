@@ -13,4 +13,14 @@ router.get('/test', async (req, res) => { // Path chaining -> /api/user/test
     }
 });
 
+router.post('/register', async (req, res) => {
+    try {
+        const{username, email, password, description} = req;
+        await UserRepository.createUser(username, email, password, description);
+        res.status(201).json();
+    } catch (err) {
+        res.status(500).json({message: err.message});
+    }
+});
+
 module.exports = router;
