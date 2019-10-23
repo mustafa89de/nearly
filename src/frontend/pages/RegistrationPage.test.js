@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import WelcomePage from './WelcomePage.vue'
 
-describe('WelcomePage', () => {
+describe('RegistrationPage', () => {
   test('should render names', () => {
     const wrapper = mount(WelcomePage);
     const h1 = wrapper.find("h1");
