@@ -48,8 +48,7 @@
         alert("register");
       },
       login: function() {
-        alert("login");
-        test();
+        alert("login");        
       }
     },
     mounted(){
