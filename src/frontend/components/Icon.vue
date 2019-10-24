@@ -1,71 +1,77 @@
 <template>
-  <component :is="selectIcon" :class="iconColor" />
+  <component :is="selectIcon" :class="[iconColor, {iconScale: scaleUp}]" />
 </template>
 
 <script>
-import person from "assets/icons/person.svg";
-import mail from "assets/icons/mail.svg";
-import key from "assets/icons/key.svg";
-import bug from "assets/icons/bug.svg";
+  import person from "assets/icons/person.svg";
+  import mail from "assets/icons/mail.svg";
+  import key from "assets/icons/key.svg";
+  import bug from "assets/icons/bug.svg";
 
-export default {
-  props: {
+  export default {
+    props: {
       iconType: String,
-      iconColor: String
-  },  
-  computed: {
-    selectIcon: function(){
-      switch(this.iconType){
-        case "person":
-          return person;
-        case "mail":
-          return mail;
-        case "key":
-          return key;
-        default:
-          return bug;
-      }      
+      iconColor: String,
+      scaleUp: Boolean
     },
-    style: function(){
-        return "path { fill: black }"
+    computed: {
+      selectIcon: function() {
+        switch (this.iconType) {
+          case "person":
+            return person;
+          case "mail":
+            return mail;
+          case "key":
+            return key;
+          default:
+            return bug;
+        }
+      }
     }
-  }
-};
+  };
 </script>
 
 <style scoped lang="scss">
   @import "assets/styles";
+
+  svg {
+    transition: transform 200ms;
+  }
+
+  .iconScale {
+    transform: scale(1.3);
+  }
 
   path {
     transition: fill 500ms ease;
   }
 
   .primary {
-    path{
+    path {
       fill: $colorPrimary;
     }
   }
 
   .secondary {
-    path{
+    path {
       fill: $colorSecondary;
     }
   }
 
   .white {
-    path{
+    path {
       fill: $colorWhite;
     }
   }
 
   .black {
-    path{
+    path {
       fill: $colorBlack;
     }
   }
 
   .blackLight {
-    path{
+    path {
       fill: $colorBlackLight;
     }
   }

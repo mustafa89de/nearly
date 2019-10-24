@@ -12,16 +12,16 @@ Vue.use(VueRouter);
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        { 
-            path: '/', 
+        {
+            path: '/',
             component: RegistrationPage
         },
-        { 
-            path: '/help', 
-            component: HelpPage 
+        {
+            path: '/help',
+            component: HelpPage
         },
         {
-            path :'*',
+            path: '*',
             component: NotFoundPage
         }
     ]
