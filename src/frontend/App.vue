@@ -8,6 +8,8 @@
 </script>
 
 <style lang="scss">
+    @import url(https://fonts.googleapis.com/css?family=Gothic+A1|DM+Serif+Display|Poppins:700&display=swap);
+
     * {
         font-family: sans-serif;
         box-sizing: border-box;

@@ -1,5 +1,5 @@
 <template>
-  <component :is="selectIcon" />
+  <component :is="selectIcon" :class="iconColor" />
 </template>
 
 <script>
@@ -10,24 +10,63 @@ import bug from "assets/icons/bug.svg";
 
 export default {
   props: {
-      iconType: String
+      iconType: String,
+      iconColor: String
   },  
   computed: {
     selectIcon: function(){
       switch(this.iconType){
         case "person":
           return person;
+        case "mail":
+          return mail;
+        case "key":
+          return key;
         default:
-          return person;
+          return bug;
       }      
+    },
+    style: function(){
+        return "path { fill: black }"
     }
   }
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
   @import "assets/styles";
-  path{
-    fill: $colorBlackLight;
+
+  path {
+    transition: fill 500ms ease;
+  }
+
+  .primary {
+    path{
+      fill: $colorPrimary;
+    }
+  }
+
+  .secondary {
+    path{
+      fill: $colorSecondary;
+    }
+  }
+
+  .white {
+    path{
+      fill: $colorWhite;
+    }
+  }
+
+  .black {
+    path{
+      fill: $colorBlack;
+    }
+  }
+
+  .blackLight {
+    path{
+      fill: $colorBlackLight;
+    }
   }
 </style>

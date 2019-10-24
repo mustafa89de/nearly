@@ -5,52 +5,33 @@
     </div>
     <div class="card">
       <h2>Registrierung</h2>      
-      <div class="input">    
-        <icon iconType="person"/><input type="text" placeholder="Benutzername"/>
-      </div>
+      <div class="textinput-wrapper"><textinput iconType="person" placeholder="Benutzername" /></div>
+      <div class="textinput-wrapper"><textinput iconType="mail" placeholder="E-Mail" /></div>
+      <div class="textinput-wrapper"><textinput iconType="key" placeholder="Password" /></div>      
     </div>    
   </article>
 </template>
 
 <script>
 import Icon from "../components/Icon.vue"
+import TextInput from "../components/TextInput.vue"
 
 export default {
   data: function() {
-    return {
-      names: ["Bean", "Jonas", "Mustafa", "Tom"]
-    };
+    return {};
   },
   components: {
-    icon: Icon
+    icon: Icon,
+    textinput: TextInput
   }
 };
 </script>
 
 <style lang="scss">
   @import "assets/styles";
-  @import url(https://fonts.googleapis.com/css?family=DM+Serif+Display|Poppins:700&display=swap);
 
   body {
     background-color: $colorPrimary;    
-  }
-
-  svg path{
-    fill: $colorBlackLight;
-  }
-
-  .input {
-    display: flex;
-    border-bottom: 1px solid $colorBlackLight;
-    padding-bottom: 5px;
-
-    input {
-      margin-left: 5px;
-      border: 0;      
-    }
-    ::placeholder {
-        color: $colorBlackLight;
-    }
   }
 
   article {
@@ -65,7 +46,7 @@ export default {
       h1 {
         color: $colorWhite;
         font-family: "DM Serif Display", 'Times New Roman', Times, serif;
-        font-size: 2rem;
+        font-size: 2rem;        
       }
     }
 
@@ -79,7 +60,12 @@ export default {
       h2 {
         @include textTitle;
         color: $colorBlack;
-      }
+        margin: 0;        
+      }      
     }     
+  }
+
+  .textinput-wrapper {
+    margin-top: 50px;
   }
 </style>

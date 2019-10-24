@@ -7,7 +7,7 @@ $colorBlackLight: #838D9A;
 
 // Font
 @mixin textTitle{
-    font-family: "Poppins";
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
     font-size: 1rem;
     letter-spacing: 0.10em;
     font-weight: 800;
