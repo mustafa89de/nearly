@@ -1,5 +1,5 @@
 <template>
-  <component :is="selectIcon" :class="[iconColor, {iconScale: scaleUp}]" />
+  <component :is="selectIcon" :class="[iconColor, {iconScale: scaleUp}]"/>
 </template>
 
 <script>
@@ -15,7 +15,7 @@
       scaleUp: Boolean
     },
     computed: {
-      selectIcon: function() {
+      selectIcon: function () {
         switch (this.iconType) {
           case "person":
             return person;

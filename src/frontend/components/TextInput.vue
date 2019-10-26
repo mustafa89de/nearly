@@ -1,13 +1,15 @@
 <template>
   <div :class="['input', {focused: isActive}]">
     <div class="icon-wrapper">
-      <icon v-if="iconType" :iconType="iconType" :iconColor="getIconColor" :scaleUp="isActive" />
+      <icon v-if="iconType" :iconType="iconType" :iconColor="getIconColor" :scaleUp="isActive"/>
     </div>
     <input
-      :type="type || 'text'"
-      :placeholder="placeholder"
-      @focus="isActive = true"
-      @blur="isActive = false"
+        :type="type || 'text'"
+        :placeholder="placeholder"
+        @focus="isActive = true"
+        @blur="isActive = false"
+        v-bind:value="value"
+        v-on:input="$emit('input', $event.target.value)"
     />
   </div>
 </template>
@@ -19,9 +21,10 @@
     props: {
       iconType: String,
       placeholder: String,
-      type: String
+      type: String,
+      value: String
     },
-    data: function() {
+    data: function () {
       return {
         isActive: false
       };
@@ -30,11 +33,11 @@
       icon: Icon
     },
     computed: {
-      getIconColor: function() {
+      getIconColor: function () {
         if (this.isActive) return "primary";
         else return "blackLight";
       }
-    }
+    },
   };
 </script>
 
@@ -77,30 +80,37 @@
     opacity: 0.5;
     transition: color 500ms ease;
   }
+
   :focus::-webkit-input-placeholder {
     color: $colorPrimary;
   }
+
   :-ms-input-placeholder { /* IE 10+ */
     color: $colorBlackLight;
     opacity: 0.5;
     transition: color 500ms ease;
   }
+
   :focus:-ms-input-placeholder {
     color: $colorPrimary;
   }
+
   ::-moz-placeholder { /* Firefox 19+ */
     color: $colorBlackLight;
     opacity: 0.5;
     transition: color 500ms ease;
   }
+
   :focus::-moz-placeholder {
     color: $colorPrimary;
   }
+
   :-moz-placeholder { /* Firefox 4 - 18 */
     color: $colorBlackLight;
     opacity: 0.5;
     transition: color 500ms ease;
   }
+
   :focus:-moz-placeholder {
     color: $colorPrimary;
   }

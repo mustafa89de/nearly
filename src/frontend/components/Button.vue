@@ -1,5 +1,5 @@
 <template>
-  <input :type="type" :value="text" @click="onClick" />
+  <input :type="type" :value="text" @click="onClick || null" :disabled="disabled"/>
 </template>
 
 <script>
@@ -7,10 +7,8 @@
     props: {
       type: String,
       text: String,
-      onClick: Function
-    },
-    data: function() {
-      return {};
+      onClick: Function,
+      disabled: Boolean
     }
   };
 </script>
@@ -29,13 +27,17 @@
     transition: background-color 500ms ease, box-shadow 500ms ease;
 
     &:hover {
-      box-shadow: $shadowDefault;      
+      box-shadow: $shadowDefault;
       cursor: pointer;
       background-color: $colorPrimary;
     }
 
     &:active {
       background-color: darken($colorPrimary, 10%);
+    }
+
+    &:disabled {
+      background-color: $button-col-disabled;
     }
   }
 </style>
