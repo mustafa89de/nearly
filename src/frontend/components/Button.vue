@@ -25,6 +25,7 @@
     border: none;
     border-radius: 30px;
     transition: background-color 500ms ease, box-shadow 500ms ease;
+    -webkit-appearance: none;
 
     &:hover {
       box-shadow: $shadowDefault;      

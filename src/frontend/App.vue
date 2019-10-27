@@ -15,15 +15,25 @@
         box-sizing: border-box;
     }
 
-    html, body {
-        padding: 0;
-        margin: 0;
+    html {
         height: 100%;
     }
 
+    body {
+        margin: 0;
+        min-height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     main{
-        height: 100%;
-        margin: 0 auto;
+        flex: 1;
+        width: 100%;
         max-width: 500px;
+
+        display: flex;
+        flex-direction: column;
     }
 </style>
