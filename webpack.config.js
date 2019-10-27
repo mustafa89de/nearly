@@ -15,12 +15,14 @@ module.exports = {
         rules: [
             { test: /\.vue$/, use: 'vue-loader' },
             { test: /\.css$/, use: ['vue-style-loader', 'css-loader'] },
-            { test: /\.scss$/,   use: ['vue-style-loader','css-loader','sass-loader'] }
+            { test: /\.scss$/,   use: ['vue-style-loader','css-loader','sass-loader'] },
+            { test: /\.svg$/, use: 'vue-svg-loader'}
         ]
     },
     resolve: {
         alias: {
-            vue: 'vue/dist/vue.esm.js'
+            vue: 'vue/dist/vue.esm.js',
+            assets: path.resolve(__dirname, "./src/frontend/assets")
         },
         extensions: [
             '.vue',
