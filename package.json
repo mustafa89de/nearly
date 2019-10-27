@@ -23,6 +23,7 @@
     "homepage": "https://github.com/mustafa89de/mi-projekt-repo#readme",
     "devDependencies": {
         "@vue/test-utils": "^1.0.0-beta.29",
+        "autoprefixer": "^9.7.0",
         "babel-core": "^6.26.3",
         "babel-jest": "^24.9.0",
         "babel-preset-env": "^1.7.0",
@@ -33,6 +34,7 @@
         "jest": "^24.9.0",
         "node-sass": "^4.12.0",
         "nodemon": "^1.19.3",
+        "postcss-loader": "^3.0.0",
         "sass-loader": "^8.0.0",
         "supertest": "^4.0.2",
         "vue": "^2.6.10",

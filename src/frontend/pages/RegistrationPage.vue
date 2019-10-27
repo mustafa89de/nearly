@@ -4,23 +4,19 @@
       <h1>Meeting</h1>
     </header>
     <transition name="slide">
-      <div v-if="isReady" class="card">
+      <section v-if="isReady" class="card">
         <h2>Registrierung</h2>
         <form @submit="handleRegistration">
-          <div class="top-wrapper">
-              <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" v-model="username"/>
-              <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" v-model="email"/>
-              <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Password" v-model="password"/>
-          </div>
+          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" v-model="username"/>
+          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" v-model="email"/>
+          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Password" v-model="password"/>
           <p v-if="errorMessage">{{errorMessage}}</p>
           <p v-if="registrationSucceed">Die Registrierung war erfolgreich</p>
-          <div class="bottom-wrapper">
-            <button-submit type="submit" text="Registrieren" :disabled="!password || !username || !email"/>
-            <p class="login-text">Du hast schon einen Account?</p>
-            <router-link to="/login">Anmelden</router-link>
-          </div>
+          <button-submit class="register-button" type="submit" text="Registrieren" :disabled="!password || !username || !email"/>
+          <p class="login-text">Du hast schon einen Account?</p>
+          <router-link class="login-link" to="/login">Anmelden</router-link>
         </form>
-      </div>
+      </section>
     </transition>
   </article>
 </template>
@@ -77,19 +73,23 @@
 
   body {
     background-color: $colorPrimary;
-    overflow: hidden;
   }
 
   article {
+    flex: 1;
+
     display: flex;
     flex-flow: column;
-    height: 100%;
 
     header {
-      flex: 0 1 auto;
-      padding: 50px 25px 50px 25px;
+      flex: 1 1 auto;
+      padding: 25px;
+      max-height: 200px;
+      display: flex;
+      align-items: center;
 
       h1 {
+        margin: 0;
         color: $colorWhite;
         font-family: "DM Serif Display", "Times New Roman", Times, serif;
         font-size: 2rem;
@@ -98,12 +98,17 @@
 
     .card {
       flex: 1 1 auto;
+
+      display: flex;
+      flex-direction: column;
       background-color: $colorWhite;
       border-radius: 50px 50px 0px 0px;
       padding: 50px 25px 50px 25px;
       box-shadow: $shadowDark;
 
       h2 {
+        flex: none;
+
         @include textTitle;
         color: $colorBlack;
         margin: 0;
@@ -111,48 +116,49 @@
 
       .input-text-wrapper {
         margin-top: 50px;
+
+        &:last-of-type {
+          margin-bottom: 50px;
+        }
       }
 
       form {
+        flex: 1;
+
         display: flex;
         flex-flow: column;
         height: 100%;
         padding-bottom: 25px;
       }
 
-      .top-wrapper {
-        flex: 1 1 auto;
-
-        .input-text-wrapper{
-          margin-top: 50px;
-        }
+      .register-button, .login-text, .login-link {
+        align-self: center;
       }
 
-      .bottom-wrapper {
-        flex: 0 1 auto;
-        text-align: center;
+      .register-button {
+        margin-top: auto;
+      }
 
-        .login-text {
-          @include textBody;
-          color: $colorBlackLight;
-          margin: 25px 0 10px 0;
+      .login-text {
+        @include textBody;
+        color: $colorBlackLight;
+        margin: 25px 0 10px 0;
+      }
+
+      .login-link {
+        @include textButton;
+        text-decoration: none;
+        color: $colorSecondary;
+        transition: color 500ms ease;
+
+        &:link,
+        &:visited,
+        &:active {
+          color: $colorSecondary;
         }
 
-        a {
-          @include textButton;
-          text-decoration: none;
-          color: $colorSecondary;
-          transition: color 500ms ease;
-
-          &:link,
-          &:visited,
-          &:active {
-            color: $colorSecondary;
-          }
-
-          &:hover {
-            color: $colorPrimary;
-          }
+        &:hover {
+          color: $colorPrimary;
         }
       }
     }
