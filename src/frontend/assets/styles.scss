@@ -1,0 +1,34 @@
+// Colors
+$colorPrimary: #E44021;
+$colorSecondary: #F69B11;
+$colorWhite: #FFFFFF;
+$colorBlack: #111821;
+$colorBlackLight: #838D9A;
+
+// Text Styles
+@mixin textTitle {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.10em;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+@mixin textBody {
+    font-family: "Arimo", Arial, Helvetica, sans-serif;    
+    font-size: 18px;
+    font-weight: 400;    
+    letter-spacing: 0.02em;
+}
+
+@mixin textButton {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.10em;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+// Shadows
+$shadowDefault: 0px 4px 10px rgba(0, 0, 0, 0.25);
+$shadowDark: 0px 4px 10px rgba(0, 0, 0, 0.5);
