@@ -7,6 +7,8 @@ const PORT = process.env.PORT || 8080;
 const controller = require('./controller');  // imports /controller/index.js with all registered routes
 const DBService = require("./services/DBService");
 
+app.use(express.json());
+
 app.use('/api', controller); // Path chaining -> /api/...
 
 app.use(express.static('dist'));

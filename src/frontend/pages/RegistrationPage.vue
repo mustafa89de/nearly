@@ -6,13 +6,15 @@
     <transition name="slide">
       <section v-if="isReady" class="card">
         <h2>Registrierung</h2>
-        <form>
-          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername"/>
-          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail"/>
-          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Password"/>
-          <button-submit class="register-button" type="submit" text="Registrieren" :onClick="register"/>
+        <form @submit="handleRegistration">
+          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" v-model="username"/>
+          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" v-model="email"/>
+          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Password" v-model="password"/>
+          <p v-if="errorMessage">{{errorMessage}}</p>
+          <p v-if="registrationSucceed">Die Registrierung war erfolgreich</p>
+          <button-submit class="register-button" type="submit" text="Registrieren" :disabled="!password || !username || !email"/>
           <p class="login-text">Du hast schon einen Account?</p>
-          <a class="login-link" href="#" @click="login">Anmelden</a>
+          <router-link class="login-link" to="/login">Anmelden</router-link>
         </form>
       </section>
     </transition>
@@ -22,11 +24,17 @@
 <script>
   import TextInput from "../components/TextInput.vue";
   import Button from "../components/Button.vue";
+  import UserService from "../services/UserService";
 
   export default {
     data: function () {
       return {
-        isReady: false
+        isReady: false,
+        username: '',
+        email: '',
+        password: '',
+        errorMessage: null,
+        registrationSucceed: false
       };
     },
     components: {
@@ -34,12 +42,24 @@
       "button-submit": Button
     },
     methods: {
-      register: function () {
-        alert("register");
+      handleRegistration: async function (e) {
+        e.preventDefault();
+
+        try {
+          await UserService.register(this.username, this.email, this.password);
+
+          this.registrationSucceed = true;
+          this.errorMessage = null;
+        } catch (err) {
+          this.registrationSucceed = false;
+
+          if (err.status === 409) {
+            this.errorMessage = "Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse";
+          } else {
+            this.errorMessage = "Ein unbekannter Fehler ist aufgetreten."
+          }
+        }
       },
-      login: function () {
-        alert("login");
-      }
     },
     mounted() {
       this.isReady = true;
