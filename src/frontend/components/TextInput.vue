@@ -1,8 +1,6 @@
 <template>
   <div :class="['input', {focused: isActive}]">
-    <div class="icon-wrapper">
-      <icon v-if="iconType" :iconType="iconType" :iconColor="getIconColor" :scaleUp="isActive"/>
-    </div>
+    <icon v-if="iconType" :iconType="iconType" :iconColor="getIconColor" :scaleUp="isActive" />
     <input
         :type="type || 'text'"
         :placeholder="placeholder"
@@ -37,12 +35,12 @@
         if (this.isActive) return "primary";
         else return "blackLight";
       }
-    },
+    }
   };
 </script>
 
 <style scoped lang="scss">
-  @import "assets/styles";
+  @import "assets/variables";
 
   .input {
     display: flex;
@@ -50,7 +48,7 @@
     border-bottom: 1px solid $colorBlackLight;
     transition: border-bottom 500ms ease, padding-bottom 200ms ease;
 
-    .icon-warpper {
+    svg {
       flex: 0 1 auto;
     }
 
@@ -63,6 +61,10 @@
       font-size: 1rem;
       color: $colorBlackLight;
       transition: color 500ms ease;
+
+      &:focus {
+        outline: none;
+      }
     }
   }
 

@@ -14,7 +14,8 @@
 </script>
 
 <style scoped lang="scss">
-  @import "assets/styles";
+  @import "assets/variables";
+  @import "assets/mixins";
 
   input {
     @include textButton;
@@ -38,6 +39,13 @@
 
     &:disabled {
       background-color: $button-col-disabled;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: $shadowDefault;
+      cursor: pointer;
+      background-color: $colorPrimary
     }
   }
 </style>

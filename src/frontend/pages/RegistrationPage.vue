@@ -1,22 +1,16 @@
 <template>
   <article>
-    <div class="header">
+    <header>
       <h1>Meeting</h1>
-    </div>
+    </header>
     <transition name="slide">
       <div v-if="isReady" class="card">
         <h2>Registrierung</h2>
         <form @submit="handleRegistration">
           <div class="top-wrapper">
-            <div class="input-text-wrapper">
-              <input-text iconType="person" placeholder="Benutzername" v-model="username"/>
-            </div>
-            <div class="input-text-wrapper">
-              <input-text type="email" iconType="mail" placeholder="E-Mail" v-model="email"/>
-            </div>
-            <div class="input-text-wrapper">
-              <input-text iconType="key" type="password" placeholder="Password" v-model="password"/>
-            </div>
+              <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" v-model="username"/>
+              <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" v-model="email"/>
+              <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Password" v-model="password"/>
           </div>
           <p v-if="errorMessage">{{errorMessage}}</p>
           <p v-if="registrationSucceed">Die Registrierung war erfolgreich</p>
@@ -78,7 +72,8 @@
 </script>
 
 <style lang="scss">
-  @import "assets/styles";
+  @import "assets/variables";
+  @import "assets/mixins";
 
   body {
     background-color: $colorPrimary;
@@ -90,7 +85,7 @@
     flex-flow: column;
     height: 100%;
 
-    .header {
+    header {
       flex: 0 1 auto;
       padding: 50px 25px 50px 25px;
 
@@ -127,6 +122,10 @@
 
       .top-wrapper {
         flex: 1 1 auto;
+
+        .input-text-wrapper{
+          margin-top: 50px;
+        }
       }
 
       .bottom-wrapper {
