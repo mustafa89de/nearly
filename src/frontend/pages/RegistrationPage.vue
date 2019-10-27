@@ -6,16 +6,18 @@
     <transition name="slide">
       <div v-if="isReady" class="card">
         <h2>Registrierung</h2>
-        <form>
-          <div class="top-wrapper">                        
-              <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" />            
-              <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" />            
-              <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Password" />            
+        <form @submit="handleRegistration">
+          <div class="top-wrapper">
+              <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" v-model="username"/>
+              <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" v-model="email"/>
+              <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Password" v-model="password"/>
           </div>
+          <p v-if="errorMessage">{{errorMessage}}</p>
+          <p v-if="registrationSucceed">Die Registrierung war erfolgreich</p>
           <div class="bottom-wrapper">
-            <button-submit type="submit" text="Registrieren" :onClick="register" />
+            <button-submit type="submit" text="Registrieren" :disabled="!password || !username || !email"/>
             <p class="login-text">Du hast schon einen Account?</p>
-            <a href="#" @click="login">Anmelden</a>
+            <router-link to="/login">Anmelden</router-link>
           </div>
         </form>
       </div>
@@ -26,11 +28,17 @@
 <script>
   import TextInput from "../components/TextInput.vue";
   import Button from "../components/Button.vue";
+  import UserService from "../services/UserService";
 
   export default {
-    data: function() {
+    data: function () {
       return {
-        isReady: false
+        isReady: false,
+        username: '',
+        email: '',
+        password: '',
+        errorMessage: null,
+        registrationSucceed: false
       };
     },
     components: {
@@ -38,14 +46,26 @@
       "button-submit": Button
     },
     methods: {
-      register: function() {
-        alert("register");
+      handleRegistration: async function (e) {
+        e.preventDefault();
+
+        try {
+          await UserService.register(this.username, this.email, this.password);
+
+          this.registrationSucceed = true;
+          this.errorMessage = null;
+        } catch (err) {
+          this.registrationSucceed = false;
+
+          if (err.status === 409) {
+            this.errorMessage = "Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse";
+          } else {
+            this.errorMessage = "Ein unbekannter Fehler ist aufgetreten."
+          }
+        }
       },
-      login: function() {
-        alert("login");        
-      }
     },
-    mounted(){
+    mounted() {
       this.isReady = true;
     }
   };
@@ -58,7 +78,7 @@
   body {
     background-color: $colorPrimary;
     overflow: hidden;
-  }  
+  }
 
   article {
     display: flex;
@@ -81,7 +101,7 @@
       background-color: $colorWhite;
       border-radius: 50px 50px 0px 0px;
       padding: 50px 25px 50px 25px;
-      box-shadow: $shadowDark;      
+      box-shadow: $shadowDark;
 
       h2 {
         @include textTitle;
