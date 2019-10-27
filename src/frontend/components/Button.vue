@@ -8,16 +8,14 @@
       type: String,
       text: String,
       onClick: Function
-    },
-    data: function() {
-      return {};
     }
   };
 </script>
 
 <style scoped lang="scss">
-  @import "assets/styles";
-
+  @import "assets/variables";
+  @import "assets/mixins";
+  
   input {
     @include textButton;
     width: 70%;
@@ -36,6 +34,13 @@
 
     &:active {
       background-color: darken($colorPrimary, 10%);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: $shadowDefault;
+      cursor: pointer;
+      background-color: $colorPrimary
     }
   }
 </style>

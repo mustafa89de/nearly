@@ -23,5 +23,7 @@
 
     main{
         height: 100%;
+        margin: 0 auto;
+        max-width: 500px;
     }
 </style>

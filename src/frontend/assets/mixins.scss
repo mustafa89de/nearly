@@ -1,10 +1,3 @@
-// Colors
-$colorPrimary: #E44021;
-$colorSecondary: #F69B11;
-$colorWhite: #FFFFFF;
-$colorBlack: #111821;
-$colorBlackLight: #838D9A;
-
 // Text Styles
 @mixin textTitle {
     font-family: "Poppins", Arial, Helvetica, sans-serif;
@@ -28,7 +21,3 @@ $colorBlackLight: #838D9A;
     font-weight: 800;
     text-transform: uppercase;
 }
-
-// Shadows
-$shadowDefault: 0px 4px 10px rgba(0, 0, 0, 0.25);
-$shadowDark: 0px 4px 10px rgba(0, 0, 0, 0.5);

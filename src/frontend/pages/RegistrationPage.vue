@@ -1,22 +1,16 @@
 <template>
   <article>
-    <div class="header">
+    <header>
       <h1>Meeting</h1>
-    </div>
+    </header>
     <transition name="slide">
       <div v-if="isReady" class="card">
         <h2>Registrierung</h2>
         <form>
-          <div class="top-wrapper">            
-            <div class="input-text-wrapper">
-              <input-text iconType="person" placeholder="Benutzername" />
-            </div>            
-            <div class="input-text-wrapper">
-              <input-text iconType="mail" placeholder="E-Mail" />
-            </div>
-            <div class="input-text-wrapper">
-              <input-text iconType="key" type="password" placeholder="Password" />
-            </div>
+          <div class="top-wrapper">                        
+              <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" />            
+              <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" />            
+              <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Password" />            
           </div>
           <div class="bottom-wrapper">
             <button-submit type="submit" text="Registrieren" :onClick="register" />
@@ -58,19 +52,20 @@
 </script>
 
 <style lang="scss">
-  @import "assets/styles";
+  @import "assets/variables";
+  @import "assets/mixins";
 
   body {
     background-color: $colorPrimary;
     overflow: hidden;
-  }
+  }  
 
   article {
     display: flex;
     flex-flow: column;
     height: 100%;
 
-    .header {
+    header {
       flex: 0 1 auto;
       padding: 50px 25px 50px 25px;
 
@@ -107,6 +102,10 @@
 
       .top-wrapper {
         flex: 1 1 auto;
+
+        .input-text-wrapper{
+          margin-top: 50px;
+        }
       }
 
       .bottom-wrapper {

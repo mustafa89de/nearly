@@ -1,8 +1,6 @@
 <template>
-  <div :class="['input', {focused: isActive}]">
-    <div class="icon-wrapper">
-      <icon v-if="iconType" :iconType="iconType" :iconColor="getIconColor" :scaleUp="isActive" />
-    </div>
+  <div :class="['input', {focused: isActive}]">    
+    <icon v-if="iconType" :iconType="iconType" :iconColor="getIconColor" :scaleUp="isActive" />    
     <input
       :type="type || 'text'"
       :placeholder="placeholder"
@@ -39,7 +37,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import "assets/styles";
+  @import "assets/variables";  
 
   .input {
     display: flex;
@@ -47,8 +45,8 @@
     border-bottom: 1px solid $colorBlackLight;
     transition: border-bottom 500ms ease, padding-bottom 200ms ease;
 
-    .icon-warpper {
-      flex: 0 1 auto;
+    svg {
+      flex: 0 1 auto;      
     }
 
     input {
@@ -57,9 +55,13 @@
       margin-left: 10px;
       border: 0;
       font-family: "Gothic A1";
-      font-size: 1rem;
-      color: $colorBlackLight;
+      font-size: 1rem;      
+      color: $colorBlackLight;      
       transition: color 500ms ease;
+
+      &:focus {
+        outline: none;
+      }
     }
   }
 
