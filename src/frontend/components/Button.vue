@@ -38,7 +38,7 @@
     }
 
     &:disabled {
-      background-color: $button-col-disabled;
+      background-color: $colorGrey;
     }
 
     &:focus {
