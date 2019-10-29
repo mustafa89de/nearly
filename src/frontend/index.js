@@ -6,6 +6,7 @@ import App from './App';
 import RegistrationPage from './pages/RegistrationPage';
 import HelpPage from './pages/HelpPage';
 import NotFoundPage from './pages/NotFoundPage';
+import LoginPage from "./pages/LoginPage";
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,10 @@ const router = new VueRouter({
         {
             path: '/',
             component: RegistrationPage
+        },
+        {
+            path: '/login',
+            component: LoginPage
         },
         {
             path: '/help',
