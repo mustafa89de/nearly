@@ -15,6 +15,19 @@ class UserService {
             throw err;
         }
     }
+
+    async login(email, password){
+        try{
+            await axios.post(ENDPOINTS.LOGIN, {
+                email,
+                password
+            })
+        }catch(err){
+            err.status = err.response.status;
+            console.error(err.message);
+            throw err;
+        }
+    }
 }
 
 export default new UserService();

@@ -8,10 +8,11 @@
       <section v-if="isReady" class="card">
         <h2>Login</h2>
         <form @submit="handleLogin">
-          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" v-model="email"/>
+          <input-text class="input-text-wrapper" iconType="mail" type="email" placeholder="E-Mail" v-model="email"/>
           <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Password" v-model="password"/>
+          <!-- ps are placeholders to be replaced -->
           <p v-if="errorMessage">{{errorMessage}}</p>
-          <p v-if="registrationSucceed">Die Registrierung war erfolgreich</p>
+          <p v-if="loginSucceed">Du hast dich erfolgreich angemeldet</p>
           <button-submit class="login-button" type="submit" text="Login" :disabled="!password || !email"/>
           <p class="registration-text">Du hast noch keinen Account?</p>
           <!--- We might need a separate router endpoint for registration. Currently this will lead to main landing page -->
@@ -35,7 +36,7 @@
         email: '',
         password: '',
         errorMessage: null,
-        registrationSucceed: false
+        loginSucceed: false
       };
     },
     components: {
@@ -47,15 +48,13 @@
         e.preventDefault();
 
         try {
-          await UserService.register(this.username, this.email, this.password);
-
-          this.registrationSucceed = true;
+          await UserService.login(this.email, this.password);
+          this.loginSucceed = true;
           this.errorMessage = null;
         } catch (err) {
-          this.registrationSucceed = false;
-
+          this.loginSucceed = false;
           if (err.status === 409) {
-            this.errorMessage = "Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse";
+            this.errorMessage = "Dein Passwort oder Email stimmen nicht, bitte überprüfe nochmal deine Eingabe!";
           } else {
             this.errorMessage = "Ein unbekannter Fehler ist aufgetreten."
           }
