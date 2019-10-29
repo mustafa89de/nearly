@@ -14,7 +14,7 @@
           <p v-if="errorMessage">{{errorMessage}}</p>
           <p v-if="loginSucceed">Du hast dich erfolgreich angemeldet</p>
           <button-submit class="login-button" type="submit" text="Login" :disabled="!password || !email"/>
-          <p class="registration-text">Du hast noch keinen Account?</p>
+          <p class="login-text">Du hast noch keinen Account?</p>
           <!--- We might need a separate router endpoint for registration. Currently this will lead to main landing page -->
           <router-link class="registration-link" to="/">Registrieren</router-link>
         </form>
@@ -26,13 +26,12 @@
 <script>
   import TextInput from "../components/TextInput.vue";
   import Button from "../components/Button.vue";
-  import UserService from "../services/UserService";
+  import AuthService from "../services/AuthService";
 
   export default {
     data: function () {
       return {
         isReady: false,
-        username: '',
         email: '',
         password: '',
         errorMessage: null,
@@ -48,7 +47,7 @@
         e.preventDefault();
 
         try {
-          await UserService.login(this.email, this.password);
+          await AuthService.login(this.email, this.password);
           this.loginSucceed = true;
           this.errorMessage = null;
         } catch (err) {
@@ -131,7 +130,7 @@
         padding-bottom: 25px;
       }
 
-      .login-button, .registration-text, .registration-link {
+      .login-button, .login-text, .registration-link {
         align-self: center;
       }
 
@@ -139,7 +138,7 @@
         margin-top: auto;
       }
 
-      .registration-text {
+      .login-text {
         @include textBody;
         color: $colorBlackLight;
         margin: 25px 0 10px 0;
