@@ -1,5 +1,5 @@
 <template>
-  <component :is="selectIcon" :class="[iconColor, {iconScale: scaleUp}]"/>
+  <component :is="selectIcon" :class="iconColor"/>
 </template>
 
 <script>
@@ -11,8 +11,7 @@
   export default {
     props: {
       iconType: String,
-      iconColor: String,
-      scaleUp: Boolean
+      iconColor: String
     },
     computed: {
       selectIcon: function () {
@@ -36,10 +35,6 @@
 
   svg {
     transition: transform 200ms;
-  }
-
-  .iconScale {
-    transform: scale(1.3);
   }
 
   path {

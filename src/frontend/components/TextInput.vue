@@ -1,6 +1,6 @@
 <template>
   <div :class="['input', {focused: isActive}]">
-    <icon v-if="iconType" :iconType="iconType" :iconColor="getIconColor" :scaleUp="isActive" />
+    <icon v-if="iconType" :iconType="iconType" :iconColor="getIconColor" />
     <input
         :type="type || 'text'"
         :placeholder="placeholder"
@@ -41,6 +41,7 @@
 
 <style scoped lang="scss">
   @import "assets/variables";
+  @import "assets/mixins.scss"  ;
 
   .input {
     display: flex;
@@ -53,11 +54,11 @@
     }
 
     input {
+      @include textBody;
       flex: 1 1 auto;
       width: 80%;
       margin-left: 10px;
       border: 0;
-      font-family: "Gothic A1";
       font-size: 1rem;
       color: $colorBlackLight;
       transition: color 500ms ease;
@@ -69,7 +70,6 @@
   }
 
   .focused {
-    padding-bottom: 20px;
     border-bottom: 1px solid $colorPrimary;
 
     input {

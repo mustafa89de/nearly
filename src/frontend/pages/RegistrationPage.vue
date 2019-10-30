@@ -108,7 +108,6 @@
 
       h2 {
         flex: none;
-
         @include textTitle;
         color: $colorBlack;
         margin: 0;
@@ -116,10 +115,11 @@
 
       .input-text-wrapper {
         margin-top: 50px;
+        position: relative;
 
         &:last-of-type {
           margin-bottom: 50px;
-        }
+        }        
       }
 
       form {
