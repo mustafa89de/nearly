@@ -1,68 +1,72 @@
 {
-    "name": "mi-projekt",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "start": "node src/backend/app.js",
-        "build": "webpack --mode production",
-        "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
-        "frontend": "webpack-dev-server --mode development --devtool inline-source-map --hot",
-        "backend": "nodemon src/backend/app.js",
-        "test": "MODE=TEST jest"
+  "name": "mi-projekt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/backend/app.js",
+    "build": "webpack --mode production",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "frontend": "webpack-dev-server --mode development --devtool inline-source-map --hot",
+    "backend": "nodemon src/backend/app.js",
+    "test": "MODE=TEST jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mustafa89de/mi-projekt-repo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mustafa89de/mi-projekt-repo/issues"
+  },
+  "homepage": "https://github.com/mustafa89de/mi-projekt-repo#readme",
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.3",
+    "@vue/test-utils": "^1.0.0-beta.29",
+    "autoprefixer": "^9.7.0",
+    "babel-jest": "^24.9.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "concurrently": "^5.0.0",
+    "css-loader": "^3.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.9.0",
+    "node-sass": "^4.12.0",
+    "nodemon": "^1.19.3",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^8.0.0",
+    "supertest": "^4.0.2",
+    "vue": "^2.6.10",
+    "vue-jest": "^3.0.5",
+    "vue-loader": "^15.7.1",
+    "vue-style-loader": "^4.1.2",
+    "vue-svg-loader": "^0.12.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.2"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bcrypt": "^3.0.6",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.5",
+    "vue-router": "^3.1.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      ".*\\.(vue)$": "vue-jest",
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/mustafa89de/mi-projekt-repo.git"
-    },
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/mustafa89de/mi-projekt-repo/issues"
-    },
-    "homepage": "https://github.com/mustafa89de/mi-projekt-repo#readme",
-    "devDependencies": {
-        "@vue/test-utils": "^1.0.0-beta.29",
-        "autoprefixer": "^9.7.0",
-        "babel-core": "^6.26.3",
-        "babel-jest": "^24.9.0",
-        "babel-preset-env": "^1.7.0",
-        "clean-webpack-plugin": "^3.0.0",
-        "concurrently": "^5.0.0",
-        "css-loader": "^3.2.0",
-        "html-webpack-plugin": "^3.2.0",
-        "jest": "^24.9.0",
-        "node-sass": "^4.12.0",
-        "nodemon": "^1.19.3",
-        "postcss-loader": "^3.0.0",
-        "sass-loader": "^8.0.0",
-        "supertest": "^4.0.2",
-        "vue": "^2.6.10",
-        "vue-jest": "^3.0.5",
-        "vue-loader": "^15.7.1",
-        "vue-style-loader": "^4.1.2",
-        "vue-svg-loader": "^0.12.0",
-        "vue-template-compiler": "^2.6.10",
-        "webpack": "^4.41.0",
-        "webpack-cli": "^3.3.9",
-        "webpack-dev-server": "^3.8.2"
-    },
-    "dependencies": {
-        "axios": "^0.19.0",
-        "bcrypt": "^3.0.6",
-        "express": "^4.17.1",
-        "mongoose": "^5.7.5",
-        "vue-router": "^3.1.3"
-    },
-    "jest": {
-        "moduleFileExtensions": [
-            "js",
-            "json",
-            "vue"
-        ],
-        "transform": {
-            ".*\\.(vue)$": "vue-jest",
-            "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
-        }
+    "moduleNameMapper": {
+      "\\.(svg)$": "<rootDir>/src/jestMock.js"
     }
+  }
 }

@@ -3,10 +3,10 @@
 </template>
 
 <script>
-  import person from "assets/icons/person.svg";
-  import mail from "assets/icons/mail.svg";
-  import key from "assets/icons/key.svg";
-  import bug from "assets/icons/bug.svg";
+  import person from "../assets/icons/person.svg";
+  import mail from "../assets/icons/mail.svg";
+  import key from "../assets/icons/key.svg";
+  import bug from "../assets/icons/bug.svg";
 
   export default {
     props: {
@@ -32,7 +32,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import "assets/variables";
+  @import "../assets/variables";
 
   svg {
     transition: transform 200ms;
