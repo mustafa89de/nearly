@@ -29,4 +29,31 @@ passport.use(new JwtStrategy({
     }
 }));
 
+//local strategy (email & pw authentication)
+passport.use(new LocalStrategy({
+    usernameField: 'email'
+}, async (email, password, done) => {
+    try {
 
+        //Find user given email
+        const user = await User.findOne({email});
+
+        //If not, handle
+        if (!user) {
+            done(null, false);
+        }
+        //Check if PW is correct
+        const isMatch = UserService.compareHashed(password, user.password);
+
+        //If not, handle
+        if(!isMatch){
+            return done(null, false);
+        }
+
+        //Else return user
+        done(null, user);
+
+    } catch (err) {
+        done(err, false);
+    }
+}));
