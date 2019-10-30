@@ -2,13 +2,16 @@
   <div :class="['input', {focused: isActive}]">
     <icon v-if="iconType" :iconType="iconType" :iconColor="getIconColor" />
     <input
-        :type="type || 'text'"
+        :type="passwordVisibility || (type || 'text')"
         :placeholder="placeholder"
         @focus="isActive = true"
         @blur="isActive = false"
         v-bind:value="value"
         v-on:input="$emit('input', $event.target.value)"
     />
+    <span v-if="type === 'password'" class="password-toggle" @click="togglePasswordVisibility">
+      <icon :iconType="passwordVisibility === 'text' ? 'eye' : 'eye-closed'" :iconColor="getIconColor" />
+    </span>
     <span v-if="hint" :class="['input-hint', {'hint-visible': showHint}]">{{hint}}</span>
   </div>
 </template>
@@ -27,11 +30,18 @@
     },
     data: function () {
       return {
-        isActive: false
+        isActive: false,
+        passwordVisibility: ""
       };
     },
     components: {
       icon: Icon
+    },
+    methods: {
+      togglePasswordVisibility: function(){
+        console.log("test");
+        this.passwordVisibility = this.passwordVisibility === "text" ? "password" : "text";
+      }
     },
     computed: {
       getIconColor: function () {
@@ -85,6 +95,10 @@
 
     .hint-visible {
       opacity: 1;
+    }
+
+    .password-toggle{
+      cursor: pointer;
     }
   }
 

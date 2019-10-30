@@ -7,9 +7,9 @@
       <section v-if="isReady" class="card">
         <h2>Registrierung</h2>
         <form @submit="handleRegistration">
-          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" hint="muss mind. 4 Zeichen haben" :showHint="username != '' && !usernameValid" v-model="username"/>
-          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" hint="muss korrektes Format haben" :showHint="email != '' && !emailValid" v-model="email"/>
-          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Password" hint="muss mind. 8 Zeichen haben" :showHint="password != '' && !passwordValid" v-model="password"/>
+          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" hint="Benutzername muss mind. 4 Zeichen haben" :showHint="username != '' && !usernameValid" v-model="username"/>
+          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" hint="E-Mail-Adresse ist unvollständig" :showHint="email != '' && !emailValid" v-model="email"/>
+          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Passwort" hint="Passwort muss mind. 8 Zeichen haben" :showHint="password != '' && !passwordValid" v-model="password"/>
           <p v-if="errorMessage">{{errorMessage}}</p>
           <p v-if="registrationSucceed">Die Registrierung war erfolgreich</p>
           <button-submit class="register-button" type="submit" text="Registrieren" :disabled="!usernameValid || !emailValid || !passwordValid"/>
@@ -68,8 +68,8 @@
         this.usernameValid = this.username.length >= 4;
       },
       email: function(){
-        this.emailValid =
-/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.email);
+        this.emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        .test(this.email);
       },
       password: function(){
         this.passwordValid = this.password.length >= 8;
