@@ -24,5 +24,14 @@ router.post('/', passportLocal, async (req, res, next) => {
     }
 });
 
+// secure route for testing, only accessible with valid token
+router.get('/secure', passportJWT, async (req, res, next) => {
+    try {
+        console.log('managed to get here');
+        res.json({secret: 'resource'});
+    } catch (err) {
+        res.status(500).json({message: err.message});
+    }
+});
 
 module.exports = router;
