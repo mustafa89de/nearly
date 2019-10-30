@@ -1,6 +1,4 @@
 const bcrypt = require('bcrypt');
-const JWT = require('jsonwebtoken');
-const {JWT_SECRET} = require('../configuration/config');
 
 class UserService {
     hashPassword(plainPassword) {
@@ -15,14 +13,6 @@ class UserService {
             throw new Error(err);
         }
     }
-
-    signToken = user => {
-        return JWT.sign({
-            iss: 'MeetApp',
-            sub: user.id,
-            exp: new Date().setDate(new Date().getDate() + 1) //current time +1 day
-        }, JWT_SECRET);
-    };
 }
 
 module.exports = new UserService();
