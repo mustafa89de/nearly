@@ -1,9 +1,7 @@
-const JWT = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const passportConf = require('../passport');
-const UserService = require('../services/UserService');
 const JWTService = require('../services/JWTService');
 
 //jwt-authentication for token authentication/validation
