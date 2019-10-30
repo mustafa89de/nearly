@@ -9,6 +9,7 @@
         v-bind:value="value"
         v-on:input="$emit('input', $event.target.value)"
     />
+    <span v-if="hint" :class="['input-hint', {'hint-visible': showHint}]">{{hint}}</span>
   </div>
 </template>
 
@@ -20,7 +21,9 @@
       iconType: String,
       placeholder: String,
       type: String,
-      value: String
+      value: String,
+      hint: String,
+      showHint: Boolean
     },
     data: function () {
       return {
@@ -66,6 +69,22 @@
       &:focus {
         outline: none;
       }
+    }
+
+    .input-hint {
+      @include textHint;
+      flex: none;
+      position: absolute;
+      bottom: -75%;
+      opacity: 0;
+      transition: opacity 200ms;
+      width: 100%;
+      text-align: center;
+      color: $colorPrimary;
+    }
+
+    .hint-visible {
+      opacity: 1;
     }
   }
 
