@@ -17,7 +17,7 @@ describe('CreateEventPage', () => {
     wrapper.setData({
       name: testName,
       description: testDescription,
-      latitude: testLongitude,
+      latitude: testLatitude,
       longitude: testLongitude,
       time: testTime
     });
