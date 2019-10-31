@@ -53,8 +53,8 @@
 </script>
 
 <style scoped lang="scss">
-  @import "assets/variables";
-  @import "assets/mixins.scss"  ;
+  @import "../assets/variables";
+  @import "../assets/mixins.scss"  ;
 
   .input {
     display: flex;

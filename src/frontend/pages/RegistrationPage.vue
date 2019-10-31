@@ -82,8 +82,8 @@
 </script>
 
 <style lang="scss">
-  @import "assets/variables";
-  @import "assets/mixins";
+  @import "../assets/variables";
+  @import "../assets/mixins";
 
   body {
     background-color: $colorPrimary;

@@ -40,7 +40,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import "assets/variables";
+  @import "../assets/variables";
 
   svg {
     transition: transform 200ms;
