@@ -1,5 +1,6 @@
 <template>
-  <input :type="type" :value="text" @click="onClick || null" :disabled="disabled"/>
+  <router-link v-if="type === 'link'" :to="to">{{text}}</router-link>
+  <input v-else :type="type" :value="text" @click="onClick || null" :disabled="disabled"/>
 </template>
 
 <script>
@@ -8,7 +9,8 @@
       type: String,
       text: String,
       onClick: Function,
-      disabled: Boolean
+      disabled: Boolean,
+      to: String
     }
   };
 </script>
@@ -17,7 +19,7 @@
   @import "assets/variables";
   @import "assets/mixins";
 
-  input {
+  input, a {
     @include textButton;
     width: 70%;
     background: $colorSecondary;
@@ -27,6 +29,8 @@
     border-radius: 30px;
     transition: background-color 500ms ease, box-shadow 500ms ease;
     appearance: none;
+    text-align: center;
+    text-decoration: none;
 
     &:hover {
       box-shadow: $shadowDefault;

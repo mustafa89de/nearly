@@ -9,6 +9,8 @@
   import check from "assets/icons/check.svg";
   import eye from "assets/icons/eye.svg";
   import eyeClosed from "assets/icons/eye-closed.svg";
+  import checkCircle from "assets/icons/check-circle.svg";
+  import errorCircle from "assets/icons/error-circle.svg";
   import bug from "assets/icons/bug.svg";
 
   export default {
@@ -31,6 +33,10 @@
             return eye;
           case "eye-closed":
             return eyeClosed;
+          case "check-circle":
+            return checkCircle;
+          case "error-circle":
+            return errorCircle;
           default:
             return bug;
         }
