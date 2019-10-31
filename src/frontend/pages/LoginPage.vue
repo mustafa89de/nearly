@@ -5,7 +5,7 @@
       <h1>Meeting</h1>
     </header>
     <transition name="slide">
-      <section v-if="isReady" class="card">
+   <section v-if="isReady" class="card">
         <h2>Login</h2>
         <form @submit="handleLogin">
           <input-text class="input-text-wrapper" iconType="mail" type="email" placeholder="E-Mail" v-model="email"/>

@@ -16,6 +16,13 @@ class AuthService {
             throw err;
         }
     }
+
+    isAuthenticated(){
+        if(localStorage.getItem('jwt-token') === undefined){
+            // still missing: check if token expired
+            return true;
+        }else return false;
+    }
 }
 
 export default new AuthService();

@@ -3,7 +3,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 class JWTService {
 
-    signToken = user => {
+    signToken(user){
         return JWT.sign({
             iss: 'MeetApp',
             sub: user.id,
