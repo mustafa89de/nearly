@@ -7,15 +7,16 @@ class JWTService {
   //jwt-authentication for token authentication/validation
   //if token invalid/not authentic, automatically responds with 401 with body{Unauthorized}
   requireJWT() {
-    console.log('YYYYYYY');
     return passport.authenticate('jwt', {session: false});
   }
 
   //local authentication for email/password
   //if any are incorrect, automatically responds with 401 with body{Unauthorized}
-  requireCredentials = () => passport.authenticate('local', {session: false});
+  requireCredentials() {
+    return passport.authenticate('local', {session: false});
+  }
 
-  signToken = user => {
+  signToken(user) {
     return JWT.sign({
       iss: 'MeetApp',
       sub: user.id,
