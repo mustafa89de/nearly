@@ -9,6 +9,7 @@ class AuthService {
                 email,
                 password
             })
+            localStorage.setItem('jwt-token', res.data.token);
         }catch(err){
             err.status = err.response.status;
             console.error(err.message);

@@ -47,12 +47,12 @@
         e.preventDefault();
 
         try {
-          await AuthService.login(this.email, this.password);
+          const res = await AuthService.login(this.email, this.password);
           this.loginSucceed = true;
           this.errorMessage = null;
         } catch (err) {
           this.loginSucceed = false;
-          if (err.status === 409) {
+          if (err.status === 401) {
             this.errorMessage = "Dein Passwort oder Email stimmen nicht, bitte überprüfe nochmal deine Eingabe!";
           } else {
             this.errorMessage = "Ein unbekannter Fehler ist aufgetreten."
@@ -63,12 +63,12 @@
     mounted() {
       this.isReady = true;
     }
-  };
+  }
 </script>
 
 <style lang="scss">
-  @import "assets/variables";
-  @import "assets/mixins";
+  @import "../assets/variables";
+  @import "../assets/mixins";
 
   body {
     background-color: $colorPrimary;
