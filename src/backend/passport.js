@@ -8,52 +8,60 @@ const ExtractJWT = require('passport-jwt').ExtractJwt;
 
 
 //jwt authentication
-passport.use(new JwtStrategy({
-    jwtFromRequest: ExtractJWT.fromHeader('authorization'), //where token comes from
-    secretOrKey: JWT_SECRET
-}, async (payload, done) => {
-    try {
-        //Find the user specified in token
-        const user = User.findById(payload.sub);
 
-        //If user doesn't exist return false, no error
-        if (!user) {
-            return done(null, false);
-        }
+class Passport {
+    async init() {
+        passport.use(new JwtStrategy({
+            jwtFromRequest: ExtractJWT.fromHeader('authorization'), //where token comes from
+            secretOrKey: JWT_SECRET
+        }, async (payload, done) => {
+            try {
+                //Find the user specified in token
+                const user = User.findById(payload.sub);
 
-        //Else, return user
-        done(null, user);
+                //If user doesn't exist return false, no error
+                if (!user) {
+                    return done(null, false);
+                }
 
-    } catch (err) {
-        done(err, false);
-    }
-}));
+                //Else, return user
+                done(null, user);
+
+            } catch (err) {
+                done(err, false);
+            }
+        }));
 
 //local strategy (email & pw authentication)
-passport.use(new LocalStrategy({
-    usernameField: 'email'
-}, async (email, password, done) => {
-    try {
+        passport.use(new LocalStrategy({
+            usernameField: 'email'
+        }, async (email, password, done) => {
+            try {
 
-        //Find user given email
-        const user = await User.findOne({email});
+                //Find user given email
+                const user = await User.findOne({email});
 
-        //If not, handle
-        if (!user) {
-            done(null, false);
-        }
-        //Check if PW is correct
-        const isMatch = UserService.compareHashed(password, user.password);
+                //If not, handle
+                if (!user) {
+                    done(null, false);
+                }
 
-        //If not, handle
-        if(!isMatch){
-            return done(null, false);
-        }
+                //Check if PW is correct
+                const isMatch = await UserService.compareHashed(password, user.password);
 
-        //Else return user
-        done(null, user);
+                //If not, handle
+                if(!isMatch){
+                    return done(null, false);
+                }
 
-    } catch (err) {
-        done(err, false);
+                //Else return user
+                done(null, user);
+
+            } catch (err) {
+                done(err, false);
+            }
+        }));
     }
-}));
+}
+
+module.exports = new Passport();
