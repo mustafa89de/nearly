@@ -2,13 +2,14 @@ import axios from 'axios';
 import {ENDPOINTS} from "../constants";
 
 class EventService {
-  async createEvent(name, description, location, time) {
+  async createEvent(name, description, latitude, longitude, time) {
     try {
       const userId = 'MOCKED_USER_ID'; // TODO: Read from jwt
       await axios.post(ENDPOINTS.EVENT, {
         name,
         description: description || null,
-        location,
+        latitude,
+        longitude,
         time,
         hostId: userId
       })
