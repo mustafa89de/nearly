@@ -7,12 +7,12 @@
       <section v-if="isReady" class="card">
         <h2>Registrierung</h2>
         <form @submit="handleRegistration">
-          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" v-model="username"/>
-          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" v-model="email"/>
-          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Password" v-model="password"/>
+          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" hint="Benutzername muss mind. 4 Zeichen haben" :showHint="username != '' && !usernameValid" v-model="username"/>
+          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" hint="E-Mail-Adresse ist unvollständig" :showHint="email != '' && !emailValid" v-model="email"/>
+          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Passwort" hint="Passwort muss mind. 8 Zeichen haben" :showHint="password != '' && !passwordValid" v-model="password"/>
           <p v-if="errorMessage">{{errorMessage}}</p>
           <p v-if="registrationSucceed">Die Registrierung war erfolgreich</p>
-          <button-submit class="register-button" type="submit" text="Registrieren" :disabled="!password || !username || !email"/>
+          <button-submit class="register-button" type="submit" text="Registrieren" :disabled="!usernameValid || !emailValid || !passwordValid"/>
           <p class="login-text">Du hast schon einen Account?</p>
           <router-link class="login-link" to="/login">Anmelden</router-link>
         </form>
@@ -34,7 +34,10 @@
         email: '',
         password: '',
         errorMessage: null,
-        registrationSucceed: false
+        registrationSucceed: false,
+        usernameValid: false,
+        emailValid: false,
+        passwordValid: false
       };
     },
     components: {
@@ -52,14 +55,25 @@
           this.errorMessage = null;
         } catch (err) {
           this.registrationSucceed = false;
-
           if (err.status === 409) {
             this.errorMessage = "Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse";
           } else {
-            this.errorMessage = "Ein unbekannter Fehler ist aufgetreten."
+            this.errorMessage = "Ein unbekannter Fehler ist aufgetreten.";
           }
         }
+      }
+    },
+    watch: {
+      username: function(){
+        this.usernameValid = this.username.length >= 4;
       },
+      email: function(){
+        this.emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        .test(this.email);
+      },
+      password: function(){
+        this.passwordValid = this.password.length >= 8;
+      }
     },
     mounted() {
       this.isReady = true;
@@ -108,7 +122,6 @@
 
       h2 {
         flex: none;
-
         @include textTitle;
         color: $colorBlack;
         margin: 0;
@@ -116,6 +129,7 @@
 
       .input-text-wrapper {
         margin-top: 50px;
+        position: relative;
 
         &:last-of-type {
           margin-bottom: 50px;
