@@ -1,11 +1,13 @@
 import axios from 'axios';
+const JWT = require('jsonwebtoken');
+
 import {ENDPOINTS} from "../constants";
 
 class AuthService {
 
     async login(email, password){
         try{
-            await axios.post(ENDPOINTS.LOGIN, {
+            const res = await axios.post(ENDPOINTS.LOGIN, {
                 email,
                 password
             })
@@ -17,11 +19,19 @@ class AuthService {
         }
     }
 
-    isAuthenticated(){
-        if(localStorage.getItem('jwt-token') === undefined){
-            // still missing: check if token expired
+    async isAuthenticated(){
+        const token = localStorage.getItem('jwt-token');
+        if(token === undefined) return false;
+        try{
+            await axios.get(ENDPOINTS.JWTTEST,  { Authorization: token });
+            console.log('user authorized');
             return true;
-        }else return false;
+        }catch(err){
+            err.status = err.response.status;
+            console.error(err.message);
+            throw err;
+        }
+
     }
 }
 

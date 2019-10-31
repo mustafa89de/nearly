@@ -27,6 +27,8 @@
   import TextInput from "../components/TextInput.vue";
   import Button from "../components/Button.vue";
   import AuthService from "../services/AuthService";
+  import {ENDPOINTS} from "../constants";
+  import {router} from "../index";
 
   export default {
     data: function () {
@@ -47,9 +49,11 @@
         e.preventDefault();
 
         try {
-          const res = await AuthService.login(this.email, this.password);
+          await AuthService.login(this.email, this.password);
           this.loginSucceed = true;
           this.errorMessage = null;
+          router.push('/secured');
+
         } catch (err) {
           this.loginSucceed = false;
           if (err.status === 401) {
