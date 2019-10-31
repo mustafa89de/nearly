@@ -1,6 +1,8 @@
 const request = require('supertest');
 const app = require('../app');
 const EventRepository = require("../repositories/EventRepository");
+const JWTService = require("../services/JWTService");
+const passport = require("passport");
 
 
 describe('Event Controller', () => {
@@ -15,6 +17,10 @@ describe('Event Controller', () => {
       const mockEvent = 'aMockedEvent';
 
       EventRepository.createEvent = jest.fn().mockResolvedValue(mockEvent);
+      passport.authenticate = jest.fn().mockImplementation(() => {
+        console.log('ZZZZ');
+        return (req, res, next) => next()
+      });
 
       return request(app)
           .post('/api/event')

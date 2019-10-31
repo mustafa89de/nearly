@@ -1,9 +1,10 @@
+const JWTService = require("../services/JWTService");
 const EventRepository = require("../repositories/EventRepository");
 
 const express = require('express');
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', JWTService.requireJWT(), async (req, res) => {
   try {
     const {name, description, location, time, hostId} = req.body;
 
