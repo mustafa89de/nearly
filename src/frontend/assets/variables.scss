@@ -27,8 +27,8 @@ $button-col-secondary: $red;
 $button-col-disabled: $grey;
 
 // Placeholders
-$placeholder-col: opacify($light-black, 0.5);
-$placeholder-col-active: opacify($font-col-active, 0.5);
+$placeholder-col: rgba($light-black, .5);
+$placeholder-col-active: rgba($font-col-active, .5);
 
 // Shadows
 $shadow-default: 0px 4px 10px rgba(0, 0, 0, 0.25);
