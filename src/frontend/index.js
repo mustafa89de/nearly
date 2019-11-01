@@ -13,7 +13,7 @@ import AuthService from "./services/AuthService";
 
 Vue.use(VueRouter);
 
-const router = new VueRouter({
+export const router = new VueRouter({
     mode: 'history',
     routes: [
         {

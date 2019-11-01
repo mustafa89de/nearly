@@ -1,8 +1,28 @@
 import axios from 'axios';
 import {ENDPOINTS} from "../constants";
 import JWTService from "./JWTService";
+import {router} from "../index";
 
 class AuthService {
+  constructor() {
+    // if axios detects a 401 => logout
+    axios.interceptors.response.use(
+        response => response,
+        error => {
+          if (error.response.status === 401) this.logout();
+          return Promise.reject(error);
+        }
+    );
+
+    // if authenticated add auth header
+    axios.interceptors.request.use(
+        config => {
+          if (this.isAuthenticated()) config.headers.authorization = JWTService.getJWT();
+          return config;
+        },
+        error => Promise.reject(error)
+    );
+  }
 
   async login(email, password) {
     try {
@@ -30,9 +50,11 @@ class AuthService {
     };
   }
 
-  logout(router) {
+  logout() {
     JWTService.removeJWT();
-    router.go();
+    if (router) {
+      router.go();
+    }
   }
 }
 

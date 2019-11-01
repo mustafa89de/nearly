@@ -13,7 +13,7 @@
   export default {
     methods: {
       handleLogout: function () {
-        AuthService.logout(this.$router);
+        AuthService.logout();
       }
     },
     data: function() {
