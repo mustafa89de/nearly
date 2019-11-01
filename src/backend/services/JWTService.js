@@ -20,6 +20,7 @@ class JWTService {
     return JWT.sign({
       iss: 'MeetApp',
       sub: user.id,
+      username: user.username,
       exp: new Date().setDate(new Date().getDate() + 1) //current time +1 day
     }, JWT_SECRET);
   };

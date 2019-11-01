@@ -16,7 +16,7 @@
           <button-submit class="login-button" type="submit" text="Login" :disabled="!password || !email"/>
           <p class="login-text">Du hast noch keinen Account?</p>
           <!--- We might need a separate router endpoint for registration. Currently this will lead to main landing page -->
-          <router-link class="registration-link" to="/">Registrieren</router-link>
+          <router-link class="registration-link" to="/register">Registrieren</router-link>
         </form>
       </section>
     </transition>
@@ -50,9 +50,10 @@
           await AuthService.login(this.email, this.password);
           this.loginSucceed = true;
           this.errorMessage = null;
+          this.$router.push('/');
         } catch (err) {
           this.loginSucceed = false;
-          if (err.status === 409) {
+          if (err.status === 401) {
             this.errorMessage = "Dein Passwort oder Email stimmen nicht, bitte überprüfe nochmal deine Eingabe!";
           } else {
             this.errorMessage = "Ein unbekannter Fehler ist aufgetreten."
