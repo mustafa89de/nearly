@@ -1,6 +1,6 @@
 <template>
   <div :class="['input', {focused: isActive}]">
-    <icon v-if="iconType" :iconType="iconType" :iconColor="getIconColor" />
+    <icon v-if="iconType" :iconType="iconType" :iconColor="getIconColor"/>
     <input
         :type="passwordVisibility || (type || 'text')"
         :placeholder="placeholder"
@@ -8,9 +8,10 @@
         @blur="isActive = false"
         v-bind:value="value"
         v-on:input="$emit('input', $event.target.value)"
+        :step="step"
     />
     <span v-if="type === 'password'" class="password-toggle" @click="togglePasswordVisibility">
-      <icon :iconType="passwordVisibility === 'text' ? 'eye' : 'eye-closed'" :iconColor="getIconColor" />
+      <icon :iconType="passwordVisibility === 'text' ? 'eye' : 'eye-closed'" :iconColor="getIconColor"/>
     </span>
     <span v-if="hint" :class="['input-hint', {'hint-visible': showHint}]">{{hint}}</span>
   </div>
@@ -24,7 +25,8 @@
       iconType: String,
       placeholder: String,
       type: String,
-      value: String,
+      value: [String, Number],
+      step: String,
       hint: String,
       showHint: Boolean
     },
@@ -38,7 +40,7 @@
       icon: Icon
     },
     methods: {
-      togglePasswordVisibility: function(){
+      togglePasswordVisibility: function () {
         console.log("test");
         this.passwordVisibility = this.passwordVisibility === "text" ? "password" : "text";
       }
@@ -54,7 +56,7 @@
 
 <style scoped lang="scss">
   @import "../assets/variables";
-  @import "../assets/mixins.scss"  ;
+  @import "../assets/mixins.scss";
 
   .input {
     display: flex;
@@ -97,7 +99,7 @@
       opacity: 1;
     }
 
-    .password-toggle{
+    .password-toggle {
       cursor: pointer;
     }
   }

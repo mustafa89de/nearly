@@ -9,19 +9,21 @@ describe('CreateEventPage', () => {
 
     const testName = 'aName';
     const testDescription = 'aDescription';
-    const testLocation = 'aLocation';
+    const testLatitude = 11.11;
+    const testLongitude = 22.22;
     const testTime = 'aTime';
 
     const wrapper = mount(CreateEventPage);
     wrapper.setData({
       name: testName,
       description: testDescription,
-      location: testLocation,
+      latitude: testLatitude,
+      longitude: testLongitude,
       time: testTime
     });
 
     await wrapper.vm.handleEventCreation({preventDefault: jest.fn()});
 
-    expect(EventService.createEvent).toHaveBeenCalledWith(testName, testDescription, testLocation, testTime);
+    expect(EventService.createEvent).toHaveBeenCalledWith(testName, testDescription, testLatitude, testLongitude, testTime);
   });
 });
