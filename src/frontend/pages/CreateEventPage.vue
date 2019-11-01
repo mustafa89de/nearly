@@ -1,20 +1,18 @@
 <template>
   <article>
     <header>
-      <h1>Erstelle dein Event</h1>
+      <h1>Event erstellen</h1>
     </header>
     <form @submit="handleEventCreation">
-      <input-text id="nameInput" class="input-text-wrapper" placeholder="Was?" v-model="name"/>
-      <input-text id="descriptionInput" class="input-text-wrapper" placeholder="Was genau?" v-model="description"/>
-      <input-text id="latitudeInput" class="input-text-wrapper" type="number" placeholder="Wo?" v-model="latitude"
-                  step="0.0000001"/>
-      <input-text id="longitudeInput" class="input-text-wrapper" type="number" placeholder="Wo?" v-model="longitude"
-                  step="0.0000001"/>
-      <button @click="setCurrentPosition">Genau hier!</button>
-      <br>
-      <input-text id="timeInput" class="input-text-wrapper" placeholder="Wann?" type="datetime-local" v-model="time"/>
+      <text-input placeholder="Name" v-model="name"/>
+      <textarea placeholder="Beschreibung" v-model="description"></textarea>
+      <text-input icon-type="latitude" placeholder="Latitude" v-model="latitude"/>
+      <text-input icon-type="longitude" id="longField" placeholder="Longitude" v-model="longitude"/>
+      <text-input icon-type="calendar" placeholder="Datum" type="date" v-model="date"/>
+      <text-input icon-type="clock" id="timeField" placeholder="Uhrzeit" type="time" v-model="time"/>
       <p v-if="errorMessage">{{errorMessage}}</p>
-      <button-submit class="create-button" type="submit" text="Event erstellen"
+      <button-submit @click="setCurrentPosition" type="button" text="Standort laden"/>
+      <button-submit type="submit" text="Erstellen"
                      :disabled="!name || !latitude || !longitude || !time"/>
     </form>
   </article>
@@ -31,14 +29,15 @@
       return {
         name: '',
         description: '',
-        latitude: 0.0,
-        longitude: 0.0,
-        time: this.shortenDate(new Date()),
+        latitude: '',
+        longitude: '',
+        date: this.formatDate(new Date()),
+        time: this.formatTime(new Date()),
         errorMessage: null
       };
     },
     components: {
-      "input-text": TextInput,
+      "text-input": TextInput,
       "button-submit": Button
     },
     methods: {
@@ -61,16 +60,120 @@
           console.error('Can not get current position', err.message)
         }
       },
-      shortenDate: function (date) {
-        return date.toISOString().replace(/:\d*.\d*Z$/, '')
+      formatDate: function (date) {
+        const year = date.getFullYear();
+        let month = date.getMonth();
+        if (month < 10) month = '0' + month;
+
+        let day = date.getDate();
+        if (day < 10) day = '0' + day;
+
+        return `${year}-${month}-${day}`;
       },
-      roundCoord: function(coord) {
+      formatTime: function (date) {
+        let hours = date.getHours();
+        if (hours < 10) hours = '0' + hours;
+
+        let minutes = date.getMinutes();
+        if (minutes < 10) minutes = '0' + minutes;
+
+        return `${hours}:${minutes}`;
+      },
+      roundCoord: function (coord) {
         return parseFloat(coord.toFixed(7));
       }
     }
   };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
+  @import "../assets/variables";
 
+  article {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  header {
+    flex: none;
+  }
+
+  form {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  h1 {
+    font-family: Poppins, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .input, section {
+    margin-top: 40px;
+
+    &#longField {
+      margin-top: 25px;
+    }
+
+    &#timeField {
+      margin-top: 25px;
+      margin-bottom: 25px;
+    }
+  }
+
+  input[type="button"] {
+    align-self: center;
+    margin: auto 10px 25px;
+  }
+
+  input[type="submit"] {
+    align-self: center;
+    margin: 0 10px;
+  }
+
+  textarea {
+    background: rgba(131, 141, 154, 0.05);
+    padding: 10px;
+    margin-top: 50px;
+    color: $font-col-light;
+
+    border: 0;
+    border-bottom: 1px solid #838D9A;
+    outline: 0;
+    height: 120px;
+    font-size: 18px;
+
+    font-family: Arimo, sans-serif;
+    line-height: 21px;
+    display: flex;
+    align-items: flex-end;
+    letter-spacing: 0.02em;
+    resize: none;
+
+    transition: 500ms ease;
+
+    &::placeholder {
+      color: $placeholder-col;
+      transition: color 500ms ease;
+    }
+
+    &:focus {
+      border-color: $font-col-active;
+      color: $font-col-active;
+
+      &::placeholder {
+        color: $placeholder-col-active;
+      }
+    }
+  }
 </style>

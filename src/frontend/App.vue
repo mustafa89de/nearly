@@ -9,6 +9,7 @@
 
 <style lang="scss">
     @import url(https://fonts.googleapis.com/css?family=Arimo|DM+Serif+Display|Poppins:700&display=swap);
+    @import "./assets/variables";
 
     * {
         font-family: sans-serif;
@@ -26,6 +27,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+
+      &.red {
+        background-color: $bg-col-secondary;
+      }
     }
 
     main{

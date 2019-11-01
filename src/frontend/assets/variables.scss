@@ -1,11 +1,35 @@
 // Colors
-$colorPrimary: #E44021;
-$colorSecondary: #F69B11;
-$colorWhite: #FFFFFF;
-$colorBlack: #111821;
-$colorBlackLight: #838D9A;
-$colorGrey: #AAAAAA;
+$white: #FFFFFF;
+$black: #111821;
+$light-black: #838D9A;
+$grey: #AAAAAA;
+
+$red: #E44021;
+$orange: #F69B11;
+
+// Fonts
+$font-col-primary: $black;
+$font-col-secondary: $white;
+$font-col-light: $light-black;
+$font-col-active: $red;
+$font-col-error: $red;
+
+// Links
+$link-color: $orange;
+
+// Backgrounds
+$bg-col-primary: $white;
+$bg-col-secondary: $red;
+
+// Buttons
+$button-col-primary: $orange;
+$button-col-secondary: $red;
+$button-col-disabled: $grey;
+
+// Placeholders
+$placeholder-col: opacify($light-black, 0.5);
+$placeholder-col-active: opacify($font-col-active, 0.5);
 
 // Shadows
-$shadowDefault: 0px 4px 10px rgba(0, 0, 0, 0.25);
-$shadowDark: 0px 4px 10px rgba(0, 0, 0, 0.5);
+$shadow-default: 0px 4px 10px rgba(0, 0, 0, 0.25);
+$shadow-dark: 0px 4px 10px rgba(0, 0, 0, 0.5);

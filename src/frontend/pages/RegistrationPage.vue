@@ -77,17 +77,17 @@
     },
     mounted() {
       this.isReady = true;
+      document.body.classList.add('red');
+    },
+    destroyed() {
+      document.body.classList.remove('red');
     }
   };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
   @import "../assets/variables";
   @import "../assets/mixins";
-
-  body {
-    background-color: $colorPrimary;
-  }
 
   article {
     flex: 1;
@@ -104,7 +104,7 @@
 
       h1 {
         margin: 0;
-        color: $colorWhite;
+        color: $font-col-secondary;
         font-family: "DM Serif Display", "Times New Roman", Times, serif;
         font-size: 2rem;
       }
@@ -115,15 +115,15 @@
 
       display: flex;
       flex-direction: column;
-      background-color: $colorWhite;
+      background-color: $white;
       border-radius: 50px 50px 0px 0px;
       padding: 50px 25px 50px 25px;
-      box-shadow: $shadowDark;
+      box-shadow: $shadow-dark;
 
       h2 {
         flex: none;
         @include textTitle;
-        color: $colorBlack;
+        color: $font-col-primary;
         margin: 0;
       }
 
@@ -155,24 +155,24 @@
 
       .login-text {
         @include textBody;
-        color: $colorBlackLight;
+        color: $font-col-light;
         margin: 25px 0 10px 0;
       }
 
       .login-link {
         @include textButton;
         text-decoration: none;
-        color: $colorSecondary;
+        color: $link-color;
         transition: color 500ms ease;
 
         &:link,
         &:visited,
         &:active {
-          color: $colorSecondary;
+          color: $link-color;
         }
 
         &:hover {
-          color: $colorPrimary;
+          color: $red;
         }
       }
     }
