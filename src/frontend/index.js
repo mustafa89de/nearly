@@ -4,8 +4,10 @@ import VueRouter from 'vue-router';
 import App from './App';
 
 import RegistrationPage from './pages/RegistrationPage';
+import CreateEventPage from './pages/CreateEventPage';
 import HelpPage from './pages/HelpPage';
 import NotFoundPage from './pages/NotFoundPage';
+import LoginPage from "./pages/LoginPage";
 
 Vue.use(VueRouter);
 
@@ -15,6 +17,14 @@ const router = new VueRouter({
         {
             path: '/',
             component: RegistrationPage
+        },
+        {
+            path: '/event/create',
+            component: CreateEventPage
+        },
+        {
+            path: '/login',
+            component: LoginPage
         },
         {
             path: '/help',

@@ -16,12 +16,12 @@ app.use(express.static('dist'));
 
 app.use('*', express.static(path.join(__dirname, '/../../dist/index.html')));
 
+Passport.init();
 if (process.env.MODE !== 'TEST') {
-    Passport.init();
-    DBService.init();
-    app.listen(PORT,  () => {
-        console.log(`Node app listening on port ${PORT}!`);
-    });
+  DBService.init();
+  app.listen(PORT, () => {
+    console.log(`Node app listening on port ${PORT}!`);
+  });
 
 }
 
