@@ -14,8 +14,8 @@
 </script>
 
 <style scoped lang="scss">
-  @import "assets/variables";
-  @import "assets/mixins";
+  @import "../assets/variables";
+  @import "../assets/mixins";
 
   input {
     @include textButton;

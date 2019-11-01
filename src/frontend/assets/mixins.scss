@@ -8,9 +8,16 @@
 }
 
 @mixin textBody {
-    font-family: "Arimo", Arial, Helvetica, sans-serif;    
+    font-family: "Arimo", Arial, Helvetica, sans-serif;
     font-size: 18px;
-    font-weight: 400;    
+    font-weight: 400;
+    letter-spacing: 0.02em;
+}
+
+@mixin textHint {
+    font-family: "Arimo", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
     letter-spacing: 0.02em;
 }
 

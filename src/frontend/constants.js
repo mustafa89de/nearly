@@ -1,4 +1,5 @@
 export const ENDPOINTS = {
-    USER: 'api/user/',
-    LOGIN: 'api/auth/login'
+    USER: '/api/user',
+    EVENT: '/api/event'
+    LOGIN: '/api/auth/login'
 };
