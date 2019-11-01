@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import App from './App';
 
 import RegistrationPage from './pages/RegistrationPage';
+import HomePage from './pages/HomePage';
 import CreateEventPage from './pages/CreateEventPage';
 import HelpPage from './pages/HelpPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -12,32 +13,32 @@ import AuthService from "./services/AuthService";
 
 Vue.use(VueRouter);
 
-export const router = new VueRouter({
+const router = new VueRouter({
     mode: 'history',
     routes: [
         {
-            path: '/',
-            component: RegistrationPage
-        },
-        {
-            path: '/event/create',
-            component: CreateEventPage
+            path: '/register',
+            component: RegistrationPage,
+            beforeEnter: redirectIfLoggedIn
         },
         {
             path: '/login',
-            component: LoginPage
+            component: LoginPage,
+            beforeEnter: redirectIfLoggedIn
+        },
+        {
+            path: '/',
+            component: HomePage,
+            beforeEnter: checkAuthentication
+        },
+        {
+            path: '/event/create',
+            component: CreateEventPage,
+            beforeEnter: checkAuthentication
         },
         {
             path: '/help',
             component: HelpPage
-        },
-        {
-            path: '/event/create',
-            component: CreateEventPage
-        },
-        {
-            path: '/secured',
-            component: RegistrationPage // Fake-page to be replaced
         },
         {
             path: '*',
@@ -47,16 +48,21 @@ export const router = new VueRouter({
 });
 
 
-router.beforeEach((to, from, next) => {
-    try{
-        if(to.path.includes('/secured') && !AuthService.isAuthenticated()){
-            router.push("/login");
-        }else next();
-    }catch(err){
-        console.error(err.message);
-        throw err;
+function checkAuthentication(to, from, next) {
+    if (AuthService.isAuthenticated()) {
+        next();
+    } else {
+        next("/login");
     }
-})
+}
+
+function redirectIfLoggedIn(to, from, next) {
+    if (AuthService.isAuthenticated()) {
+        next('/');
+    } else {
+        next();
+    }
+}
 
 new Vue({
     el: '#app',

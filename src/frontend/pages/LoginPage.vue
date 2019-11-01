@@ -5,7 +5,7 @@
       <h1>Meeting</h1>
     </header>
     <transition name="slide">
-   <section v-if="isReady" class="card">
+      <section v-if="isReady" class="card">
         <h2>Login</h2>
         <form @submit="handleLogin">
           <input-text class="input-text-wrapper" iconType="mail" type="email" placeholder="E-Mail" v-model="email"/>
@@ -16,7 +16,7 @@
           <button-submit class="login-button" type="submit" text="Login" :disabled="!password || !email"/>
           <p class="login-text">Du hast noch keinen Account?</p>
           <!--- We might need a separate router endpoint for registration. Currently this will lead to main landing page -->
-          <router-link class="registration-link" to="/">Registrieren</router-link>
+          <router-link class="registration-link" to="/register">Registrieren</router-link>
         </form>
       </section>
     </transition>
@@ -27,8 +27,6 @@
   import TextInput from "../components/TextInput.vue";
   import Button from "../components/Button.vue";
   import AuthService from "../services/AuthService";
-  import {ENDPOINTS} from "../constants";
-  import {router} from "../index";
 
   export default {
     data: function () {
@@ -52,8 +50,7 @@
           await AuthService.login(this.email, this.password);
           this.loginSucceed = true;
           this.errorMessage = null;
-          router.push('/secured');
-
+          this.$router.push('/');
         } catch (err) {
           this.loginSucceed = false;
           if (err.status === 401) {
@@ -67,7 +64,7 @@
     mounted() {
       this.isReady = true;
     }
-  }
+  };
 </script>
 
 <style lang="scss">
