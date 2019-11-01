@@ -1,5 +1,6 @@
 export const ENDPOINTS = {
-    USER: '/api/user/',
-    LOGIN: '/api/login/',
+    USER: '/api/user',
+    EVENT: '/api/event'
+    LOGIN: '/api/auth/login',
     JWTTEST: '/api/login/secure'
 };

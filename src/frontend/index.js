@@ -20,6 +20,10 @@ export const router = new VueRouter({
             component: RegistrationPage
         },
         {
+            path: '/event/create',
+            component: CreateEventPage
+        },
+        {
             path: '/login',
             component: LoginPage
         },
