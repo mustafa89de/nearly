@@ -11,7 +11,7 @@
         :step="step"
     />
     <span v-if="type === 'password'" class="password-toggle" @click="togglePasswordVisibility">
-      <icon :iconType="passwordVisibility === 'text' ? 'eye' : 'eye-closed'" :iconColor="getIconColor"/>
+      <icon :iconType="passwordVisibility === 'text' ? 'eye-closed' : 'eye'" :iconColor="getIconColor"/>
     </span>
     <span v-if="hint" :class="['input-hint', {'hint-visible': showHint}]">{{hint}}</span>
   </div>
@@ -41,7 +41,6 @@
     },
     methods: {
       togglePasswordVisibility: function () {
-        console.log("test");
         this.passwordVisibility = this.passwordVisibility === "text" ? "password" : "text";
       }
     },
@@ -60,26 +59,34 @@
 
   .input {
     display: flex;
-    padding-bottom: 5px;
-    border-bottom: 1px solid $colorBlackLight;
+    align-items: center;
+    border-bottom: 1px solid $light-black;
     transition: border-bottom 500ms ease, padding-bottom 200ms ease;
 
     svg {
-      flex: 0 1 auto;
+      flex: none
     }
 
     input {
       @include textBody;
-      flex: 1 1 auto;
-      width: 80%;
-      margin-left: 10px;
+      flex: 1;
+      padding: 10px;
       border: 0;
-      font-size: 1rem;
-      color: $colorBlackLight;
+      font-size: 18px;
+      color: $font-col-light;
       transition: color 500ms ease;
+
+      &::placeholder {
+        color: $placeholder-col;
+        transition: color 500ms ease;
+      }
 
       &:focus {
         outline: none;
+
+        &::placeholder {
+          color: $placeholder-col-active;
+        }
       }
     }
 
@@ -87,12 +94,12 @@
       @include textHint;
       flex: none;
       position: absolute;
-      bottom: -75%;
+      bottom: -50%;
       opacity: 0;
       transition: opacity 200ms;
       width: 100%;
       text-align: center;
-      color: $colorPrimary;
+      color: $font-col-error;
     }
 
     .hint-visible {
@@ -101,54 +108,17 @@
 
     .password-toggle {
       cursor: pointer;
+      font-size: 0;
     }
   }
 
   .focused {
-    border-bottom: 1px solid $colorPrimary;
+    border-bottom: 1px solid $font-col-active;
 
     input {
-      color: $colorPrimary;
+      color: $font-col-active;
     }
   }
 
-  ::-webkit-input-placeholder { /* Chrome */
-    color: $colorBlackLight;
-    opacity: 0.5;
-    transition: color 500ms ease;
-  }
 
-  :focus::-webkit-input-placeholder {
-    color: $colorPrimary;
-  }
-
-  :-ms-input-placeholder { /* IE 10+ */
-    color: $colorBlackLight;
-    opacity: 0.5;
-    transition: color 500ms ease;
-  }
-
-  :focus:-ms-input-placeholder {
-    color: $colorPrimary;
-  }
-
-  ::-moz-placeholder { /* Firefox 19+ */
-    color: $colorBlackLight;
-    opacity: 0.5;
-    transition: color 500ms ease;
-  }
-
-  :focus::-moz-placeholder {
-    color: $colorPrimary;
-  }
-
-  :-moz-placeholder { /* Firefox 4 - 18 */
-    color: $colorBlackLight;
-    opacity: 0.5;
-    transition: color 500ms ease;
-  }
-
-  :focus:-moz-placeholder {
-    color: $colorPrimary;
-  }
 </style>

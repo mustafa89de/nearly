@@ -10,6 +10,10 @@
   import eye from "../assets/icons/eye.svg";
   import eyeClosed from "../assets/icons/eye-closed.svg";
   import bug from "../assets/icons/bug.svg";
+  import latitude from "../assets/icons/latitude.svg";
+  import longitude from "../assets/icons/longitude.svg";
+  import calendar from "../assets/icons/calendar.svg";
+  import clock from "../assets/icons/clock.svg";
 
   export default {
     props: {
@@ -31,6 +35,14 @@
             return eye;
           case "eye-closed":
             return eyeClosed;
+          case "latitude":
+            return latitude;
+          case "longitude":
+            return longitude;
+          case "calendar":
+            return calendar;
+          case "clock":
+            return clock;
           default:
             return bug;
         }
@@ -52,31 +64,31 @@
 
   .primary {
     path {
-      fill: $colorPrimary;
+      fill: $font-col-active;
     }
   }
 
   .secondary {
     path {
-      fill: $colorSecondary;
+      fill: $orange;
     }
   }
 
   .white {
     path {
-      fill: $colorWhite;
+      fill: $font-col-secondary;
     }
   }
 
   .black {
     path {
-      fill: $colorBlack;
+      fill: $font-col-primary;
     }
   }
 
   .blackLight {
     path {
-      fill: $colorBlackLight;
+      fill: $font-col-light;
     }
   }
 </style>

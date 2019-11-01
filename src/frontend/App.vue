@@ -16,14 +16,14 @@
         AuthService.logout();
       }
     },
-    data: function() {
+    data: function () {
       return {
         loggedIn: AuthService.isAuthenticated()
       }
     },
-    updated: function() {
+    updated: function () {
       const newLoggedIn = AuthService.isAuthenticated();
-      if(newLoggedIn !== this.loggedIn) {
+      if (newLoggedIn !== this.loggedIn) {
         this.loggedIn = newLoggedIn;
       }
     }
@@ -32,6 +32,7 @@
 
 <style lang="scss">
   @import url(https://fonts.googleapis.com/css?family=Arimo|DM+Serif+Display|Poppins:700&display=swap);
+  @import "./assets/variables";
 
   * {
     font-family: sans-serif;
@@ -49,6 +50,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    &.red {
+      background-color: $bg-col-secondary;
+    }
   }
 
   main {

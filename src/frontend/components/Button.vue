@@ -1,5 +1,5 @@
 <template>
-  <input :type="type" :value="text" @click="onClick || null" :disabled="disabled"/>
+  <input @click="handleClick" :type="type" :value="text" :disabled="disabled"/>
 </template>
 
 <script>
@@ -9,6 +9,11 @@
       text: String,
       onClick: Function,
       disabled: Boolean
+    },
+    methods: {
+      handleClick: function (e) {
+        this.$emit('click', e);
+      }
     }
   };
 </script>
@@ -20,33 +25,23 @@
   input {
     @include textButton;
     width: 70%;
-    background: $colorSecondary;
-    color: $colorWhite;
+    background: $button-col-primary;
+    color: $font-col-secondary;
     padding: 15px;
     border: none;
     border-radius: 30px;
     transition: background-color 500ms ease, box-shadow 500ms ease;
     appearance: none;
-
-    &:hover {
-      box-shadow: $shadowDefault;
-      cursor: pointer;
-      background-color: $colorPrimary;
-    }
-
-    &:active {
-      background-color: darken($colorPrimary, 10%);
-    }
+    outline: none;
+    cursor: pointer;
 
     &:disabled {
-      background-color: $colorGrey;
+      background-color: $button-col-disabled;
     }
 
-    &:focus {
-      outline: none;
-      box-shadow: $shadowDefault;
-      cursor: pointer;
-      background-color: $colorPrimary
+    &:hover:not(:disabled) {
+      box-shadow: $shadow-default;
+      background-color: $button-col-secondary
     }
   }
 </style>
