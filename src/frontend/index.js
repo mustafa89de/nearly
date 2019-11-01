@@ -9,7 +9,7 @@ import CreateEventPage from './pages/CreateEventPage';
 import HelpPage from './pages/HelpPage';
 import NotFoundPage from './pages/NotFoundPage';
 import LoginPage from "./pages/LoginPage";
-import AuthService from "./services/AuthService";
+import {checkAuthentication, redirectIfLoggedIn} from "./services/NavigationGuards";
 
 Vue.use(VueRouter);
 
@@ -46,23 +46,6 @@ export const router = new VueRouter({
         }
     ]
 });
-
-
-function checkAuthentication(to, from, next) {
-    if (AuthService.isAuthenticated()) {
-        next();
-    } else {
-        next("/login");
-    }
-}
-
-function redirectIfLoggedIn(to, from, next) {
-    if (AuthService.isAuthenticated()) {
-        next('/');
-    } else {
-        next();
-    }
-}
 
 new Vue({
     el: '#app',
