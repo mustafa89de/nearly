@@ -8,17 +8,19 @@ describe('EventService', () => {
 
     const testName = 'aName';
     const testDescription = 'aDescription';
-    const testLocation = 'aLocation';
+    const testLatitude = 'aLocation';
+    const testLongitude = 'aLocation';
     const testTime = 'aTime';
 
-    await EventService.createEvent(testName, testDescription, testLocation, testTime);
+    await EventService.createEvent(testName, testDescription, testLatitude, testLongitude, testTime);
 
     expect(axios.post).toHaveBeenCalledWith(
         ENDPOINTS.EVENT,
         {
           "description": testDescription,
           "hostId": 'MOCKED_USER_ID',
-          "location": testLocation,
+          "latitude": testLatitude,
+          "longitude": testLongitude,
           "name": testName,
           "time": testTime
         });

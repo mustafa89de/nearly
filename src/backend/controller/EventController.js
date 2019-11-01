@@ -6,9 +6,9 @@ const router = express.Router();
 
 router.post('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const {name, description, location, time, hostId} = req.body;
+    const {name, description, latitude, longitude, time, hostId} = req.body;
 
-    const createdEvent = await EventRepository.createEvent(name, location, time, hostId, description);
+    const createdEvent = await EventRepository.createEvent(name, latitude, longitude, time, hostId, description);
 
     res.status(201).json(createdEvent);
   } catch (err) {
