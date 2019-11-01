@@ -1,10 +1,12 @@
 import axios from 'axios';
 import {ENDPOINTS} from "../constants";
+import AuthService from "./AuthService";
 
 class EventService {
   async createEvent(name, description, latitude, longitude, time) {
     try {
-      const userId = 'MOCKED_USER_ID'; // TODO: Read from jwt
+      const userId = AuthService.getUser().userId;
+
       await axios.post(ENDPOINTS.EVENT, {
         name,
         description: description || null,
