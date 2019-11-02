@@ -10,7 +10,7 @@
       <text-input icon-type="longitude" id="longField" placeholder="Longitude" v-model="longitude"/>
       <text-input icon-type="calendar" placeholder="Datum" type="date" v-model="date"/>
       <text-input icon-type="clock" id="timeField" placeholder="Uhrzeit" type="time" v-model="time"/>
-      <p v-if="errorMessage">{{errorMessage}}</p>
+      <p id="error" v-if="errorMessage">{{errorMessage}}</p>
       <button-submit @click="setCurrentPosition" type="button" text="Standort laden"/>
       <button-submit type="submit" text="Erstellen"
                      :disabled="!name || !latitude || !longitude || !time"/>
@@ -175,5 +175,11 @@
         color: $placeholder-col-active;
       }
     }
+  }
+
+  #error {
+    color: $font-col-error;
+    margin: 0 auto 25px;
+    font-weight: bold;
   }
 </style>

@@ -1,33 +1,10 @@
 <template>
   <main>
     <router-view/>
-    <footer v-if="loggedIn">
-      <button @click="handleLogout">Logout</button>
-    </footer>
   </main>
 </template>
 
 <script>
-  import AuthService from "./services/AuthService";
-
-  export default {
-    methods: {
-      handleLogout: function () {
-        AuthService.logout();
-      }
-    },
-    data: function () {
-      return {
-        loggedIn: AuthService.isAuthenticated()
-      }
-    },
-    updated: function () {
-      const newLoggedIn = AuthService.isAuthenticated();
-      if (newLoggedIn !== this.loggedIn) {
-        this.loggedIn = newLoggedIn;
-      }
-    }
-  };
 </script>
 
 <style lang="scss">
