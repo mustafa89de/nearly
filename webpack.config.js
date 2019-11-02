@@ -16,7 +16,7 @@ module.exports = {
             { test: /\.vue$/, use: 'vue-loader' },
             { test: /\.css$/, use: ['vue-style-loader', 'css-loader', 'postcss-loader'] },
             { test: /\.scss$/,   use: ['vue-style-loader','css-loader', 'postcss-loader', 'sass-loader'] },
-            { test: /\.svg$/, use: 'vue-svg-loader'}
+            { test: /\.svg$/, use: { loader: 'vue-svg-loader', options: { svgo: { plugins: [{ removeViewBox: false }] }} } }
         ]
     },
     resolve: {

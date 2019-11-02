@@ -58,14 +58,14 @@
         try {
           await UserService.register(this.username, this.email, this.password);
 
-          this.resultMessage = "Du hast dich erfolgreich registriert!";
+          this.resultMessage = "Du hast dich erfolgreich registriert! Gehe weiter zur Anmeldung.";
           this.resultButton = "Anmelden";
           this.resultLink = "/login";
         } catch (err) {
           if (err.status === 409) {
             this.emailAlreadyExsists = true;
           } else {
-            this.resultMessage = "Ein unbekannter Fehler ist aufgetreten.";
+            this.resultMessage = "Leider ist bei der Registrierung etwas schief gelaufen. Versuche es zu einem später Zeitpunkt noch einmal.";
             this.resultButton = "Neu Laden";
             this.resultLink = "/register";
           }
@@ -154,7 +154,6 @@
         display: flex;
         flex-flow: column;
         height: 100%;
-        padding-bottom: 25px;
 
         .register-button, .login-text, .login-link {
           align-self: center;
@@ -189,10 +188,10 @@
       }
 
       #result-wrapper {
+        flex: 1;
         @include textBody;
         display: flex;
         flex-direction: column;
-        height: 100%;
 
         p:first-of-type{
           margin-top: 50px;
@@ -200,7 +199,8 @@
 
         .result-icon {
           margin: auto;
-          transform: scale(5);
+          width: 50%;
+          height: auto;
         }
 
         .result-link {
@@ -213,10 +213,12 @@
   //vue transitions
   .fade-enter-active, .fade-leave-active {
     opacity: 1;
-    transition: opacity 500ms ease-out;
+    transform: translateY(0);
+    transition: opacity 250ms ease-out, transform 500ms ease-out;
   }
 
   .fade-enter, .fade-leave-to {
     opacity: 0;
+    transform: translateY(50px);
   }
 </style>
