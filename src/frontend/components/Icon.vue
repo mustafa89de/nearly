@@ -3,15 +3,19 @@
 </template>
 
 <script>
-  import person from "assets/icons/person.svg";
-  import mail from "assets/icons/mail.svg";
-  import key from "assets/icons/key.svg";
-  import check from "assets/icons/check.svg";
-  import eye from "assets/icons/eye.svg";
-  import eyeClosed from "assets/icons/eye-closed.svg";
-  import checkCircle from "assets/icons/check-circle.svg";
-  import errorCircle from "assets/icons/error-circle.svg";
-  import bug from "assets/icons/bug.svg";
+  import person from "../assets/icons/person.svg";
+  import mail from "../assets/icons/mail.svg";
+  import key from "../assets/icons/key.svg";
+  import check from "../assets/icons/check.svg";
+  import eye from "../assets/icons/eye.svg";
+  import eyeClosed from "../assets/icons/eye-closed.svg";
+  import bug from "../assets/icons/bug.svg";
+  import latitude from "../assets/icons/latitude.svg";
+  import longitude from "../assets/icons/longitude.svg";
+  import calendar from "../assets/icons/calendar.svg";
+  import clock from "../assets/icons/clock.svg";
+  import checkCircle from "../assets/icons/check-circle.svg";
+  import errorCircle from "../assets/icons/error-circle.svg";
 
   export default {
     props: {
@@ -37,6 +41,14 @@
             return checkCircle;
           case "error-circle":
             return errorCircle;
+          case "latitude":
+            return latitude;
+          case "longitude":
+            return longitude;
+          case "calendar":
+            return calendar;
+          case "clock":
+            return clock;
           default:
             return bug;
         }
@@ -46,7 +58,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import "assets/variables";
+  @import "../assets/variables";
 
   svg {
     transition: transform 200ms;
@@ -58,31 +70,31 @@
 
   .primary {
     path {
-      fill: $colorPrimary;
+      fill: $font-col-active;
     }
   }
 
   .secondary {
     path {
-      fill: $colorSecondary;
+      fill: $orange;
     }
   }
 
   .white {
     path {
-      fill: $colorWhite;
+      fill: $font-col-secondary;
     }
   }
 
   .black {
     path {
-      fill: $colorBlack;
+      fill: $font-col-primary;
     }
   }
 
   .blackLight {
     path {
-      fill: $colorBlackLight;
+      fill: $font-col-light;
     }
   }
 </style>

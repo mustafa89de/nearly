@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const DB_URL = process.env.DB_URL;
 
 const User = require('../models/User');
+const Event = require('../models/Event');
 
 class DBService {
     async init() {
@@ -13,6 +14,7 @@ class DBService {
             });
 
             User.init();
+            Event.init();
 
             console.log('Successfully established database connection');
         } catch (err) {

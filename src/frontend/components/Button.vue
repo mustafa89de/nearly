@@ -1,6 +1,6 @@
 <template>
   <router-link v-if="type === 'link'" :to="to">{{text}}</router-link>
-  <input v-else :type="type" :value="text" @click="handleClick(onClick) || null" :disabled="disabled"/>
+  <input v-else :type="type" :value="text" @click="handleClick" :disabled="disabled"/>
 </template>
 
 <script>
@@ -13,49 +13,43 @@
       to: String
     },
     methods: {
-      handleClick: function(e) {
-        this.$emit("click", e);
+      handleClick: function (e) {
+        this.$emit('click', e);
       }
     }
   };
 </script>
 
 <style scoped lang="scss">
-  @import "assets/variables";
-  @import "assets/mixins";
+  @import "../assets/variables";
+  @import "../assets/mixins";
 
   input, a {
     @include textButton;
     width: 70%;
-    background: $colorSecondary;
-    color: $colorWhite;
+    background: $button-col-primary;
+    color: $font-col-secondary;
     padding: 15px;
     border: none;
     border-radius: 30px;
     transition: background-color 500ms ease, box-shadow 500ms ease;
     appearance: none;
+    outline: none;
+    cursor: pointer;
     text-align: center;
     text-decoration: none;
 
-    &:hover {
-      box-shadow: $shadowDefault;
-      cursor: pointer;
-      background-color: $colorPrimary;
-    }
-
     &:active {
-      background-color: darken($colorPrimary, 10%);
+        background-color: darken($button-col-secondary, 10%);
     }
 
     &:disabled {
-      background-color: $colorGrey;
+      background-color: $button-col-disabled;
     }
 
-    &:focus {
-      outline: none;
-      box-shadow: $shadowDefault;
-      cursor: pointer;
-      background-color: $colorPrimary
+    &:hover:not(:disabled) {
+      box-shadow: $shadow-default;
+      background-color: $button-col-secondary
     }
   }
 </style>
