@@ -1,6 +1,6 @@
 <template>
   <router-link v-if="type === 'link'" :to="to">{{text}}</router-link>
-  <input v-else :type="type" :value="text" @click="onClick || null" :disabled="disabled"/>
+  <input v-else :type="type" :value="text" @click="handleClick(onClick) || null" :disabled="disabled"/>
 </template>
 
 <script>
@@ -11,6 +11,11 @@
       onClick: Function,
       disabled: Boolean,
       to: String
+    },
+    methods: {
+      handleClick: function(e) {
+        this.$emit("click", e);
+      }
     }
   };
 </script>

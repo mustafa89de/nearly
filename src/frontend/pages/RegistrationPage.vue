@@ -3,7 +3,7 @@
     <header>
       <h1>Meeting</h1>
     </header>
-      <section v-if="isReady" class="card">
+      <section class="card">
         <h2>Registrierung</h2>
         <transition name="fade" mode="out-in">
           <form v-if="!resultMessage" id="registration-form" @submit="handleRegistration">
@@ -15,9 +15,10 @@
             <router-link class="login-link" to="/login">Anmelden</router-link>
           </form>
           <div id="result-wrapper" v-else>
+            <h3>{{resultTitle}}</h3>
             <p>{{resultMessage}}</p>
             <icon class="result-icon" :iconType="resultButton === 'Anmelden' ? 'check-circle' : 'error-circle'" iconColor="colorPrimary"/>
-            <button-submit class="result-link" type="link" :to="resultLink" :text="resultButton"/>
+            <button-submit class="result-link" @click="backToForm" to="/login" :type="resultButton === 'Anmelden' ? 'link' : 'button'" :text="resultButton"/>
           </div>
         </transition>
       </section>
@@ -33,13 +34,12 @@
   export default {
     data: function () {
       return {
-        isReady: false,
         username: '',
         email: '',
         password: '',
+        resultTitle: "",
         resultMessage: "",
         resultButton: "",
-        resultLink: "",
         usernameValid: false,
         emailValid: false,
         passwordValid: false,
@@ -58,18 +58,23 @@
         try {
           await UserService.register(this.username, this.email, this.password);
 
-          this.resultMessage = "Du hast dich erfolgreich registriert! Gehe weiter zur Anmeldung.";
+          this.resultTitle = "Glückwunsch!"
+          this.resultMessage = "Du hast dich erfolgreich registriert. Gehe weiter zur Anmeldung.";
           this.resultButton = "Anmelden";
-          this.resultLink = "/login";
         } catch (err) {
           if (err.status === 409) {
             this.emailAlreadyExsists = true;
           } else {
+            this.resultTitle = "Ach herrje!"
             this.resultMessage = "Leider ist bei der Registrierung etwas schief gelaufen. Versuche es zu einem später Zeitpunkt noch einmal.";
-            this.resultButton = "Neu Laden";
-            this.resultLink = "/register";
+            this.resultButton = "Zurück";
           }
         }
+      },
+      backToForm: function() {
+        this.resultTitle = "";
+        this.resultMessage = "";
+        this.resultButton = "";
       }
     },
     watch: {
@@ -84,9 +89,6 @@
       password: function(){
         this.passwordValid = this.password.length >= 8;
       }
-    },
-    mounted() {
-      this.isReady = true;
     }
   };
 </script>
@@ -193,13 +195,20 @@
         display: flex;
         flex-direction: column;
 
-        p:first-of-type{
-          margin-top: 50px;
+        h3 {
+          @include textBody;
+          font-size: 3rem;
+          margin: 25px 0 10px 0;
+        }
+
+        p {
+          margin: 0;
         }
 
         .result-icon {
           margin: auto;
           width: 50%;
+          max-width: 180px;
           height: auto;
         }
 
