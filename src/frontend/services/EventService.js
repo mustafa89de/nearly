@@ -21,6 +21,16 @@ class EventService {
       throw err;
     }
   }
+
+  async getAllEvents({latitude, longitude}) {
+    const eventsMock = [
+      {
+        latitude,
+        longitude
+      }
+    ];
+    return Promise.resolve(eventsMock);
+  }
 }
 
 export default new EventService();
