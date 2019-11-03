@@ -10,6 +10,15 @@ class EventRepository {
       throw err;
     }
   }
+
+  async getEventById(eid){
+    try{
+      return await Event.findById(eid);;
+    }catch(err){
+      console.error('DB Error:', err.message);
+      throw err;
+    }
+  }
 }
 
 module.exports = new EventRepository();
