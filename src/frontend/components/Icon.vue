@@ -14,6 +14,8 @@
   import longitude from "../assets/icons/longitude.svg";
   import calendar from "../assets/icons/calendar.svg";
   import clock from "../assets/icons/clock.svg";
+  import checkCircle from "../assets/icons/check-circle.svg";
+  import errorCircle from "../assets/icons/error-circle.svg";
 
   export default {
     props: {
@@ -35,6 +37,10 @@
             return eye;
           case "eye-closed":
             return eyeClosed;
+          case "check-circle":
+            return checkCircle;
+          case "error-circle":
+            return errorCircle;
           case "latitude":
             return latitude;
           case "longitude":

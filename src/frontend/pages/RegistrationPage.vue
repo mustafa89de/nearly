@@ -3,46 +3,53 @@
     <header>
       <h1>Meeting</h1>
     </header>
-    <transition name="slide">
-      <section v-if="isReady" class="card">
+      <section class="card">
         <h2>Registrierung</h2>
-        <form @submit="handleRegistration">
-          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" hint="Benutzername muss mind. 4 Zeichen haben" :showHint="username != '' && !usernameValid" v-model="username"/>
-          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" hint="E-Mail-Adresse ist unvollständig" :showHint="email != '' && !emailValid" v-model="email"/>
-          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Passwort" hint="Passwort muss mind. 8 Zeichen haben" :showHint="password != '' && !passwordValid" v-model="password"/>
-          <p v-if="errorMessage">{{errorMessage}}</p>
-          <p v-if="registrationSucceed">Die Registrierung war erfolgreich</p>
-          <button-submit class="register-button" type="submit" text="Registrieren" :disabled="!usernameValid || !emailValid || !passwordValid"/>
-          <p class="login-text">Du hast schon einen Account?</p>
-          <router-link class="login-link" to="/login">Anmelden</router-link>
-        </form>
+        <transition name="fade" mode="out-in">
+          <form v-if="!resultMessage" id="registration-form" @submit="handleRegistration">
+            <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" hint="Benutzername muss mind. 4 Zeichen haben" :showHint="username != '' && !usernameValid" v-model="username"/>
+            <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" :hint="emailAlreadyExsists ? 'Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse' : 'E-Mail-Adresse ist unvollständig'" :showHint="emailAlreadyExsists || (email != '' && !emailValid)" v-model="email"/>
+            <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Passwort" hint="Passwort muss mind. 8 Zeichen haben" :showHint="password != '' && !passwordValid" v-model="password"/>
+            <button-submit class="register-button" type="submit" text="Registrieren" :disabled="!usernameValid || !emailValid || !passwordValid"/>
+            <p class="login-text">Du hast schon einen Account?</p>
+            <router-link class="login-link" to="/login">Anmelden</router-link>
+          </form>
+          <div id="result-wrapper" v-else>
+            <h3>{{resultTitle}}</h3>
+            <p>{{resultMessage}}</p>
+            <icon class="result-icon" :iconType="resultButton === 'Anmelden' ? 'check-circle' : 'error-circle'" iconColor="colorPrimary"/>
+            <button-submit class="result-link" @click="backToForm" to="/login" :type="resultButton === 'Anmelden' ? 'link' : 'button'" :text="resultButton"/>
+          </div>
+        </transition>
       </section>
-    </transition>
   </article>
 </template>
 
 <script>
   import TextInput from "../components/TextInput.vue";
   import Button from "../components/Button.vue";
+  import Icon from "../components/Icon.vue";
   import UserService from "../services/UserService";
 
   export default {
     data: function () {
       return {
-        isReady: false,
         username: '',
         email: '',
         password: '',
-        errorMessage: null,
-        registrationSucceed: false,
+        resultTitle: "",
+        resultMessage: "",
+        resultButton: "",
         usernameValid: false,
         emailValid: false,
-        passwordValid: false
+        passwordValid: false,
+        emailAlreadyExsists: false
       };
     },
     components: {
       "input-text": TextInput,
-      "button-submit": Button
+      "button-submit": Button,
+      "icon": Icon
     },
     methods: {
       handleRegistration: async function (e) {
@@ -51,16 +58,23 @@
         try {
           await UserService.register(this.username, this.email, this.password);
 
-          this.registrationSucceed = true;
-          this.errorMessage = null;
+          this.resultTitle = "Glückwunsch!"
+          this.resultMessage = "Du hast dich erfolgreich registriert. Gehe weiter zur Anmeldung.";
+          this.resultButton = "Anmelden";
         } catch (err) {
-          this.registrationSucceed = false;
           if (err.status === 409) {
-            this.errorMessage = "Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse";
+            this.emailAlreadyExsists = true;
           } else {
-            this.errorMessage = "Ein unbekannter Fehler ist aufgetreten.";
+            this.resultTitle = "Ach herrje!"
+            this.resultMessage = "Leider ist bei der Registrierung etwas schief gelaufen. Versuche es zu einem später Zeitpunkt noch einmal.";
+            this.resultButton = "Zurück";
           }
         }
+      },
+      backToForm: function() {
+        this.resultTitle = "";
+        this.resultMessage = "";
+        this.resultButton = "";
       }
     },
     watch: {
@@ -68,6 +82,7 @@
         this.usernameValid = this.username.length >= 4;
       },
       email: function(){
+        this.emailAlreadyExsists = false;
         this.emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         .test(this.email);
       },
@@ -76,7 +91,6 @@
       }
     },
     mounted() {
-      this.isReady = true;
       document.body.classList.add('red');
     },
     destroyed() {
@@ -116,12 +130,14 @@
       display: flex;
       flex-direction: column;
       background-color: $white;
+      color: $black;
       border-radius: 50px 50px 0px 0px;
       padding: 50px 25px 50px 25px;
       box-shadow: $shadow-dark;
 
       h2 {
         flex: none;
+
         @include textTitle;
         color: $font-col-primary;
         margin: 0;
@@ -136,55 +152,84 @@
         }
       }
 
-      form {
+      #registration-form {
         flex: 1;
 
         display: flex;
         flex-flow: column;
         height: 100%;
-        padding-bottom: 25px;
-      }
 
-      .register-button, .login-text, .login-link {
-        align-self: center;
-      }
-
-      .register-button {
-        margin-top: auto;
-      }
-
-      .login-text {
-        @include textBody;
-        color: $font-col-light;
-        margin: 25px 0 10px 0;
-      }
-
-      .login-link {
-        @include textButton;
-        text-decoration: none;
-        color: $link-color;
-        transition: color 500ms ease;
-
-        &:link,
-        &:visited,
-        &:active {
-          color: $link-color;
+        .register-button, .login-text, .login-link {
+          align-self: center;
         }
 
-        &:hover {
-          color: $red;
+        .register-button {
+          margin-top: auto;
+        }
+
+        .login-text {
+          @include textBody;
+          color: $font-col-light;
+          margin: 25px 0 10px 0;
+        }
+
+        .login-link {
+          @include textButton;
+          text-decoration: none;
+          color: $link-color;
+          transition: color 500ms ease;
+
+          &:link,
+          &:visited,
+          &:active {
+            color: $link-color;
+          }
+
+          &:hover {
+            color: $red;
+          }
+        }
+      }
+
+      #result-wrapper {
+        flex: 1;
+        @include textBody;
+        display: flex;
+        flex-direction: column;
+
+        h3 {
+          @include textBody;
+          font-size: 3rem;
+          margin: 25px 0 10px 0;
+        }
+
+        p {
+          margin: 0;
+        }
+
+        .result-icon {
+          margin: auto;
+          width: 50%;
+          max-width: 180px;
+          height: auto;
+        }
+
+        .result-link {
+          margin: auto auto 0 auto;
         }
       }
     }
   }
 
   //vue transitions
-  .slide-enter-active, .slide-leave-active {
-    transition: opacity 500ms ease-out, transform 500ms ease-out;
+  .fade-enter-active, .fade-leave-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 250ms ease-out, transform 500ms ease-out;
   }
 
-  .slide-enter, .slide-leave-to {
-    transform: translateY(200px);
+  .fade-enter, .fade-leave-to {
     opacity: 0;
+    transform: translateY(50px);
   }
 </style>
