@@ -4,15 +4,23 @@ import {MAP_ID} from "../constants";
 const STYLE = 'mapbox://styles/mapbox/light-v10';
 
 class MapService {
-  initMap({center, zoom}) {
+  initMap({center, zoom, bounds}) {
     return new Promise(resolve => {
       mapboxgl.accessToken = MAPBOX_TOKEN; // Wird beim compilieren durch Webpack Define Plugin ersetzt
-      this.map = new mapboxgl.Map({
+
+      let options = {
         container: MAP_ID,
-        style: STYLE,
-        center: {lon: center.longitude, lat: center.latitude},
-        zoom
-      });
+        style: STYLE
+      };
+
+      if (bounds) {
+        options.bounds = bounds
+      } else {
+        options.center = {lon: center.longitude, lat: center.latitude};
+        options.zoom = zoom
+      }
+
+      this.map = new mapboxgl.Map(options);
       this.map.addControl(new mapboxgl.NavigationControl());
       this.map.on('load', () => {
         resolve();
@@ -25,23 +33,23 @@ class MapService {
   }
 
   onDragEnd(handler) {
-    this.map.on('dragend', () => handler(this.map.getCenter()));
+    this.map.on('dragend', () => handler(this.map.getBounds()));
   }
 
   onZoomEnd(handler) {
-    this.map.on('zoomend', () => handler(this.map.getCenter()));
+    this.map.on('zoomend', () => handler(this.map.getBounds()));
   }
 
-  setCenter({longitude, latitude}) {
+  setCenter({lon, lat}) {
     this.map.flyTo({
       center: {
-        lon: longitude,
-        lat: latitude
+        lon,
+        lat
       }
     });
   }
 
-  addMarker({longitude, latitude, onClick, text}) {
+  addMarker({lon, lat, onClick, text}) {
     const element = document.createElement('div');
     element.className = 'map-marker';
     element.innerText = text;
@@ -51,8 +59,8 @@ class MapService {
 
     const marker = new mapboxgl.Marker(element);
     marker.setLngLat({
-      lon: longitude,
-      lat: latitude
+      lon,
+      lat
     });
     marker.addTo(this.map);
 

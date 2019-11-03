@@ -9,6 +9,7 @@
     props: {
       'initialCenter': Object,
       'initialZoom': Number,
+      'initialBounds': Array,
       'markers': Array
     },
     data: function () {
@@ -24,10 +25,10 @@
         });
 
         // add and store new ones
-        this.markerRefs = markers.map(({longitude, latitude}, index) => {
+        this.markerRefs = markers.map(({lon, lat}, index) => {
           return MapService.addMarker({
-            longitude,
-            latitude,
+            lon,
+            lat,
             text: index + 1,
             onClick: () => this.handleClick(index)
           });
@@ -38,12 +39,20 @@
       handleClick(index) {
         this.$emit('markerClick', index)
       },
-      handlePositionChange({lat, lng}) {
-        this.$emit('mapUpdate', {longitude: lng, latitude: lat})
+      handlePositionChange(bounds) {
+        const p1 = bounds.getSouthWest();
+        const p2 = bounds.getNorthEast();
+
+        const newBounds = [{lon: p1.lng, lat: p1.lat}, {lon: p2.lng, lat: p2.lat}];
+        this.$emit('mapUpdate', newBounds)
       }
     },
     mounted: async function () {
-      await MapService.initMap({center: this.initialCenter, zoom: this.initialZoom});
+      await MapService.initMap({
+        center: this.initialCenter,
+        zoom: this.initialZoom,
+        bounds: this.initialBounds
+      });
       MapService.onDragEnd(this.handlePositionChange);
       MapService.onZoomEnd(this.handlePositionChange);
     }

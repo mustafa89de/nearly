@@ -22,11 +22,12 @@ class EventService {
     }
   }
 
-  async getAllEvents({latitude, longitude}) {
+  async getAllEvents([p1,p2]) {
+    // an mocked event in the center of the bounds
     const eventsMock = [
       {
-        latitude,
-        longitude
+        lon: (p1.lon + p2.lon) / 2,
+        lat: (p1.lat + p2.lat) / 2
       }
     ];
     return Promise.resolve(eventsMock);

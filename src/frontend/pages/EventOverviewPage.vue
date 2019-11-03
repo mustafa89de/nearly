@@ -1,8 +1,7 @@
 <template>
   <article>
     <mapbox
-        :initialCenter="initialCenter"
-        :initialZoom="initialZoom"
+        :initialBounds="initialBounds"
         :markers="markers"
         @markerClick="handleMarkerClick"
         @mapUpdate="handleMapUpdate"
@@ -25,35 +24,34 @@
     },
     computed: {
       markers: function () {
-        return this.events.map(({longitude, latitude}) => {
+
+        return this.events.map(({lon, lat}) => {
           return {
-            longitude,
-            latitude,
+            lon,
+            lat,
           }
         })
       },
-      initialCenter: function () {
-        return {longitude: 13.415684, latitude: 52.502270};
-      },
-      initialZoom: function () {
-        return 16;
-      },
+      initialBounds: function () {
+        return [{lon: 13.411684, lat: 52.498270}, {lon: 13.419684, lat: 52.506270}];
+      }
     },
     mounted: function () {
-      this.fetchEvents(this.initialCenter);
+      this.fetchEvents(this.initialBounds);
     },
     methods: {
       handleMarkerClick: function (index) {
         console.log('Clicked marker ' + index)
       },
-      handleMapUpdate: function (center) {
-        this.fetchEvents(center)
+      handleMapUpdate: function (bounds) {
+        this.fetchEvents(bounds)
       },
-      fetchEvents: async function (center) {
-        console.log('Fetch events for:', center);
+      fetchEvents: async function (bounds) {
+        console.log('Fetch events for:', bounds);
         try {
-          this.events = await EventService.getAllEvents(center);
+          this.events = await EventService.getAllEvents(bounds);
         } catch (e) {
+          console.error(e);
           // TODO: error handling
         }
       }
