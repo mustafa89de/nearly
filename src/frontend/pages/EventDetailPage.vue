@@ -45,7 +45,10 @@
           this.event = event;
         }catch(err){
           this.isLoading = false;
-          this.error = "Ooops, das Event konnte leider nicht geladen werden ";
+          if(err.status === 404){
+            this.error = "Das gesuchte Event existiert leider nicht.";
+          }
+          else this.error = "Ooops, das Event konnte leider nicht geladen werden ";
           console.error(err);
         }
       }
