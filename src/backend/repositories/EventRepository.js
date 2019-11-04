@@ -13,7 +13,7 @@ class EventRepository {
 
   async getEventById(eid){
     try{
-      return await Event.findById(eid);;
+      return await Event.findById(eid);
     }catch(err){
       console.error('DB Error:', err.message);
       throw err;
