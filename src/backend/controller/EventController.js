@@ -21,6 +21,7 @@ router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
     const event = await EventRepository.getEventById(req.params.eid);
     res.status(200).json(event);
   }catch(err){
+    console.log(err.status);
     res.status(500).json({message: err.message});
   }
 });

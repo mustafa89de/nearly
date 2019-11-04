@@ -21,6 +21,17 @@ class EventService {
       throw err;
     }
   }
+
+  async getEventById(eid){
+    try{
+      const res = await axios.get(ENDPOINTS.EVENT + '/' + eid);
+      return res.data;
+    }catch(err){
+      err.status = err.response.status;
+      console.error(err.message);
+      throw err;
+    }
+  }
 }
 
 export default new EventService();
