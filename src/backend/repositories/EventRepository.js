@@ -1,9 +1,9 @@
 const Event = require('../models/Event');
 
 class EventRepository {
-  async createEvent(name, latitude, longitude, time, hostId, description) {
+  async createEvent(name, time, hostId, description, location) {
     try {
-      let event = Event({name, description, latitude, longitude, time, hostId});
+      let event = Event({name, description, time, hostId, location});
       await event.save();
     } catch (err) {
       console.error('DB Error:', err.message);
@@ -20,6 +20,8 @@ class EventRepository {
       throw err;
     }
   }
+
+
 }
 
 module.exports = new EventRepository();
