@@ -7,9 +7,9 @@ const router = express.Router();
 
 router.post('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const {name, description, latitude, longitude, time, hostId} = req.body;
+    const {name, description, time, hostId, location} = req.body;
 
-    const createdEvent = await EventRepository.createEvent(name, latitude, longitude, time, hostId, description);
+    const createdEvent = await EventRepository.createEvent(name, time, hostId, description, location);
 
     res.status(201).json(createdEvent);
   } catch (err) {
@@ -19,9 +19,8 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
 
 router.get('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const {north, east, west, south} = req.body;
-    const events = MapService.getEventsInArea(north, east, south, west);
-    res.status(201).json(events);
+
+    res.status(201).json();
   } catch (err) {
     res.status(500).json({message: err.message});
   }
