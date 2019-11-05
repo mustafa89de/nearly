@@ -120,5 +120,10 @@
     left: 0;
     height: 100%;
     width: 100%;
+
+    @media screen and (max-width: 500px) {
+      bottom: 277px - 50px; // events section height minus border-radius
+      height: initial;
+    }
   }
 </style>
