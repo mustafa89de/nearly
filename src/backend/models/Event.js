@@ -5,7 +5,7 @@ const eventSchema = mongoose.Schema({
   description: {type: String, required: false, default: null},
   time: {type: Date, required: true},
   hostId: {type: String, required: true},
-  location: {
+  loc: {
     type: {
       type: String,
       enum: ['Point'],
