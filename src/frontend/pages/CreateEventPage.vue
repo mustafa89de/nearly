@@ -40,11 +40,16 @@
       "text-input": TextInput,
       "button-submit": Button
     },
+    computed: {
+      mergedDateTime: function () {
+        return new Date(`${this.date} ${this.time}`);
+      }
+    },
     methods: {
       handleEventCreation: async function (e) {
         e.preventDefault();
         try {
-          const createdEvent = await EventService.createEvent(this.name, this.description, this.latitude, this.longitude, this.time);
+          const createdEvent = await EventService.createEvent(this.name, this.description, this.latitude, this.longitude, this.mergedDateTime);
           this.$router.push('/');
         } catch (err) {
           this.errorMessage = "Ein unbekannter Fehler ist aufgetreten."
@@ -62,7 +67,7 @@
       },
       formatDate: function (date) {
         const year = date.getFullYear();
-        let month = date.getMonth();
+        let month = date.getMonth() + 1;
         if (month < 10) month = '0' + month;
 
         let day = date.getDate();
