@@ -42,18 +42,7 @@
     },
     computed: {
       mergedDateTime: function () {
-        const [year, month, day] = this.date.split('-');
-        const [hours, minutes] = this.time.split(':');
-
-        const dateTime = new Date(
-            year || 0,
-            month || 0,
-            day || 0,
-            hours || 0,
-            minutes || 0
-        );
-
-        return dateTime;
+        return new Date(`${this.date} ${this.time}`);
       }
     },
     methods: {
@@ -78,7 +67,7 @@
       },
       formatDate: function (date) {
         const year = date.getFullYear();
-        let month = date.getMonth();
+        let month = date.getMonth() + 1;
         if (month < 10) month = '0' + month;
 
         let day = date.getDate();
