@@ -1,9 +1,9 @@
 const Event = require('../models/Event');
 
 class EventRepository {
-  async createEvent(name, time, hostId, description, location) {
+  async createEvent(name, time, hostId, description, loc) {
     try {
-      let event = Event({name, description, time, hostId, location});
+      let event = Event({name, description, time, hostId, loc});
       await event.save();
     } catch (err) {
       console.error('DB Error:', err.message);
@@ -11,7 +11,7 @@ class EventRepository {
     }
   }
 
-  async getAllEvents(){
+  async getAllEvents() {
     try {
       let [events] = await Promise.all([Event.find({})]);
       return events;
@@ -21,27 +21,28 @@ class EventRepository {
     }
   }
 
-  async getEventsInArea(point1, point2, point3, point4) {
+  async getEventsInArea(ne, se, sw, nw) {
     try {
-      return await Event.find(
+      let events = await Event.find(
         {
           loc: {
             $geoWithin: {
               $geometry: {
-                type : "Polygon" ,
-                coordinates: [ [
-                  [ point1.lng, point1.lat ],
-                  [ point2.lng, point2.lat ],
-                  [ point3.lng, point3.lat ],
-                  [ point4.lng, point4.lat ],
-                  [ point1.lng, point1.lat ]
-                ] ]
+                type: "Polygon",
+                coordinates: [[
+                  [ne.lng, ne.lat],
+                  [se.lng, se.lat],
+                  [sw.lng, sw.lat],
+                  [nw.lng, nw.lat],
+                  [ne.lng, ne.lat]
+                ]]
               }
             }
           }
         }
-      )
-    }catch (err) {
+      );
+      return events;
+    } catch (err) {
       console.error('DB Error:', err.message);
     }
   }
