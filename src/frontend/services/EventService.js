@@ -22,8 +22,19 @@ class EventService {
     }
   }
 
-  async getAllEvents([p1, p2]) {
-    // an mocked event in the center of the bounds
+  async getAllEvents({sw, ne}) {
+    // params
+    // {
+    //   "sw": {
+    //     "lng": 13.413520135576363,
+    //     "lat": 52.49495532275526
+    //   },
+    //   "ne": {
+    //     "lng": 13.422374455230994,
+    //     "lat": 52.50662662374336
+    //   }
+    // }
+
     const eventsMock = [
       {
         id: 'id0',

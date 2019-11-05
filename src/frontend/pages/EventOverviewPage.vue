@@ -43,8 +43,7 @@
       },
       initialBounds: function () {
         const homeLL = mapboxgl.LngLat.convert(LocationService.getHomePosition());
-        const [[lon1, lat1], [lon2, lat2]] = homeLL.toBounds(INITIAL_MAP_RADIUS).toArray();
-        return [{lon: lon1, lat: lat1}, {lon: lon2, lat: lat2}];
+        return homeLL.toBounds(INITIAL_MAP_RADIUS)
       }
     },
     mounted: function () {
@@ -61,12 +60,10 @@
         this.fetchEvents(bounds)
       },
       fetchEvents: async function (bounds) {
-        console.log('Fetch events for:', bounds);
         try {
           this.events = await EventService.getAllEvents(bounds);
         } catch (e) {
           console.error(e);
-          // TODO: error handling
         }
       },
       scrollTo: function (index) {
