@@ -22,6 +22,17 @@ class EventService {
     }
   }
 
+  async getAllEvents([p1,p2]) {
+    // an mocked event in the center of the bounds
+    const eventsMock = [
+      {
+        lon: (p1.lon + p2.lon) / 2,
+        lat: (p1.lat + p2.lat) / 2
+      }
+    ];
+    return Promise.resolve(eventsMock);
+  }
+
   async getEventById(eid){
     try{
       const res = await axios.get(ENDPOINTS.EVENT + '/' + eid);

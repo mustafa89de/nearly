@@ -55,6 +55,7 @@
     "bcrypt": "^3.0.6",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "mapbox-gl": "^1.5.0",
     "mongoose": "^5.7.5",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
