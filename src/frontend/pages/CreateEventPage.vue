@@ -40,11 +40,27 @@
       "text-input": TextInput,
       "button-submit": Button
     },
+    computed: {
+      mergedDateTime: function () {
+        const [year, month, day] = this.date.split('-');
+        const [hours, minutes] = this.time.split(':');
+
+        const dateTime = new Date(
+            year || 0,
+            month || 0,
+            day || 0,
+            hours || 0,
+            minutes || 0
+        );
+
+        return dateTime;
+      }
+    },
     methods: {
       handleEventCreation: async function (e) {
         e.preventDefault();
         try {
-          const createdEvent = await EventService.createEvent(this.name, this.description, this.latitude, this.longitude, this.time);
+          const createdEvent = await EventService.createEvent(this.name, this.description, this.latitude, this.longitude, this.mergedDateTime);
           this.$router.push('/');
         } catch (err) {
           this.errorMessage = "Ein unbekannter Fehler ist aufgetreten."
