@@ -11,19 +11,9 @@ class EventRepository {
     }
   }
 
-  async getAllEvents() {
-    try {
-      let [events] = await Promise.all([Event.find({})]);
-      return events;
-    } catch (err) {
-      console.error('DB Error:', err.message);
-      throw err;
-    }
-  }
-
   async getEventsInArea(ne, se, sw, nw) {
     try {
-      let events = await Event.find(
+      return  await Event.find(
         {
           loc: {
             $geoWithin: {
@@ -41,7 +31,6 @@ class EventRepository {
           }
         }
       );
-      return events;
     } catch (err) {
       console.error('DB Error:', err.message);
     }

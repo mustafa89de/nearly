@@ -12,9 +12,6 @@ class MapService{
 
     return [se, nw];
   }
-
-
-
 }
 
 module.exports = new MapService();
