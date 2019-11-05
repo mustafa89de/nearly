@@ -39,8 +39,8 @@
         this.$emit('click', index)
       },
       getDistance: function ({lon, lat}) {
-        const center = MapService.getCenter();
-        const distance = LocationService.getDistance({lon, lat}, {lon: center.lng, lat: center.lat});
+        const home = LocationService.getHomePosition();
+        const distance = LocationService.getDistance({lon, lat}, {lon: home.lon, lat: home.lat});
 
         if (distance < 1) {
           return (distance*1000).toFixed() + 'm'
