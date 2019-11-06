@@ -7,7 +7,11 @@ const router = express.Router();
 
 router.post('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const {name, description, time, hostId, loc} = req.body;
+    const {name, description, latitude, longitude, time, hostId} = req.body;
+    const loc = {
+      type: "Point",
+      coordinates: [longitude, latitude]
+    };
 
     const createdEvent = await EventRepository.createEvent(name, time, hostId, description, loc);
 
@@ -19,7 +23,7 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
 
 router.get('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const{ne, sw} = req.body;
+    const {ne, sw} = req.body;
     const otherPoints = MapService.createMissingBounds(ne, sw);
     const [se, nw] = otherPoints;
     const events = await EventRepository.getEventsInArea(ne, se, sw, nw);
