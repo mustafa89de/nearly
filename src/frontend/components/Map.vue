@@ -9,7 +9,7 @@
     props: {
       'initialCenter': Object,
       'initialZoom': Number,
-      'initialBounds': Array,
+      'initialBounds': Object,
       'markers': Array
     },
     data: function () {
@@ -40,11 +40,10 @@
         this.$emit('markerClick', index)
       },
       handlePositionChange(bounds) {
-        const p1 = bounds.getSouthWest();
-        const p2 = bounds.getNorthEast();
+        const sw = bounds.getSouthWest();
+        const ne = bounds.getNorthEast();
 
-        const newBounds = [{lon: p1.lng, lat: p1.lat}, {lon: p2.lng, lat: p2.lat}];
-        this.$emit('mapUpdate', newBounds)
+        this.$emit('mapUpdate', {sw, ne})
       }
     },
     mounted: async function () {
@@ -60,8 +59,10 @@
 </script>
 
 <style lang="scss">
+  @import "../assets/variables";
+
   .map-marker {
-    background: #db0000;
+    background: $red;
     border: 3px solid #fff;
     border-radius: 9999px;
     height: 35px;

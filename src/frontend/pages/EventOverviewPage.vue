@@ -6,15 +6,25 @@
         @markerClick="handleMarkerClick"
         @mapUpdate="handleMapUpdate"
     />
+    <section id="events">
+      <h2>Für dich</h2>
+      <horizontal-event-list :events="events" @click="handleEventClick"/>
+    </section>
   </article>
 </template>
 
 <script>
   import Map from '../components/Map';
   import EventService from "../services/EventService";
+  import HorizontalEventList from "../components/HorizontalEventList";
+  import LocationService from "../services/LocationService";
+  import {INITIAL_MAP_RADIUS} from "../constants";
+
+  const mapboxgl = require("mapbox-gl");
 
   export default {
     components: {
+      HorizontalEventList,
       "mapbox": Map
     },
     data: function () {
@@ -24,7 +34,6 @@
     },
     computed: {
       markers: function () {
-
         return this.events.map(({lon, lat}) => {
           return {
             lon,
@@ -33,7 +42,8 @@
         })
       },
       initialBounds: function () {
-        return [{lon: 13.411684, lat: 52.498270}, {lon: 13.419684, lat: 52.506270}];
+        const homeLL = mapboxgl.LngLat.convert(LocationService.getHomePosition());
+        return homeLL.toBounds(INITIAL_MAP_RADIUS)
       }
     },
     mounted: function () {
@@ -41,28 +51,65 @@
     },
     methods: {
       handleMarkerClick: function (index) {
-        console.log('Clicked marker ' + index)
+        this.scrollTo(index);
+      },
+      handleEventClick: function (index) {
+        this.$router.push('/event/' + this.events[index].id);
       },
       handleMapUpdate: function (bounds) {
         this.fetchEvents(bounds)
       },
       fetchEvents: async function (bounds) {
-        console.log('Fetch events for:', bounds);
         try {
           this.events = await EventService.getAllEvents(bounds);
         } catch (e) {
           console.error(e);
-          // TODO: error handling
         }
+      },
+      scrollTo: function (index) {
+        const listItem = document.querySelector('.eventListItem:nth-child(' + (index + 1) + ')');
+        const list = document.querySelector('.horizontalEventList');
+        list.scrollTo({
+          top: 0,
+          left: listItem.offsetLeft - 25, // list padding
+          behavior: 'smooth'
+        });
       }
     }
   };
 </script>
 
 <style scoped lang="scss">
+  @import "../assets/variables";
+
   article {
     min-height: 100%;
     min-width: 100%;
+  }
+
+  #events {
+    z-index: 1;
+    position: absolute;
+    background: #fff;
+    width: 100%;
+    max-width: 500px;
+    bottom: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 50px 50px 0 0;
+    padding: 50px 0 25px;
+
+    > h2 {
+      font-family: Poppins, sans-serif;
+      font-size: 18px;
+      line-height: 27px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin: 0 25px 25px;
+    }
+
+    > ul {
+      padding-left: 25px;
+    }
   }
 </style>
 
@@ -73,5 +120,10 @@
     left: 0;
     height: 100%;
     width: 100%;
+
+    @media screen and (max-width: 500px) {
+      bottom: 277px - 50px; // events section height minus border-radius
+      height: initial;
+    }
   }
 </style>

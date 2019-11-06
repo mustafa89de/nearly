@@ -5,3 +5,4 @@ export const ENDPOINTS = {
 };
 
 export const MAP_ID = 'map';
+export const INITIAL_MAP_RADIUS = 300;
