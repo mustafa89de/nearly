@@ -1,23 +1,23 @@
 <template>
   <div>
     <div v-if="isLoading" class="eventLoading"> Loading...</div>
-    <div v-if="error" class="error"> {{error}}</div>
+    <div v-if="error" class="error">{{error}}</div>
     <div v-if="event" class="eventContent">
       <article>
-        <h1> {{name}} </h1>
+        <h1>{{event.name}}</h1>
         <!-- Share Button to be implemented here -->
-        <p class="description">{{ description }}</p>
+        <p class="description">{{ event.description }}</p>
         <div class="fieldContainer">
           <div class="leftSide">
-            <text-field :iconType="'longitude'" :iconColor="'primary'" :value="longitude"/>
-            <text-field :iconType="'calendar'" :iconColor="'primary'" :value="eventDate"/>
+            <text-field :iconType="'longitude'" :iconColor="'primary'" :value="event.longitude.$numberDecimal"/>
+            <text-field :iconType="'calendar'" :iconColor="'primary'" :value="event.date"/>
           </div>
           <div class="rightSide">
-            <text-field :iconType="'latitude'" :iconColor="'primary'" :value="latitude"/>
-            <text-field :iconType="'clock'" :iconColor="'primary'" :value="time"/>
+            <text-field :iconType="'latitude'" :iconColor="'primary'" :value="event.latitude.$numberDecimal"/>
+            <text-field :iconType="'clock'" :iconColor="'primary'" :value="event.time"/>
           </div>
         </div>
-        <text-field :iconType="'person'" :iconColor="'primary'" :value="hostID"/>
+        <text-field :iconType="'person'" :iconColor="'primary'" :value="hostName"/>
         <button-submit v-if="isCreator" @click="editEvent" class="joinButton" type="submit" text="bearbeiten"/>
         <button-submit v-else @click="signInForEvent" class="joinButton" type="submit" text="mitmachen"/>
       </article>
@@ -48,39 +48,51 @@
       return {
         isLoading: false,
         error: null,
-        event: null,
-        name: null,
-        description: null,
-        latitude: null,
-        longitude: null,
-        mapcenter: null,
-        markers: null,
-        time: null,
-        eventDate: null,
-        hostID: null,
-        isCreator: null,
+        event: null
       }
     },
 
-    created() {
-      // fetch event when Vue is created
-      this.init()
+    computed: {
+      mapcenter: function(){
+        if(this.event) return {longitude: this.event.longitude.$numberDecimal, latitude: this.event.latitude.$numberDecimal};
+        else return {};
+      },
+
+      markers: function () {
+        if(this.event) return [this.event.longitude.$numberDecimal, this.event.latitude.$numberDecimal];
+        else return [];
+      },
+
+      hostName: async function () {
+        try {
+          if(this.event){
+            const user = await UserService.getUserByID(this.event.hostId);
+            return user.username;
+          }else{
+            return "Unbekannter Nutzer"
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      },
+
+      isCreator: function () {
+        if(this.event){
+          const thisUserId = AuthService.getUser().userId;
+          return thisUserId === this.event.hostId;
+        }else{
+          return false;
+        }
+      }
     },
 
     methods: {
       async init() {
         try {
           this.isLoading = true;
-
-          // fetch Event
           const event = await EventService.getEventById(this.$route.params.eid);
-          this.setEventData(event);
-          this.adaptButton();
-
-          // hostId to be replaced by user name after endpoint is available
-          // this.hostID = UserService.getUserByID(event.hostId);
+          this.event = event;
           this.isLoading = false;
-
         } catch (err) {
           this.isLoading = false;
           if (err.status === 404) {
@@ -90,30 +102,10 @@
         }
       },
 
-      setEventData(event) {
-        this.event = event;
-        this.name = event.name;
-        this.description = event.description;
-        this.latitude = event.latitude.$numberDecimal;
-        this.longitude = event.longitude.$numberDecimal;
-        this.mapcenter = {longitude: this.longitude, latitude: this.latitude};
-        this.markers = [this.longitude, this.latitude];
-        
-        const eventTime = new Date(event.time);
-        this.time = eventTime.getHours() + ':' + eventTime.getMinutes();  // to be replaced after aligning with be
-        this.eventDate = event.date;
-        this.hostID = event.hostId;
-      },
-
-      adaptButton() {
-        if (AuthService.getUser().userId === this.hostID) this.isCreator = true;
-        else this.isCreator = false;
-      },
-
       async editEvent(e) {
         e.preventDefault();
         try {
-          // Routing to Event Editing Page to be implemented here
+          // TODO: Routing to Event Editing Page to be implemented here
           await this.$router.push('/');
         } catch (err) {
           console.error(err);
@@ -123,12 +115,16 @@
       async signInForEvent(e) {
         e.preventDefault();
         try {
-          // Routing to Event Signing to be implemented here
+          // TODO: Routing to Event Signing to be implemented here
           await this.$router.push('/');
         } catch (err) {
           console.error(err);
         }
       }
+    },
+
+    mounted() {
+      this.init()
     }
   }
 </script>
@@ -185,9 +181,9 @@
     margin-top: 40px;
     align-self: center;
   }
-
-  .mapContainer{
-    position:absolute;
+  
+  .mapContainer {
+    position: absolute;
     background: #E44021;
     top: 250px;
     margin-left: 25px;
@@ -196,7 +192,7 @@
     z-index: 1;
   }
   
-  #map{
-    position:absolute;
+  #map {
+    position: absolute;
   }
 </style>

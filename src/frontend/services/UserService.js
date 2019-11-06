@@ -16,19 +16,6 @@ class UserService {
         }
     }
 
-    async login(email, password){
-        try{
-            await axios.post(ENDPOINTS.LOGIN, {
-                email,
-                password
-            })
-        }catch(err){
-            err.status = err.response.status;
-            console.error(err.message);
-            throw err;
-        }
-    }
-
     async getUserByID(uid){
         try{
             const res = await axios.get(ENDPOINTS.USER + '/' + uid);
