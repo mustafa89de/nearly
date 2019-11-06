@@ -24,8 +24,8 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
 router.get('/', JWTService.requireJWT(), async (req, res) => {
   try {
     const {ne, sw} = req.body;
-    const otherPoints = MapService.createMissingBounds(ne, sw);
-    const [se, nw] = otherPoints;
+    const missingBounds = MapService.createMissingBounds(ne, sw);
+    const [se, nw] = missingBounds;
     const events = await EventRepository.getEventsInArea(ne, se, sw, nw);
     res.status(201).json(events);
   } catch (err) {
