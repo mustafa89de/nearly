@@ -28,9 +28,12 @@ class EventRepository {
                 ]]
               }
             }
+          },
+          time: {
+            $gte: new Date()
           }
         }
-      );
+      ).sort({"time": 1});
     } catch (err) {
       console.error('DB Error:', err.message);
     }
