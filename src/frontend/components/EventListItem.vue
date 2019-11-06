@@ -11,13 +11,21 @@
 </template>
 
 <script>
+  import LocationService from '../services/LocationService';
+
   export default {
     props: {
       number: Number,
       title: String,
       description: String,
-      distance: String,
+      lat: Number,
+      lon: Number,
       time: String
+    },
+    data: function () {
+      return {
+        distance: '...'
+      }
     },
     computed: {
       formattedDate: function () {
@@ -64,6 +72,17 @@
       handleClick: function (index) {
         this.$emit('click', index)
       }
+    },
+    async created() {
+      const home = await LocationService.getHomePosition(); // will never catch
+      const distance = LocationService.getDistance({lon: this.lon, lat: this.lat}, {lon: home.lon, lat: home.lat});
+
+      if (distance < 1) {
+        this.distance = (distance * 1000).toFixed() + 'm'
+      } else {
+        this.distance = distance.toFixed(1) + 'km'
+      }
+
     }
   };
 </script>

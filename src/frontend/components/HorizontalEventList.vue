@@ -1,15 +1,18 @@
 <template>
-  <ul class="horizontalEventList">
+  <ul class="horizontalEventList" v-if="events.length > 0">
     <event-list-item
+        :key="item.id"
         v-for="(item, index) in events"
         :title="item.title"
         :description="item.description"
         :number="index + 1"
         :time="item.time"
-        :distance="getDistance(item)"
+        :lat="item.lat"
+        :lon="item.lon"
         @click="() => handleClick(index)"
     />
   </ul>
+  <p v-else class="error">Es konnten keine Events gefunden werden.</p>
 </template>
 
 <script>
@@ -37,17 +40,6 @@
       },
       handleClick: function (index) {
         this.$emit('click', index)
-      },
-      getDistance: function ({lon, lat}) {
-        const home = LocationService.getHomePosition();
-        const distance = LocationService.getDistance({lon, lat}, {lon: home.lon, lat: home.lat});
-
-        if (distance < 1) {
-          return (distance*1000).toFixed() + 'm'
-        } else {
-          return distance.toFixed(1) + 'km'
-        }
-
       }
     }
   };
@@ -71,5 +63,25 @@
         margin-right: 0;
       }
     }
+  }
+
+  .error {
+    font-family: Arimo, sans-serif;
+    letter-spacing: 0.02em;
+    background: $button-col-secondary;
+    padding: 20px;
+    border-radius: 25px;
+    color: #fff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    height: 150px;
+    width: 250px;
+    font-size: 18px;
+    font-weight: normal;
+    margin: 0 0 0 25px;
+
   }
 </style>

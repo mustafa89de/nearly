@@ -18,21 +18,8 @@
       }
     },
     watch: {
-      markers: function (markers) {
-        // remove old ones
-        this.markerRefs.forEach(ref => {
-          ref.remove();
-        });
-
-        // add and store new ones
-        this.markerRefs = markers.map(({lon, lat}, index) => {
-          return MapService.addMarker({
-            lon,
-            lat,
-            text: index + 1,
-            onClick: () => this.handleClick(index)
-          });
-        });
+      markers: function () {
+        this.updateMarkers();
       }
     },
     methods: {
@@ -44,6 +31,23 @@
         const ne = bounds.getNorthEast();
 
         this.$emit('mapUpdate', {sw, ne})
+      },
+      updateMarkers() {
+        this.markerRefs.forEach(ref => {
+          ref.remove();
+        });
+
+        if (!this.markers) return; // abort
+
+        // add and store new ones
+        this.markerRefs = this.markers.map(({lon, lat}, index) => {
+          return MapService.addMarker({
+            lon,
+            lat,
+            text: index + 1,
+            onClick: () => this.handleClick(index)
+          });
+        });
       }
     },
     mounted: async function () {
@@ -54,6 +58,7 @@
       });
       MapService.onDragEnd(this.handlePositionChange);
       MapService.onZoomEnd(this.handlePositionChange);
+      this.updateMarkers();
     }
   }
 </script>

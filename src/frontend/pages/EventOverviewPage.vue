@@ -1,15 +1,19 @@
 <template>
   <article>
     <mapbox
+        v-if="isLoaded"
         :initialBounds="initialBounds"
         :markers="markers"
         @markerClick="handleMarkerClick"
         @mapUpdate="handleMapUpdate"
     />
-    <section id="events">
+    <section v-if="isLoaded" id="events">
       <h2>Für dich</h2>
       <horizontal-event-list :events="events" @click="handleEventClick"/>
     </section>
+    <transition name="fade">
+      <p v-if="!isLoaded" class="loader">Lädt ...</p>
+    </transition>
   </article>
 </template>
 
@@ -29,7 +33,8 @@
     },
     data: function () {
       return {
-        events: []
+        events: null,
+        initialBounds: null
       }
     },
     computed: {
@@ -41,12 +46,15 @@
           }
         })
       },
-      initialBounds: function () {
-        const homeLL = mapboxgl.LngLat.convert(LocationService.getHomePosition());
-        return homeLL.toBounds(INITIAL_MAP_RADIUS)
+      isLoaded() {
+        return !!this.initialBounds && !!this.events;
       }
     },
-    mounted: function () {
+    created: async function () {
+      const homePosition = await LocationService.getHomePosition(); // will never catch
+      const homeLL = mapboxgl.LngLat.convert(homePosition);
+
+      this.initialBounds = homeLL.toBounds(INITIAL_MAP_RADIUS);
       this.fetchEvents(this.initialBounds);
     },
     methods: {
@@ -63,6 +71,7 @@
         try {
           this.events = await EventService.getAllEvents(bounds);
         } catch (e) {
+          this.events = [];
           console.error(e);
         }
       },
@@ -85,6 +94,8 @@
   article {
     min-height: 100%;
     min-width: 100%;
+    display: flex;
+    flex: 1;
   }
 
   #events {
@@ -110,6 +121,26 @@
     > ul {
       padding-left: 25px;
     }
+  }
+
+  .loader {
+    display: flex;
+    font-family: "Poppins", sans-serif;
+    font-size: 28px;
+    flex: 1;
+    font-weight: bold;
+    margin: 0;
+    background: $bg-col-secondary;
+    align-items: center;
+    justify-content: center;
+    color: $font-col-secondary;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .fade-leave-active {
+    opacity: 0;
+    transition: .8s;
   }
 </style>
 
