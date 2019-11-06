@@ -27,7 +27,7 @@ router.get('/', JWTService.requireJWT(), async (req, res) => {
     const missingBounds = MapService.createMissingBounds(ne, sw);
     const [se, nw] = missingBounds;
     const events = await EventRepository.getEventsInArea(ne, se, sw, nw);
-    res.status(201).json(events);
+    res.json(events);
   } catch (err) {
     res.status(500).json({message: err.message});
   }
