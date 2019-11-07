@@ -8,7 +8,7 @@
       <transition name="fade" mode="out-in">
       <form v-if="!loginFailed" id="login-form" @submit="handleLogin">
         <input-text class="input-text-wrapper" iconType="mail" type="email" placeholder="E-Mail" v-model="email"/>
-        <input-text class="input-text-wrapper" iconType="key" type="password" hint="Deine Daten stimmen nicht überein, bitte überprüfe noch mal deine Eingabe!" :showHint="wrongLoginData" placeholder="Password" v-model="password"/>
+        <input-text class="input-text-wrapper" iconType="key" type="password" hint="Deine Anmeldedaten stimmen nicht, bitte überprüfe noch mal deine Eingabe!" :showHint="wrongLoginData" placeholder="Password" v-model="password"/>
         <button-submit class="login-button" type="submit" text="Login" to="" :disabled="!password || !email"/>
         <p class="registration-text">Du hast noch keinen Account?</p>
         <router-link class="registration-link" to="/register">Registrieren</router-link>
@@ -84,6 +84,7 @@
 <style scoped lang="scss">
   @import "../assets/variables";
   @import "../assets/mixins";
+  @import "../assets/transitions";
 
   article {
     flex: 1;
@@ -201,17 +202,5 @@
         }
       }
     }
-  }
-
-  //vue transitions
-  .fade-enter-active, .fade-leave-active {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 250ms ease-out, transform 500ms ease-out;
-  }
-
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
-    transform: translateY(50px);
   }
 </style>

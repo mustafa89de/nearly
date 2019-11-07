@@ -102,6 +102,7 @@
 <style scoped lang="scss">
   @import "../assets/variables";
   @import "../assets/mixins";
+  @import "../assets/transitions";
 
   article {
     flex: 1;
@@ -219,17 +220,5 @@
         }
       }
     }
-  }
-
-  //vue transitions
-  .fade-enter-active, .fade-leave-active {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 250ms ease-out, transform 500ms ease-out;
-  }
-
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
-    transform: translateY(50px);
   }
 </style>
