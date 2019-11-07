@@ -1,46 +1,48 @@
 <template>
   <article>
-    <!-- the header might be placed in separate component on the main page to not be rendered each time -->
     <header>
       <h1>Meeting</h1>
     </header>
-    <transition name="slide">
-      <section v-if="isReady" class="card">
-        <h2>Login</h2>
-        <form @submit="handleLogin">
-          <input-text class="input-text-wrapper" iconType="mail" type="email" placeholder="E-Mail" v-model="email"/>
-          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Password" v-model="password"/>
-          <!-- ps are placeholders to be replaced -->
-          <p v-if="errorMessage">{{errorMessage}}</p>
-          <p v-if="loginSucceed">Du hast dich erfolgreich angemeldet</p>
-          <button-submit class="login-button" type="submit" text="Login" :disabled="!password || !email"/>
-          <p class="login-text">Du hast noch keinen Account?</p>
-          <!--- We might need a separate router endpoint for registration. Currently this will lead to main landing page -->
-          <router-link class="registration-link" to="/register">Registrieren</router-link>
-        </form>
-      </section>
-    </transition>
+    <section class="card">
+      <h2>Login</h2>
+      <transition name="fade" mode="out-in">
+      <form v-if="!loginFailed" id="login-form" @submit="handleLogin">
+        <input-text class="input-text-wrapper" iconType="mail" type="email" placeholder="E-Mail" v-model="email"/>
+        <input-text class="input-text-wrapper" iconType="key" type="password" hint="Deine Daten stimmen nicht überein, bitte überprüfe noch mal deine Eingabe!" :showHint="wrongLoginData" placeholder="Password" v-model="password"/>
+        <button-submit class="login-button" type="submit" text="Login" to="" :disabled="!password || !email"/>
+        <p class="registration-text">Du hast noch keinen Account?</p>
+        <router-link class="registration-link" to="/register">Registrieren</router-link>
+      </form>
+      <div id="result-wrapper" v-else>
+          <h3>Ach herrje!</h3>
+          <p>Leider ist bei der Anmeldung etwas schief gelaufen. Versuche es zu einem später Zeitpunkt noch einmal.</p>
+          <icon class="result-icon" iconType="error-circle" iconColor="colorPrimary"/>
+          <button-submit class="result-link" @click="backToForm" type="button" text="Zurück"/>
+        </div>
+      </transition>
+    </section>
   </article>
 </template>
 
 <script>
   import TextInput from "../components/TextInput.vue";
   import Button from "../components/Button.vue";
+  import Icon from "../components/Icon.vue";
   import AuthService from "../services/AuthService";
 
   export default {
     data: function () {
       return {
-        isReady: false,
         email: '',
         password: '',
-        errorMessage: null,
-        loginSucceed: false
+        wrongLoginData: false,
+        loginFailed: false
       };
     },
     components: {
       "input-text": TextInput,
-      "button-submit": Button
+      "button-submit": Button,
+      "icon": Icon
     },
     methods: {
       handleLogin: async function (e) {
@@ -48,21 +50,29 @@
 
         try {
           await AuthService.login(this.email, this.password);
-          this.loginSucceed = true;
-          this.errorMessage = null;
+
           this.$router.push('/');
         } catch (err) {
-          this.loginSucceed = false;
           if (err.status === 401) {
-            this.errorMessage = "Dein Passwort oder Email stimmen nicht, bitte überprüfe nochmal deine Eingabe!";
+            this.wrongLoginData = true;
           } else {
-            this.errorMessage = "Ein unbekannter Fehler ist aufgetreten."
+            this.loginFailed = true;
           }
         }
       },
+      backToForm: function() {
+        this.loginFailed = false;
+      },
+    },
+    watch: {
+      email: function(){
+        this.wrongLoginData = false;
+      },
+      password: function(){
+        this.wrongLoginData = false;
+      }
     },
     mounted() {
-      this.isReady = true;
       document.body.classList.add('red');
     },
     destroyed() {
@@ -101,8 +111,9 @@
 
       display: flex;
       flex-direction: column;
-      background-color: $bg-col-primary;
-      border-radius: 50px 50px 0 0;
+      background-color: $white;
+      color: $black;
+      border-radius: 50px 50px 0px 0px;
       padding: 50px 25px 50px 25px;
       box-shadow: $shadow-dark;
 
@@ -116,61 +127,91 @@
 
       .input-text-wrapper {
         margin-top: 50px;
+        position: relative;
 
         &:last-of-type {
           margin-bottom: 50px;
         }
       }
 
-      form {
+      #login-form {
         flex: 1;
 
         display: flex;
         flex-flow: column;
         height: 100%;
-        padding-bottom: 25px;
-      }
 
-      .login-button, .login-text, .registration-link {
-        align-self: center;
-      }
-
-      .login-button {
-        margin-top: auto;
-      }
-
-      .login-text {
-        @include textBody;
-        color: $font-col-light;
-        margin: 25px 0 10px 0;
-      }
-
-      .registration-link {
-        @include textButton;
-        text-decoration: none;
-        color: $link-color;
-        transition: color 500ms ease;
-
-        &:link,
-        &:visited,
-        &:active {
-          color: $link-color;
+        .login-button, .registration-text, .registration-link {
+          align-self: center;
         }
 
-        &:hover {
-          color: $red;
+        .login-button {
+          margin-top: auto;
+        }
+
+        .registration-text {
+          @include textBody;
+          color: $font-col-light;
+          margin: 25px 0 10px 0;
+        }
+
+        .registration-link {
+          @include textButton;
+          text-decoration: none;
+          color: $link-color;
+          transition: color 500ms ease;
+
+          &:link,
+          &:visited,
+          &:active {
+            color: $link-color;
+          }
+
+          &:hover {
+            color: $red;
+          }
+        }
+      }
+
+      #result-wrapper {
+        flex: 1;
+        @include textBody;
+        display: flex;
+        flex-direction: column;
+
+        h3 {
+          @include textBody;
+          font-size: 3rem;
+          margin: 25px 0 10px 0;
+        }
+
+        p {
+          margin: 0;
+        }
+
+        .result-icon {
+          margin: auto;
+          width: 50%;
+          max-width: 180px;
+          height: auto;
+        }
+
+        .result-link {
+          margin: auto auto 0 auto;
         }
       }
     }
   }
 
   //vue transitions
-  .slide-enter-active, .slide-leave-active {
-    transition: opacity 500ms ease-out, transform 500ms ease-out;
+  .fade-enter-active, .fade-leave-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 250ms ease-out, transform 500ms ease-out;
   }
 
-  .slide-enter, .slide-leave-to {
-    transform: translateY(200px);
+  .fade-enter, .fade-leave-to {
     opacity: 0;
+    transform: translateY(50px);
   }
 </style>
