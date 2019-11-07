@@ -16,6 +16,8 @@
   import clock from "../assets/icons/clock.svg";
   import checkCircle from "../assets/icons/check-circle.svg";
   import errorCircle from "../assets/icons/error-circle.svg";
+  import placeAdd from "../assets/icons/place-add.svg";
+  import home from "../assets/icons/home.svg";
 
   export default {
     props: {
@@ -49,6 +51,10 @@
             return calendar;
           case "clock":
             return clock;
+          case "place-add":
+            return placeAdd;
+          case "home":
+            return home;
           default:
             return bug;
         }
