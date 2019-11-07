@@ -40,10 +40,7 @@
         this.$emit('markerClick', index)
       },
       handlePositionChange(bounds) {
-        const sw = bounds.getSouthWest();
-        const ne = bounds.getNorthEast();
-
-        this.$emit('mapUpdate', {sw, ne})
+        this.$emit('mapUpdate', bounds)
       }
     },
     mounted: async function () {
