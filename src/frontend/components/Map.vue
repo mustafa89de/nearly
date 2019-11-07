@@ -4,6 +4,7 @@
 
 <script>
   import MapService from "../services/MapService";
+  let markerRefs = [];
 
   export default {
     props: {
@@ -11,11 +12,6 @@
       'initialZoom': Number,
       'initialBounds': Object,
       'markers': Array
-    },
-    data: function () {
-      return {
-        markerRefs: []
-      }
     },
     watch: {
       markers: function () {
@@ -30,14 +26,14 @@
         this.$emit('mapUpdate', bounds)
       },
       updateMarkers() {
-        this.markerRefs.forEach(ref => {
+        markerRefs.forEach(ref => {
           ref.remove();
         });
 
         if (!this.markers) return; // abort
 
         // add and store new ones
-        this.markerRefs = this.markers.map(({lon, lat}, index) => {
+        markerRefs = this.markers.map(({lon, lat}, index) => {
           return MapService.addMarker({
             lon,
             lat,
