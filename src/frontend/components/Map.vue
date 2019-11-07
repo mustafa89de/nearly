@@ -50,6 +50,14 @@
         });
       }
     },
+    methods: {
+      handleClick(index) {
+        this.$emit('markerClick', index)
+      },
+      handlePositionChange(bounds) {
+        this.$emit('mapUpdate', bounds)
+      }
+    },
     mounted: async function () {
       await MapService.initMap({
         center: this.initialCenter,

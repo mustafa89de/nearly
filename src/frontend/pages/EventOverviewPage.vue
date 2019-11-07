@@ -68,8 +68,12 @@
         this.fetchEvents(bounds)
       },
       fetchEvents: async function (bounds) {
+        const boundsData = {
+          ne: bounds.getNorthEast(),
+          sw: bounds.getSouthWest()
+        };
         try {
-          this.events = await EventService.getAllEvents(bounds);
+          this.events = await EventService.getAllEvents(boundsData);
         } catch (e) {
           this.events = [];
           console.error(e);
