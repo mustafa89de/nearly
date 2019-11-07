@@ -7,8 +7,9 @@ class LocationService {
         resolve(position.coords);
       }, err => {
         reject(err)
+      }, {
+        maximumAge: 0
       });
-
     })
   }
 

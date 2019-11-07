@@ -27,10 +27,7 @@
         this.$emit('markerClick', index)
       },
       handlePositionChange(bounds) {
-        const sw = bounds.getSouthWest();
-        const ne = bounds.getNorthEast();
-
-        this.$emit('mapUpdate', {sw, ne})
+        this.$emit('mapUpdate', bounds)
       },
       updateMarkers() {
         this.markerRefs.forEach(ref => {
@@ -48,14 +45,6 @@
             onClick: () => this.handleClick(index)
           });
         });
-      }
-    },
-    methods: {
-      handleClick(index) {
-        this.$emit('markerClick', index)
-      },
-      handlePositionChange(bounds) {
-        this.$emit('mapUpdate', bounds)
       }
     },
     mounted: async function () {
