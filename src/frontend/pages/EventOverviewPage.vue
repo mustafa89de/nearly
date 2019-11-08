@@ -132,7 +132,7 @@
     font-family: "Poppins", sans-serif;
     font-size: 28px;
 
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -146,6 +146,7 @@
     color: $font-col-secondary;
     letter-spacing: 0.15em;
     text-transform: uppercase;
+    z-index: 1;
   }
 
   .fade-leave-active {
