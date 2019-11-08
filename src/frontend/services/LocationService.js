@@ -1,4 +1,4 @@
-import MapService from "./MapService";
+import {FALLBACK_HOME_POSITION} from "../constants";
 
 class LocationService {
   getCurrentLocation() {
@@ -7,17 +7,30 @@ class LocationService {
         resolve(position.coords);
       }, err => {
         reject(err)
+      }, {
+        maximumAge: 0
       });
-
     })
   }
 
   getHomePosition() {
-    // TODO: get home position or get current position or get fallback position
-    return {
-      lon: 13.41569879, // fallback position
-      lat: 52.50225623
-    }
+    return new Promise(async (resolve, reject) => {
+      const userHasHomePosition = false; // Mocked
+      if (userHasHomePosition) {
+        // return home position
+      } else {
+        try {
+          const {latitude, longitude} = await this.getCurrentLocation();
+          resolve({
+            lon: longitude,
+            lat: latitude
+          });
+        } catch (e) { // f.e. if permission denied
+          console.error(e);
+          resolve(FALLBACK_HOME_POSITION);
+        }
+      }
+    });
   }
 
   getDistance(p1, p2) {

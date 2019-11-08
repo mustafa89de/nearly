@@ -1,15 +1,17 @@
 <template>
-  <nav>
-    <router-link to="/">
-      <icon iconType="home"/>
-    </router-link>
-    <router-link to="/event/create">
-      <icon iconType="place-add"/>
-    </router-link>
-    <router-link to="/links">
-      <icon iconType="person"/>
-    </router-link>
-  </nav>
+  <footer>
+    <nav>
+      <router-link to="/">
+        <icon iconType="home"/>
+      </router-link>
+      <router-link to="/event/create">
+        <icon iconType="place-add"/>
+      </router-link>
+      <router-link to="/links">
+        <icon iconType="person"/>
+      </router-link>
+    </nav>
+  </footer>
 </template>
 
 <script>
@@ -25,19 +27,29 @@
 <style scoped lang="scss">
   @import "../assets/variables";
 
-  nav {
+  footer {
     position: fixed;
     bottom: 0;
-
+    left: 0;
     width: 100%;
-    max-width: 500px;
+    height: $nav-height;
 
-    z-index: 1;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     background: white;
+  }
 
-    height: $nav-height;
+  nav {
+    width: 100%;
+    max-width: 500px;
     padding: 0 40px;
+
     display: flex;
     flex-direction: row;
     align-items: center;
