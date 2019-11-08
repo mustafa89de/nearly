@@ -8,6 +8,8 @@ class LocationService {
       }, err => {
         reject(err)
       }, {
+        enableHighAccuracy: true,
+        timeout: 5000,
         maximumAge: 0
       });
     })
