@@ -31,8 +31,8 @@
         description: '',
         latitude: '',
         longitude: '',
-        date: this.formatDate(new Date()),
-        time: this.formatTime(new Date()),
+        date: this.formatDate(this.getInitialDate()),
+        time: this.formatTime(this.getInitialTime()),
         errorMessage: null
       };
     },
@@ -49,7 +49,7 @@
       handleEventCreation: async function (e) {
         e.preventDefault();
         try {
-          const createdEvent = await EventService.createEvent(this.name, this.description, this.latitude, this.longitude, this.mergedDateTime);
+          await EventService.createEvent(this.name, this.description, this.latitude, this.longitude, this.mergedDateTime);
           this.$router.push('/');
         } catch (err) {
           this.errorMessage = "Ein unbekannter Fehler ist aufgetreten."
@@ -86,6 +86,23 @@
       },
       roundCoord: function (coord) {
         return parseFloat(coord.toFixed(7));
+      },
+      getInitialDate: function () {
+        const ONE_DAY = 24 * 60 * 60 * 1000;
+        const today = new Date();
+        const tomorrow = today.getTime() + ONE_DAY;
+        const initialDate = new Date(tomorrow);
+        console.log(initialDate);
+        return initialDate;
+      },
+      getInitialTime: function () {
+        const initialTime = new Date();
+        initialTime.setHours(20);
+        initialTime.setMinutes(0);
+        initialTime.setSeconds(0);
+        initialTime.setMilliseconds(0);
+        console.log(initialTime);
+        return initialTime;
       }
     }
   };
