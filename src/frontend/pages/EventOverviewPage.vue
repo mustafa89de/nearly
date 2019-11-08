@@ -155,6 +155,11 @@
 </style>
 
 <style lang="scss">
+  article {
+    position: relative;
+    flex: 1;
+  }
+
   #map {
     position: fixed;
     top: 0;
