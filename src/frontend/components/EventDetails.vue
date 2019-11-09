@@ -13,7 +13,9 @@
       <text-field :iconType="'person'" :iconColor="'primary'" :value="hostName"/>
     </a>
     <button-submit v-if="isCreator" @click="editEvent" class="joinButton" type="submit" text="bearbeiten"/>
+    <button-submit v-if="isParticipant" @click="signOutForEvent" class="joinButton" type="submit" text="absagen"/>
     <button-submit v-else @click="signInForEvent" class="joinButton" type="submit" text="mitmachen"/>
+    <p class="error" v-if="error">{{error}}</p>
   </article>
 </template>
 
@@ -22,6 +24,7 @@
   import UserService from "../services/UserService";
   import TextField from "../components/TextField";
   import Button from "../components/Button.vue";
+  import EventService from "../services/EventService";
   
   export default {
     name: "EventDetails",
@@ -36,7 +39,9 @@
     
     data(){
       return {
-        hostName: undefined
+        hostName: undefined,
+        error: null,
+        isParticipant: false
       };
     },
     
@@ -56,15 +61,14 @@
       
       eventTime: function(){
         return new Date(this.event.time).toLocaleTimeString('de-De', {timeStyle: 'short'});
-      }
+      },
     },
     
     methods: {
       async editEvent(e) {
         e.preventDefault();
         try {
-          // TODO: Routing to Event Editing Page to be implemented here
-          await this.$router.push('/');
+          await this.$router.push('/event/'+ this.event._id + '/edit');
         } catch (err) {
           console.error(err);
         }
@@ -73,10 +77,21 @@
       async signInForEvent(e) {
         e.preventDefault();
         try {
-          // TODO: Routing to Event Signing to be implemented here
-          await this.$router.push('/');
+          await EventService.signInForEvent(this.event._id);
+          this.isParticipant = true;
         } catch (err) {
           console.error(err);
+          this.error = "Bei der Anmeldung ist leider etwas schief gelaufen.";
+        }
+      },
+      
+      async signOutForEvent(){
+        try{
+          await EventService.signOutForEvent(this.event._id);
+          this.isParticipant = false;
+        }catch(err){
+          console.error(err);
+          this.error = "Bei der Abmeldung ist leider etwas schief gelaufen.";
         }
       },
 
@@ -92,7 +107,8 @@
     
     async created() {
       await this.getHostName();
-    }
+    },
+    
   }
 </script>
 
@@ -127,6 +143,10 @@
     font-family: Arimo, sans-serif;
     line-height: 21px;
     letter-spacing: 0.02em;
+  }
+  
+  p.error{
+    color: $font-col-error;
   }
   
   .fieldContainer {
