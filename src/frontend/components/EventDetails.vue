@@ -9,7 +9,9 @@
       <text-field class="detailField" :iconType="'calendar'" :iconColor="'primary'" :value="eventDate"/>
       <text-field class="detailField" :iconType="'clock'" :iconColor="'primary'" :value="eventTime"/>
     </div>
-    <text-field :iconType="'person'" :iconColor="'primary'" :value="hostName"/>
+    <a class="hostLink" :href="'/user/' + event.hostId">
+      <text-field :iconType="'person'" :iconColor="'primary'" :value="hostName"/>
+    </a>
     <button-submit v-if="isCreator" @click="editEvent" class="joinButton" type="submit" text="bearbeiten"/>
     <button-submit v-else @click="signInForEvent" class="joinButton" type="submit" text="mitmachen"/>
   </article>
@@ -103,6 +105,7 @@
     display: flex;
     flex-flow: column;
     background-color: $bg-col-primary;
+    color: $font-col-light;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 0px 0px 50px 50px;
     padding: 5%;
@@ -110,6 +113,7 @@
 
   h1 {
     font-family: Poppins, sans-serif;
+    color: $font-col-primary;
     font-style: normal;
     font-weight: bold;
     font-size: 18px;
@@ -119,7 +123,6 @@
   }
 
   p.description {
-    color: $font-col-primary;
     font-size: 18px;
     font-family: Arimo, sans-serif;
     line-height: 21px;
@@ -140,4 +143,13 @@
     margin-top: 5%;
     align-self: center;
   }
+  
+  .hostLink{
+    text-decoration: none;
+    color: $font-col-primary;
+    :hover{
+      color: $font-col-active;
+    }
+  }
+  
 </style>

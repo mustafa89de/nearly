@@ -48,7 +48,6 @@
       padding-left: 20px;
       border: 0;
       font-size: 18px;
-      color: $font-col-light;
     }
   }
 
