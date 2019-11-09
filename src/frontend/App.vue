@@ -65,4 +65,12 @@
   main.loggedIn > article {
     margin-bottom: $nav-height;
   }
+
+  input {
+    -webkit-appearance: none;
+  }
+
+  textarea {
+    border-radius: 0;
+  }
 </style>
