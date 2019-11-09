@@ -5,8 +5,8 @@
     <p class="description">{{ event.description }}</p>
     <div class="fieldContainer">
       <text-field class="detailField" :iconType="'longitude'" :iconColor="'primary'" :value="event.loc.coordinates[0]"/>
-      <text-field class="detailField" :iconType="'calendar'" :iconColor="'primary'" :value="eventDate"/>
       <text-field class="detailField" :iconType="'latitude'" :iconColor="'primary'" :value="event.loc.coordinates[1]"/>
+      <text-field class="detailField" :iconType="'calendar'" :iconColor="'primary'" :value="eventDate"/>
       <text-field class="detailField" :iconType="'clock'" :iconColor="'primary'" :value="eventTime"/>
     </div>
     <text-field :iconType="'person'" :iconColor="'primary'" :value="hostName"/>
@@ -29,21 +29,16 @@
     },
     
     props: {
-      event: Object
+      event: Object,
+    },
+    
+    data(){
+      return {
+        hostName: undefined
+      };
     },
     
     computed: {
-      hostName: async function () {
-        try {
-          if(this.event){
-            const user = await UserService.getUserByID(this.event.hostId);
-            return user.username;
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      },
-
       isCreator: function () {
         if(this.event){
           const thisUserId = AuthService.getUser().userId;
@@ -81,7 +76,20 @@
         } catch (err) {
           console.error(err);
         }
-      }
+      },
+
+      async getHostName() {
+        try{
+          this.hostName = await UserService.getUserByID(this.event.hostId);
+        }catch(err){
+          console.error(err);
+          this.hostName = this.event.hostId;
+        }
+      },
+    },
+    
+    async created() {
+      await this.getHostName();
     }
   }
 </script>
@@ -112,11 +120,9 @@
 
   p.description {
     color: $font-col-primary;
-  
     font-size: 18px;
     font-family: Arimo, sans-serif;
     line-height: 21px;
-    align-items: flex-end;
     letter-spacing: 0.02em;
   }
   
@@ -131,7 +137,7 @@
   }
   
   .joinButton {
-    margin-top: 40px;
+    margin-top: 5%;
     align-self: center;
   }
 </style>

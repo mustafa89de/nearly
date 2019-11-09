@@ -19,7 +19,8 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
 router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
   try{
     const event = await EventRepository.getEventById(req.params.eid);
-    res.status(200).json(event);
+    if(event) res.status(200).json(event);
+    else res.status(404).json({message: "The requested event does not exist!"});
   }catch(err){
     console.log(err.status);
     res.status(500).json({message: err.message});
