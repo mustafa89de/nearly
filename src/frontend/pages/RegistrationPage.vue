@@ -3,25 +3,25 @@
     <header>
       <h1>Meeting</h1>
     </header>
-      <section class="card">
-        <h2>Registrierung</h2>
-        <transition name="fade" mode="out-in">
-          <form v-if="!resultMessage" id="registration-form" @submit="handleRegistration">
-            <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" hint="Benutzername muss mind. 4 Zeichen haben" :showHint="username != '' && !usernameValid" v-model="username"/>
-            <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" :hint="emailAlreadyExsists ? 'Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse' : 'E-Mail-Adresse ist unvollständig'" :showHint="emailAlreadyExsists || (email != '' && !emailValid)" v-model="email"/>
-            <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Passwort" hint="Passwort muss mind. 8 Zeichen haben" :showHint="password != '' && !passwordValid" v-model="password"/>
-            <button-submit class="register-button" type="submit" text="Registrieren" :disabled="!usernameValid || !emailValid || !passwordValid"/>
-            <p class="login-text">Du hast schon einen Account?</p>
-            <router-link class="login-link" to="/login">Anmelden</router-link>
-          </form>
-          <div id="result-wrapper" v-else>
-            <h3>{{resultTitle}}</h3>
-            <p>{{resultMessage}}</p>
-            <icon class="result-icon" :iconType="resultButton === 'Anmelden' ? 'check-circle' : 'error-circle'" iconColor="colorPrimary"/>
-            <button-submit class="result-link" @click="backToForm" to="/login" :type="resultButton === 'Anmelden' ? 'link' : 'button'" :text="resultButton"/>
-          </div>
-        </transition>
-      </section>
+    <section class="card">
+      <h2>Registrierung</h2>
+      <transition name="fade" mode="out-in">
+        <form v-if="!resultMessage" id="registration-form" @submit="handleRegistration">
+          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" hint="Benutzername muss mind. 4 Zeichen haben" :showHint="username != '' && !usernameValid" v-model="username"/>
+          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" :hint="emailAlreadyExsists ? 'Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse' : 'E-Mail-Adresse ist unvollständig'" :showHint="emailAlreadyExsists || (email != '' && !emailValid)" v-model="email"/>
+          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Passwort" hint="Passwort muss mind. 8 Zeichen haben" :showHint="password != '' && !passwordValid" v-model="password"/>
+          <button-submit class="register-button" type="submit" text="Registrieren" :disabled="!usernameValid || !emailValid || !passwordValid"/>
+          <p class="login-text">Du hast schon einen Account?</p>
+          <router-link class="login-link" to="/login">Anmelden</router-link>
+        </form>
+        <div id="result-wrapper" v-else>
+          <h3>{{resultTitle}}</h3>
+          <p>{{resultMessage}}</p>
+          <icon class="result-icon" :iconType="resultButton === 'Anmelden' ? 'check-circle' : 'error-circle'" iconColor="colorPrimary"/>
+          <button-submit class="result-link" @click="backToForm" to="/login" :type="resultButton === 'Anmelden' ? 'link' : 'button'" :text="resultButton"/>
+        </div>
+      </transition>
+    </section>
   </article>
 </template>
 
@@ -102,6 +102,7 @@
 <style scoped lang="scss">
   @import "../assets/variables";
   @import "../assets/mixins";
+  @import "../assets/transitions";
 
   article {
     flex: 1;
@@ -219,17 +220,5 @@
         }
       }
     }
-  }
-
-  //vue transitions
-  .fade-enter-active, .fade-leave-active {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 250ms ease-out, transform 500ms ease-out;
-  }
-
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
-    transform: translateY(50px);
   }
 </style>
