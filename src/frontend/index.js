@@ -6,6 +6,7 @@ import RegistrationPage from './pages/RegistrationPage';
 import HomePage from './pages/HomePage';
 import CreateEventPage from './pages/CreateEventPage';
 import EventDetailPage from './pages/EventDetailPage';
+import UserDetailPage from './pages/UserDetailPage';
 import HelpPage from './pages/HelpPage';
 import NotFoundPage from './pages/NotFoundPage';
 import LoginPage from "./pages/LoginPage";
@@ -49,6 +50,11 @@ export const router = new VueRouter({
     {
       path: '/event/:eid',
       component: EventDetailPage,
+      beforeEnter: checkAuthentication
+    },
+    {
+      path: '/user/:uid',
+      component: UserDetailPage,
       beforeEnter: checkAuthentication
     },
     {

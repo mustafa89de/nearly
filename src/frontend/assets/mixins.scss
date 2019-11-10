@@ -14,6 +14,13 @@
     letter-spacing: 0.02em;
 }
 
+@mixin textBodyTitle {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.10em;
+    font-weight: 800;
+}
+
 @mixin textHint {
     font-family: "Arimo", Arial, Helvetica, sans-serif;
     font-size: 12px;
