@@ -19,7 +19,6 @@
 
 <script>
   import AuthService from "../services/AuthService";
-  import UserService from "../services/UserService";
   import TextField from "../components/TextField";
   import Button from "../components/Button.vue";
   
@@ -37,8 +36,7 @@
     computed: {
       isCreator: function () {
         if(this.event){
-          const thisUserId = AuthService.getUser().userId;
-          return thisUserId === this.event.hostId;
+          return this.event.hostId === AuthService.getUser().userId;
         }else{
           return false;
         }

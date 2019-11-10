@@ -12,7 +12,6 @@
   import EventDetails from "../components/EventDetails";
   import Map from "../components/Map.vue";
 
-  import UserService from "../services/UserService";
   import AuthService from "../services/AuthService";
 
   export default {
@@ -46,7 +45,7 @@
           this.isLoading = false;
           if (err.status === 404) {
             this.error = "Das gesuchte Event existiert leider nicht.";
-          } else this.error = "Ooops, das Event konnte leider nicht geladen werden ";
+          } else this.error = "Ein unbekannter Fehler ist aufgetreten.";
           console.error(err);
         }
       },
