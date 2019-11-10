@@ -45,8 +45,7 @@
       async init() {
         try {
           this.isLoading = true;
-          const event = await EventService.getEventById(this.$route.params.eid);
-          this.event = event;
+          this.event  = await EventService.getEventById(this.$route.params.eid);
           this.isLoading = false;
         } catch (err) {
           this.isLoading = false;

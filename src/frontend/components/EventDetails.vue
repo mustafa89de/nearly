@@ -4,16 +4,16 @@
     <!-- TODO: Implement share Button -->
     <p class="description">{{ event.description }}</p>
     <div class="fieldContainer">
-      <text-field class="detailField" :iconType="'longitude'" :iconColor="'primary'" :value="event.loc.coordinates[0]"/>
-      <text-field class="detailField" :iconType="'latitude'" :iconColor="'primary'" :value="event.loc.coordinates[1]"/>
-      <text-field class="detailField" :iconType="'calendar'" :iconColor="'primary'" :value="eventDate"/>
-      <text-field class="detailField" :iconType="'clock'" :iconColor="'primary'" :value="eventTime"/>
+      <text-field class="detailField" iconType="longitude" iconColor="primary" :value="event.loc.coordinates[0]"/>
+      <text-field class="detailField" iconType="latitude" iconColor="primary" :value="event.loc.coordinates[1]"/>
+      <text-field class="detailField" iconType="calendar" iconColor="primary" :value="eventDate"/>
+      <text-field class="detailField" iconType="clock" iconColor="primary" :value="eventTime"/>
     </div>
     <a class="hostLink" :href="'/user/' + event.hostId">
-      <text-field :iconType="'person'" :iconColor="'primary'" :value="hostName"/>
+      <text-field iconType="person" iconColor="primary" :value="event.hostName"/>
     </a>
-    <button-submit v-if="isCreator" @click="editEvent" class="joinButton" type="submit" text="bearbeiten"/>
-    <button-submit v-else @click="signInForEvent" class="joinButton" type="submit" text="mitmachen"/>
+    <button-send v-if="isCreator" @click="editEvent" class="joinButton" type="button" text="bearbeiten"/>
+    <button-send v-else @click="signInForEvent" class="joinButton" type="button" text="mitmachen"/>
   </article>
 </template>
 
@@ -27,17 +27,11 @@
     name: "EventDetails",
     components:{
       'text-field': TextField,
-      'button-submit': Button
+      'button-send': Button
     },
     
     props: {
       event: Object,
-    },
-    
-    data(){
-      return {
-        hostName: undefined
-      };
     },
     
     computed: {
@@ -79,20 +73,7 @@
           console.error(err);
         }
       },
-
-      async getHostName() {
-        try{
-          this.hostName = await UserService.getUserByID(this.event.hostId);
-        }catch(err){
-          console.error(err);
-          this.hostName = this.event.hostId;
-        }
-      },
     },
-    
-    async created() {
-      await this.getHostName();
-    }
   }
 </script>
 

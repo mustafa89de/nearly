@@ -28,6 +28,12 @@ class UserRepository {
             throw err;
         }
     }
+
+    async getUserById(id){
+        return {
+            username: "testname"
+        }
+    }
 }
 
 module.exports = new UserRepository();
