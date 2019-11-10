@@ -49,6 +49,10 @@ class MapService {
     });
   }
 
+  getCenter() {
+    return this.map.getCenter();
+  }
+
   addMarker({lon, lat, onClick, text}) {
     const element = document.createElement('div');
     element.className = 'map-marker';

@@ -15,6 +15,10 @@ import EventOverviewPage from "./pages/EventOverviewPage";
 
 Vue.use(VueRouter);
 
+import smoothscroll from 'smoothscroll-polyfill';
+smoothscroll.polyfill();
+
+
 export const router = new VueRouter({
   mode: 'history',
   routes: [
