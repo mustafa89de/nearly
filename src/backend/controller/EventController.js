@@ -58,11 +58,12 @@ router.get('/', JWTService.requireJWT(), async (req, res) => {
 
 router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
   try {
+
     const event = await EventRepository.getEventById(req.params.eid);
 
-    const {_id, name, description, time, loc, hostId} = event;
-
     if(!event) res.status(404).json({message: "The requested event does not exist!"});
+
+    const {_id, name, description, time, loc, hostId} = event;
 
     const username = (await UserRepository.getUserById(event.hostId)).username;
 

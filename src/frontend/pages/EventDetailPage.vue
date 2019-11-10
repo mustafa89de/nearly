@@ -3,7 +3,7 @@
     <div v-if="isLoading" > Loading...</div>
     <div v-if="error">{{error}}</div>
     <event-details class="eventDetails" v-if="event" :event="event"/>
-    <map-comp v-if="event" :initialCenter="mapcenter" :initialZoom="12" :markers="markers"/>
+    <map-comp v-if="event" :initialCenter="mapcenter" :initialZoom="12"/>
   </article>
 </template>
 
@@ -34,11 +34,6 @@
         if(this.event) return {longitude: this.event.loc.coordinates[0], latitude: this.event.loc.coordinates[1]};
         else return {};
       },
-
-      markers: function () {
-        if(this.event) return this.event.loc.coordinates;
-        else return [];
-      }
     },
 
     methods: {
