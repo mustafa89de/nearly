@@ -1,10 +1,30 @@
 <template>
-  <main>
+  <main :class="{'loggedIn' : loggedIn}">
     <router-view/>
+    <nav-bar v-if="loggedIn"/>
   </main>
 </template>
 
 <script>
+  import NavBar from "./components/NavBar";
+  import AuthService from "./services/AuthService";
+
+  export default {
+    components: {
+      'nav-bar': NavBar
+    },
+    data: function () {
+      return {
+        loggedIn: AuthService.isAuthenticated()
+      }
+    },
+    updated() {
+      const isAuthenticated = AuthService.isAuthenticated();
+      if (isAuthenticated !== this.loggedIn) {
+        this.loggedIn = isAuthenticated
+      }
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -40,5 +60,17 @@
 
     display: flex;
     flex-direction: column;
+  }
+
+  main.loggedIn > article {
+    margin-bottom: $nav-height;
+  }
+
+  input {
+    -webkit-appearance: none;
+  }
+
+  textarea {
+    border-radius: 0;
   }
 </style>

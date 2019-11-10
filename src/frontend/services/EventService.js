@@ -22,22 +22,29 @@ class EventService {
     }
   }
 
-  async getAllEvents([p1,p2]) {
-    // an mocked event in the center of the bounds
-    const eventsMock = [
-      {
-        lon: (p1.lon + p2.lon) / 2,
-        lat: (p1.lat + p2.lat) / 2
-      }
-    ];
-    return Promise.resolve(eventsMock);
+  async getAllEvents({sw, ne}) {
+    try {
+      const response = await axios.get(ENDPOINTS.EVENT, {
+        params: {
+          sw_lat: sw.lat,
+          sw_lon: sw.lng,
+          ne_lat: ne.lat,
+          ne_lon: ne.lng,
+        }
+      });
+      return response.data
+    } catch (err) {
+      err.status = err.response ? err.response.status : null;
+      console.error(err.message);
+      throw err;
+    }
   }
 
-  async getEventById(eid){
-    try{
+  async getEventById(eid) {
+    try {
       const res = await axios.get(ENDPOINTS.EVENT + '/' + eid);
       return res.data;
-    }catch(err){
+    } catch (err) {
       err.status = err.response.status;
       console.error(err.message);
       throw err;

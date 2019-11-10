@@ -4,35 +4,18 @@
 
 <script>
   import MapService from "../services/MapService";
+  let markerRefs = [];
 
   export default {
     props: {
       'initialCenter': Object,
       'initialZoom': Number,
-      'initialBounds': Array,
+      'initialBounds': Object,
       'markers': Array
     },
-    data: function () {
-      return {
-        markerRefs: []
-      }
-    },
     watch: {
-      markers: function (markers) {
-        // remove old ones
-        this.markerRefs.forEach(ref => {
-          ref.remove();
-        });
-
-        // add and store new ones
-        this.markerRefs = markers.map(({lon, lat}, index) => {
-          return MapService.addMarker({
-            lon,
-            lat,
-            text: index + 1,
-            onClick: () => this.handleClick(index)
-          });
-        });
+      markers: function () {
+        this.updateMarkers();
       }
     },
     methods: {
@@ -40,11 +23,24 @@
         this.$emit('markerClick', index)
       },
       handlePositionChange(bounds) {
-        const p1 = bounds.getSouthWest();
-        const p2 = bounds.getNorthEast();
+        this.$emit('mapUpdate', bounds)
+      },
+      updateMarkers() {
+        markerRefs.forEach(ref => {
+          ref.remove();
+        });
 
-        const newBounds = [{lon: p1.lng, lat: p1.lat}, {lon: p2.lng, lat: p2.lat}];
-        this.$emit('mapUpdate', newBounds)
+        if (!this.markers) return; // abort
+
+        // add and store new ones
+        markerRefs = this.markers.map(({lon, lat}, index) => {
+          return MapService.addMarker({
+            lon,
+            lat,
+            text: index + 1,
+            onClick: () => this.handleClick(index)
+          });
+        });
       }
     },
     mounted: async function () {
@@ -55,13 +51,16 @@
       });
       MapService.onDragEnd(this.handlePositionChange);
       MapService.onZoomEnd(this.handlePositionChange);
+      this.updateMarkers();
     }
   }
 </script>
 
 <style lang="scss">
+  @import "../assets/variables";
+
   .map-marker {
-    background: #db0000;
+    background: $red;
     border: 3px solid #fff;
     border-radius: 9999px;
     height: 35px;
