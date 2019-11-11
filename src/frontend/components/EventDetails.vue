@@ -12,9 +12,9 @@
     <a class="hostLink" :href="'/user/'+ event.hostId">
        <text-field iconType="person" iconColor="primary" :value="event.hostName"/>
     </a>
-    <button-send v-if="isCreator" @click="editEvent" class="joinButton" type="submit" text="bearbeiten"/>
-    <button-send v-if="isParticipant" @click="signOutForEvent" class="joinButton" type="submit" text="absagen"/>
-    <button-send v-else @click="signInForEvent" class="joinButton" type="submit" text="mitmachen"/>
+    <button-send v-if="isCreator" @click="editEvent" class="joinButton" type="button" text="bearbeiten"/>
+    <button-send v-if="isParticipant" @click="signOutForEvent" class="joinButton" type="button" text="absagen"/>
+    <button-send v-else @click="signInForEvent" class="joinButton" type="button" text="mitmachen"/>
     <p class="error" v-if="error">{{error}}</p>
   </article>
 </template>
@@ -65,7 +65,6 @@
     
     methods: {
       async editEvent(e) {
-        e.preventDefault();
         try {
           await this.$router.push('/event/'+ this.event._id + '/edit');
         } catch (err) {
@@ -74,7 +73,6 @@
       },
 
       async signInForEvent(e) {
-        e.preventDefault();
         try {
           await EventService.signInForEvent(this.event._id);
           this.isParticipant = true;

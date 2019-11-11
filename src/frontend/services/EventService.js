@@ -1,7 +1,6 @@
 import axios from 'axios';
 import {ENDPOINTS} from "../constants";
 import AuthService from "./AuthService";
-import JWTService from "./JWTService";
 
 class EventService {
   async createEvent(name, description, latitude, longitude, time) {
@@ -54,7 +53,7 @@ class EventService {
 
   async signInForEvent(eid){
     try{
-      const res = await axios.post(ENDPOINTS.EVENTPARTICIPATION, {
+      await axios.post(ENDPOINTS.EVENTPARTICIPATION, {
         userId: AuthService.getUser().userId,
         eventId: eid
       });
@@ -66,7 +65,7 @@ class EventService {
 
   async signOutForEvent(eid){
     try{
-      const res = await axios.delete(ENDPOINTS.EVENTPARTICIPATION, {
+      await axios.delete(ENDPOINTS.EVENTPARTICIPATION, {
         userId: AuthService.getUser().userId,
         eventId: eid
       });
