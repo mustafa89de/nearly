@@ -70,7 +70,7 @@ router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
 
     const requestingUserId = JWTService.getUserId(req);
 
-    const isParticipant = ParticipationRepository.checkIfParticipant(requestingUserId, event._id);
+    const isParticipant = await ParticipationRepository.checkIfParticipant(requestingUserId, event._id);
 
     const resData = {
       _id,
