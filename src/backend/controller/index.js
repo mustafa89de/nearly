@@ -1,6 +1,7 @@
 const UserController = require('./UserController');
 const AuthenticationController = require('./AuthenticationController');
 const EventController = require('./EventController');
+const ParticipationController = require('./ParticipationController');
 
 const express = require('express');
 const router = express.Router();
@@ -9,5 +10,6 @@ const router = express.Router();
 router.use('/user', UserController);
 router.use('/login', AuthenticationController);
 router.use('/event', EventController);
+router.use('/eventparticipation', ParticipationController);
 
 module.exports = router;
