@@ -9,7 +9,7 @@
       <text-field class="detailField" iconType="calendar" iconColor="primary" :value="eventDate"/>
       <text-field class="detailField" iconType="clock" iconColor="primary" :value="eventTime"/>
     </div>
-    <a class="hostLink" href="/user/" + event.hostId">
+    <a class="hostLink" :href="'/user/'+ event.hostId">
        <text-field iconType="person" iconColor="primary" :value="event.hostName"/>
     </a>
     <button-send v-if="isCreator" @click="editEvent" class="joinButton" type="submit" text="bearbeiten"/>
