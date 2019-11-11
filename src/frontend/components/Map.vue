@@ -11,7 +11,8 @@
       'initialCenter': Object,
       'initialZoom': Number,
       'initialBounds': Object,
-      'markers': Array
+      'markers': Array,
+      'hideNumbers': false
     },
     watch: {
       markers: function () {
@@ -37,7 +38,7 @@
           return MapService.addMarker({
             lon,
             lat,
-            text: index + 1,
+            text: this.hideNumbers?"":index + 1,
             onClick: () => this.handleClick(index)
           });
         });
