@@ -11,7 +11,6 @@
   import EventService from "../services/EventService";
   import EventDetails from "../components/EventDetails";
   import Map from "../components/Map.vue";
-
   import AuthService from "../services/AuthService";
 
   export default {

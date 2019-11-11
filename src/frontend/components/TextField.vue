@@ -14,7 +14,7 @@
       iconColor: String,
       value: [String, Number, Date]
     },
-
+    
     components: {
       icon: Icon
     },
