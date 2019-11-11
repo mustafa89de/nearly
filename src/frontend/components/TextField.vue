@@ -14,17 +14,9 @@
       iconColor: String,
       value: [String, Number, Date]
     },
-
-    data: function () {
-      return {
-      };
-    },
-
+    
     components: {
       icon: Icon
-    },
-
-    methods: {
     },
   };
 </script>

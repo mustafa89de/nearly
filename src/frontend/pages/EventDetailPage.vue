@@ -3,7 +3,7 @@
     <div v-if="isLoading" > Loading...</div>
     <div v-if="error">{{error}}</div>
     <event-details class="eventDetails" v-if="event" :event="event"/>
-    <map-comp v-if="event" :initialCenter="mapcenter" :initialZoom="12" :markers="markers"/>
+    <map-comp v-if="event" :initialCenter="mapcenter" :markers="markers" :initialZoom="12" hideNumbers="true"/>
   </article>
 </template>
 
@@ -11,8 +11,6 @@
   import EventService from "../services/EventService";
   import EventDetails from "../components/EventDetails";
   import Map from "../components/Map.vue";
-
-  import UserService from "../services/UserService";
   import AuthService from "../services/AuthService";
 
   export default {
@@ -34,10 +32,14 @@
         if(this.event) return {longitude: this.event.loc.coordinates[0], latitude: this.event.loc.coordinates[1]};
         else return {};
       },
-
-      markers: function () {
-        if(this.event) return this.event.loc.coordinates;
-        else return [];
+      
+      markers: function(){
+        if(!this.event) return [];
+        const coords = [{
+          lon: this.event.loc.coordinates[0],
+          lat: this.event.loc.coordinates[1]
+        }];
+        return coords;
       }
     },
 
@@ -45,14 +47,13 @@
       async init() {
         try {
           this.isLoading = true;
-          const event = await EventService.getEventById(this.$route.params.eid);
-          this.event = event;
+          this.event  = await EventService.getEventById(this.$route.params.eid);
           this.isLoading = false;
         } catch (err) {
           this.isLoading = false;
           if (err.status === 404) {
             this.error = "Das gesuchte Event existiert leider nicht.";
-          } else this.error = "Ooops, das Event konnte leider nicht geladen werden ";
+          } else this.error = "Ein unbekannter Fehler ist aufgetreten.";
           console.error(err);
         }
       },
@@ -71,8 +72,6 @@
   article{
     position: relative;
     flex: 1;
-    min-height: 100%;
-    min-width: 100%;
   }
   
   .eventDetails{
@@ -81,6 +80,8 @@
   
   #map {
     position: fixed;
+    width: 100%;
+    height: 100%;
     top: 0px;
     left: 0px;
   }

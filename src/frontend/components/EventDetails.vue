@@ -4,17 +4,17 @@
     <!-- TODO: Implement share Button -->
     <p class="description">{{ event.description }}</p>
     <div class="fieldContainer">
-      <text-field class="detailField" :iconType="'longitude'" :iconColor="'primary'" :value="event.loc.coordinates[0]"/>
-      <text-field class="detailField" :iconType="'latitude'" :iconColor="'primary'" :value="event.loc.coordinates[1]"/>
-      <text-field class="detailField" :iconType="'calendar'" :iconColor="'primary'" :value="eventDate"/>
-      <text-field class="detailField" :iconType="'clock'" :iconColor="'primary'" :value="eventTime"/>
+      <text-field class="detailField" iconType="longitude" iconColor="primary" :value="event.loc.coordinates[0]"/>
+      <text-field class="detailField" iconType="latitude" iconColor="primary" :value="event.loc.coordinates[1]"/>
+      <text-field class="detailField" iconType="calendar" iconColor="primary" :value="eventDate"/>
+      <text-field class="detailField" iconType="clock" iconColor="primary" :value="eventTime"/>
     </div>
-    <a class="hostLink" :href="'/user/' + event.hostId">
-      <text-field :iconType="'person'" :iconColor="'primary'" :value="hostName"/>
+    <a class="hostLink" href="/user/" + event.hostId">
+       <text-field iconType="person" iconColor="primary" :value="event.hostName"/>
     </a>
-    <button-submit v-if="isCreator" @click="editEvent" class="joinButton" type="submit" text="bearbeiten"/>
-    <button-submit v-if="isParticipant" @click="signOutForEvent" class="joinButton" type="submit" text="absagen"/>
-    <button-submit v-else @click="signInForEvent" class="joinButton" type="submit" text="mitmachen"/>
+    <button-send v-if="isCreator" @click="editEvent" class="joinButton" type="submit" text="bearbeiten"/>
+    <button-send v-if="isParticipant" @click="signOutForEvent" class="joinButton" type="submit" text="absagen"/>
+    <button-send v-else @click="signInForEvent" class="joinButton" type="submit" text="mitmachen"/>
     <p class="error" v-if="error">{{error}}</p>
   </article>
 </template>
@@ -25,12 +25,12 @@
   import TextField from "../components/TextField";
   import Button from "../components/Button.vue";
   import EventService from "../services/EventService";
-  
+
   export default {
     name: "EventDetails",
     components:{
       'text-field': TextField,
-      'button-submit': Button
+      'button-send': Button
     },
     
     props: {
@@ -39,7 +39,6 @@
     
     data(){
       return {
-        hostName: undefined,
         error: null,
         isParticipant: false
       };
@@ -79,7 +78,7 @@
         try {
           await EventService.signInForEvent(this.event._id);
           this.isParticipant = true;
-        } catch (err) {
+        }catch (err) {
           console.error(err);
           this.error = "Bei der Anmeldung ist leider etwas schief gelaufen.";
         }
@@ -108,7 +107,6 @@
     async created() {
       await this.getHostName();
     },
-    
   }
 </script>
 
