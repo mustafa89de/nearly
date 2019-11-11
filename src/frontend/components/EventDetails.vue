@@ -40,7 +40,7 @@
     data(){
       return {
         error: null,
-        isParticipant: false
+        isParticipant: this.event.isParticipant
       };
     },
     
