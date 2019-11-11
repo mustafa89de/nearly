@@ -1,5 +1,6 @@
 const JWTService = require("../services/JWTService");
 const EventRepository = require("../repositories/EventRepository");
+const UserRepository = require("../repositories/UserRepository");
 const MapService = require("../services/MapService");
 
 const express = require('express');
@@ -57,9 +58,27 @@ router.get('/', JWTService.requireJWT(), async (req, res) => {
 
 router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
   try {
+
     const event = await EventRepository.getEventById(req.params.eid);
-    res.status(200).json(event);
-  } catch (err) {
+
+    if(!event) res.status(404).json({message: "The requested event does not exist!"});
+
+    const {_id, name, description, time, loc, hostId} = event;
+
+    const username = (await UserRepository.getUserById(event.hostId)).username;
+
+    const resData = {
+      _id,
+      name,
+      description,
+      time,
+      loc,
+      hostId,
+      hostName: username
+    };
+
+    res.status(200).json(resData);
+  }catch(err){
     console.log(err.status);
     res.status(500).json({message: err.message});
   }
