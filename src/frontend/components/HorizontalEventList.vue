@@ -56,7 +56,7 @@
     padding: 0;
     display: flex;
     flex-direction: row;
-    overflow: scroll;
+    overflow-x: scroll;
 
     > li {
       margin-right: 25px;

@@ -2,7 +2,7 @@
   <section>
     <h2>{{ user.username }}</h2>
     <p>{{ user.description }}</p>
-    <event-list class="list" v-if="this.user" hideNumbers :events="formattedEvents" @click="handleEventClick"/>
+    <event-list class="list" v-if="user" hideNumbers :events="formattedEvents" @click="handleEventClick"/>
   </section>
 </template>
 
@@ -50,6 +50,7 @@
       @include textBody;
       margin: 0 25px 25px 25px;
       height: 150px;
+      overflow-y: scroll;
     }
 
     .list{

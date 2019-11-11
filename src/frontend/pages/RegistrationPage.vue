@@ -199,8 +199,7 @@
         flex-direction: column;
 
         h3 {
-          @include textBody;
-          font-size: 3rem;
+          @include textBodyTitle;
           margin: 25px 0 10px 0;
         }
 
