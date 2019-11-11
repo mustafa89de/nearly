@@ -24,14 +24,6 @@ class JWTService {
       exp: new Date().setDate(new Date().getDate() + 1) //current time +1 day
     }, JWT_SECRET);
   };
-
-  getUserId(req){
-    const token = req.get('Authorization');
-    const userId = JWT.decode(token, {json: true}).sub;
-    if(userId) return userId;
-    else return null;
-  }
-
 }
 
 module.exports = new JWTService();
