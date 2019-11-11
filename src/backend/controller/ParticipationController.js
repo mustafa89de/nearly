@@ -21,15 +21,5 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
   }
 });
 
-router.delete('/', JWTService.requireJWT(),async (req, res) => {
-  try {
-    const {userId, eventId} = req.body;
-    await ParticipationRepository.cancelParticipation(userId, eventId);
-    res.json();
-  } catch (err) {
-    console.log(err.status);
-    res.status(500).json({message: err.message})
-  }
-});
 
 module.exports = router;
