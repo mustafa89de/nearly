@@ -17,7 +17,7 @@ class Passport {
         }, async (payload, done) => {
             try {
                 //Find the user specified in token
-                const user = User.findById(payload.sub);
+                const user = await User.findById(payload.sub);
 
                 //If user doesn't exist return false, no error
                 if (!user) {
