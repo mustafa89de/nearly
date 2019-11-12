@@ -1,6 +1,7 @@
 const JWTService = require("../services/JWTService");
 const EventRepository = require("../repositories/EventRepository");
 const UserRepository = require("../repositories/UserRepository");
+const ParticipationRepository = require("../repositories/ParticipationRepository");
 const MapService = require("../services/MapService");
 
 const express = require('express');
@@ -67,6 +68,9 @@ router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
 
     const username = (await UserRepository.getUserById(event.hostId)).username;
 
+    const isParticipant = await ParticipationRepository.checkIfParticipant(req.user.id, event._id);
+
+
     const resData = {
       _id,
       name,
@@ -74,7 +78,8 @@ router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
       time,
       loc,
       hostId,
-      hostName: username
+      hostName: username,
+      isParticipant: isParticipant
     };
 
     res.status(200).json(resData);

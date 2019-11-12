@@ -19,6 +19,22 @@ class ParticipationRepository {
       throw err;
     }
   }
+
+  async checkIfParticipant(userId, eventId){
+    try{
+      let participation = await Participation.findOne({
+        userId: userId,
+        eventId: eventId
+      });
+
+      if(!participation) return false;
+      return true;
+
+    }catch(err){
+      console.error('DB Error:', err.message);
+      throw err;
+    }
+  }
 }
 
 module.exports = new ParticipationRepository();
