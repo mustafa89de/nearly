@@ -50,7 +50,6 @@
       @include textBody;
       margin: 0 25px 25px 25px;
       height: 150px;
-      overflow-y: scroll;
     }
 
     .list{
