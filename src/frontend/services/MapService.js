@@ -4,7 +4,7 @@ import {MAP_ID} from "../constants";
 const STYLE = 'mapbox://styles/mapbox/light-v10';
 
 class MapService {
-  initMap({center, zoom, bounds}) {
+  initMap({center, zoom, bounds, controlPosition}) {
     return new Promise(resolve => {
       mapboxgl.accessToken = MAPBOX_TOKEN; // Wird beim compilieren durch Webpack Define Plugin ersetzt
 
@@ -21,7 +21,7 @@ class MapService {
       }
 
       this.map = new mapboxgl.Map(options);
-      this.map.addControl(new mapboxgl.NavigationControl());
+      this.map.addControl(new mapboxgl.NavigationControl(), controlPosition);
       this.map.on('load', () => {
         resolve();
       });

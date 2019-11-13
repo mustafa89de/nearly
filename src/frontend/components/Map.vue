@@ -12,7 +12,8 @@
       'initialZoom': Number,
       'initialBounds': Object,
       'markers': Array,
-      'hideNumbers': false
+      'hideNumbers': false,
+      'controlPosition': String
     },
     watch: {
       markers: function () {
@@ -48,7 +49,8 @@
       await MapService.initMap({
         center: this.initialCenter,
         zoom: this.initialZoom,
-        bounds: this.initialBounds
+        bounds: this.initialBounds,
+        controlPosition: this.controlPosition || 'top-right'
       });
       MapService.onDragEnd(this.handlePositionChange);
       MapService.onZoomEnd(this.handlePositionChange);
