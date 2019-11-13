@@ -16,12 +16,10 @@ class UserService {
         }
     }
 
-    async login(email, password){
+    async getUserByID(uid){
         try{
-            await axios.post(ENDPOINTS.LOGIN, {
-                email,
-                password
-            })
+            const res = await axios.get(ENDPOINTS.USER + '/' + uid);
+            return res.data;
         }catch(err){
             err.status = err.response.status;
             console.error(err.message);

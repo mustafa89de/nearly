@@ -50,6 +50,34 @@ class EventService {
       throw err;
     }
   }
+
+  async signInForEvent(eid) {
+    try {
+      await axios.post(ENDPOINTS.EVENTPARTICIPATION, null, {
+        params: {
+          userId: AuthService.getUser().userId,
+          eventId: eid
+        }
+      });
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+  }
+
+  async signOutForEvent(eid) {
+    try {
+      await axios.delete(ENDPOINTS.EVENTPARTICIPATION, {
+        params: {
+          userId: AuthService.getUser().userId,
+          eventId: eid
+        }
+      });
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+  }
 }
 
 export default new EventService();

@@ -1,61 +1,88 @@
 <template>
-    <div class="event">
-        <div v-if="isLoading" class="eventLoading">
-            Loading...
-        </div>
-        <div v-if="error" class="error">
-            {{error}}
-        </div>
-        <div v-if="event" class="eventContent">
-            <article>
-                <header>
-                    <h1>
-                        {{event.name}}
-                    </h1>
-                </header>
-            </article>
-        </div>
-    </div>
+  <article>
+    <div v-if="isLoading" > Loading...</div>
+    <div v-if="error">{{error}}</div>
+    <event-details class="eventDetails" v-if="event" :event="event"/>
+    <map-comp v-if="event" :initialCenter="mapcenter" :markers="markers" :initialZoom="12" hideNumbers="true"/>
+  </article>
 </template>
 
 <script>
   import EventService from "../services/EventService";
+  import EventDetails from "../components/EventDetails";
+  import Map from "../components/Map.vue";
+  import AuthService from "../services/AuthService";
+
   export default {
+    components: {
+      'event-details': EventDetails,
+      'map-comp': Map
+    },
+
     data() {
       return {
         isLoading: false,
-        event: null,
-        error: null
+        error: null,
+        event: null
       }
     },
 
-    created() {
-      // fetch event when Vue is created
-      this.fetchEvent()
+    computed: {
+      mapcenter: function(){
+        if(this.event) return {longitude: this.event.loc.coordinates[0], latitude: this.event.loc.coordinates[1]};
+        else return {};
+      },
+      
+      markers: function(){
+        if(!this.event) return [];
+        const coords = [{
+          lon: this.event.loc.coordinates[0],
+          lat: this.event.loc.coordinates[1]
+        }];
+        return coords;
+      }
     },
 
     methods: {
-      async fetchEvent() {
+      async init() {
         try {
           this.isLoading = true;
-          const event = await EventService.getEventById(this.$route.params.eid);
+          this.event  = await EventService.getEventById(this.$route.params.eid);
           this.isLoading = false;
-
-          //Everything worked fine, page content can be modified
-          this.event = event;
-        }catch(err){
+        } catch (err) {
           this.isLoading = false;
-          if(err.status === 404){
+          if (err.status === 404) {
             this.error = "Das gesuchte Event existiert leider nicht.";
-          }
-          else this.error = "Ooops, das Event konnte leider nicht geladen werden ";
+          } else this.error = "Ein unbekannter Fehler ist aufgetreten.";
           console.error(err);
         }
-      }
+      },
+    },
+
+    mounted() {
+      this.init()
     }
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  @import "../assets/variables";
+  @import "../assets/mixins";
+  
+  article{
+    position: relative;
+    flex: 1;
+  }
+  
+  .eventDetails{
+    z-index: 1;
+  }
+  
+  #map {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+  }
 </style>
