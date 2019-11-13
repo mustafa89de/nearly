@@ -51,25 +51,29 @@ class EventService {
     }
   }
 
-  async signInForEvent(eid){
-    try{
-      await axios.post(ENDPOINTS.EVENTPARTICIPATION, {
-        userId: AuthService.getUser().userId,
-        eventId: eid
+  async signInForEvent(eid) {
+    try {
+      await axios.post(ENDPOINTS.EVENTPARTICIPATION, null, {
+        params: {
+          userId: AuthService.getUser().userId,
+          eventId: eid
+        }
       });
-    }catch(err){
+    } catch (err) {
       console.error(err.message);
       throw err;
     }
   }
 
-  async signOutForEvent(eid){
-    try{
+  async signOutForEvent(eid) {
+    try {
       await axios.delete(ENDPOINTS.EVENTPARTICIPATION, {
-        userId: AuthService.getUser().userId,
-        eventId: eid
+        params: {
+          userId: AuthService.getUser().userId,
+          eventId: eid
+        }
       });
-    }catch(err){
+    } catch (err) {
       console.error(err.message);
       throw err;
     }

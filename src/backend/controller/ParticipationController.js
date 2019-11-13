@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const {userId, eventId} = req.body;
+    const {userId, eventId} = req.query;
     const participation = await ParticipationRepository.attendEvent(userId, eventId);
 
     if(participation === null){
@@ -23,7 +23,7 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
 
 router.delete('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const {userId, eventId} = req.body;
+    const {userId, eventId} = req.query;
     const removal = await ParticipationRepository.cancelAttendance(userId, eventId);
     if (!removal){
       res.status(404).json({message: `Deletion of participation with userId: ${userId} and eventId: ${eventId} unsuccessful`})
