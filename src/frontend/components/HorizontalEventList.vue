@@ -9,6 +9,7 @@
         :time="item.time"
         :lat="item.lat"
         :lon="item.lon"
+        :hideNumber="hideNumbers"
         @click="() => handleClick(index)"
     />
   </ul>
@@ -23,7 +24,8 @@
   export default {
     components: {EventListItem},
     props: {
-      events: Array
+      events: Array,
+      hideNumbers: Boolean
     },
     methods: {
       isToday: function (date) {
@@ -54,7 +56,7 @@
     padding: 0;
     display: flex;
     flex-direction: row;
-    overflow: scroll;
+    overflow-x: scroll;
 
     > li {
       margin-right: 25px;

@@ -1,6 +1,6 @@
 <template>
   <li class="eventListItem" @click="handleClick">
-    <p class="number">{{number}}</p>
+    <p v-if="!this.hideNumber" class="number">{{number}}</p>
     <h4 class="title">{{title}}</h4>
     <p class="description">{{description}}</p>
     <p class="meta">
@@ -20,7 +20,8 @@
       description: String,
       lat: Number,
       lon: Number,
-      time: String
+      time: String,
+      hideNumber: Boolean
     },
     data: function () {
       return {

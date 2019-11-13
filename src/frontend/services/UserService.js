@@ -26,6 +26,17 @@ class UserService {
             throw err;
         }
     }
+
+    async getUserById(uid){
+        try{
+            const res = await axios.get(ENDPOINTS.USER + "/"+ uid);
+            return res.data;
+        } catch(err){
+            err.status = err.response.status;
+            console.error(err.message);
+            throw err;
+        }
+    }
 }
 
 export default new UserService();
