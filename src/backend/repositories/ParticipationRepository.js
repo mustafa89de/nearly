@@ -12,7 +12,7 @@ class ParticipationRepository {
         return null;
       }
 
-      if(this.checkIfParticipant(userId, eventId)){
+      if(await this.checkIfParticipant(userId, eventId)){
         return null
       }
 
