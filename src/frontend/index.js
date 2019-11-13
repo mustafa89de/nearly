@@ -58,6 +58,7 @@ export const router = new VueRouter({
       component: UserDetailPage,
       beforeEnter: checkAuthentication
     },
+    {
       path: '/event/:eid/edit',
       component: EventEditPage,
       beforeEnter: checkAuthentication
