@@ -11,6 +11,11 @@ class ParticipationRepository {
       if(!event || !user){
         return null;
       }
+
+      if(this.checkIfParticipant(userId, eventId)){
+        return null
+      }
+
       let participation = Participation({userId, eventId});
       await participation.save();
       return participation;
