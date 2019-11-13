@@ -40,6 +40,21 @@ class ParticipationRepository {
       throw err;
     }
   }
+
+  async cancelAttendance(userId, eventId) {
+    try {
+      let removal = await Participation.deleteOne({
+        userId: userId,
+        eventId: eventId
+      });
+
+      return removal.n > 0;
+
+    } catch (err) {
+      console.error('DB Error:', err.message);
+      throw err;
+    }
+  }
 }
 
 module.exports = new ParticipationRepository();
