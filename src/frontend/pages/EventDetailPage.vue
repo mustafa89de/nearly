@@ -3,7 +3,7 @@
     <div v-if="isLoading" > Loading...</div>
     <div v-if="error">{{error}}</div>
     <event-details class="eventDetails" v-if="event" :event="event"/>
-    <map-comp v-if="event" :initialCenter="mapcenter" :markers="markers" :initialZoom="12" hideNumbers="true"/>
+    <map-comp v-if="event" :initialCenter="mapcenter" :markers="markers" :initialZoom="12" hideNumbers="true" controlPosition="bottom-right"/>
   </article>
 </template>
 
@@ -72,17 +72,28 @@
   article{
     position: relative;
     flex: 1;
+
+    display: flex;
+    flex-direction: column;
   }
   
   .eventDetails{
     z-index: 1;
+    flex: 0;
   }
   
   #map {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
+    margin-top: -50px; // rounded borders
+    position: relative;
+    flex: 1;
+
+
+    @media screen and (min-width: 500px) {
+      margin-top: 0;
+      height: auto;
+      bottom: 56px; // nav bar height
+      position: fixed;
+      flex: initial;
+    }
   }
 </style>
