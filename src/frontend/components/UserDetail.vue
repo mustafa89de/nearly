@@ -2,6 +2,7 @@
   <section>
     <h2>{{ user.username }}</h2>
     <p>{{ user.description }}</p>
+    <h3>Events von {{this.user.username}}</h3>
     <event-list class="list" v-if="user" hideNumbers :events="formattedEvents" @click="handleEventClick"/>
   </section>
 </template>
@@ -44,6 +45,11 @@
     h2 {
       @include textBodyTitle;
       margin: 25px;
+    }
+
+    h3 {
+      @include textTitle;
+      margin: 0 25px 15px;
     }
 
     p {
