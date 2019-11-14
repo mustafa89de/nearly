@@ -2,7 +2,6 @@
   <article>
     <h1>Secured Homepage</h1>
     <h1>Hello {{username}}!</h1>
-    <router-link to="/event/create">Create Event</router-link>
     <button @click="handleLogout">Logout</button>
   </article>
 </template>

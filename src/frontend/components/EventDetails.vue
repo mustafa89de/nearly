@@ -4,8 +4,6 @@
     <!-- TODO: Implement share Button -->
     <p class="description">{{ event.description }}</p>
     <div class="fieldContainer">
-      <text-field class="detailField" iconType="longitude" iconColor="primary" :value="event.loc.coordinates[0]"/>
-      <text-field class="detailField" iconType="latitude" iconColor="primary" :value="event.loc.coordinates[1]"/>
       <text-field class="detailField" iconType="calendar" iconColor="primary" :value="eventDate"/>
       <text-field class="detailField" iconType="clock" iconColor="primary" :value="eventTime"/>
     </div>
@@ -59,7 +57,7 @@
       },
       
       eventTime: function(){
-        return new Date(this.event.time).toLocaleTimeString('de-De', {timeStyle: 'short'});
+        return new Date(this.event.time).toLocaleTimeString('de-De', {hour: '2-digit', minute: '2-digit'})
       },
     },
     
