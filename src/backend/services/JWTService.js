@@ -27,7 +27,7 @@ class JWTService {
   };
 
   extractPayload(req){
-    const token = req.headers.authorization.split(' ')[1]
+    const token = req.headers.authorization;
     const decoded = JWT.decode(token, {complete: true});
     return decoded.payload;
   }
