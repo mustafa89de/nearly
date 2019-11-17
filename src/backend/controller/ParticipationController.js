@@ -35,4 +35,15 @@ router.delete('/', JWTService.requireJWT(), async (req, res) => {
   }
 });
 
+router.get('/:uid', JWTService.requireJWT(), async (req, res) => {
+  try {
+    const payload = JWTService.extractPayload(req);
+    const participations = await ParticipationRepository.getUserParticipations(payload.sub);
+    res.json(participations);
+  } catch (err) {
+    console.log(err.status);
+    res.status(500).json({message: err.message})
+  }
+});
+
 module.exports = router;
