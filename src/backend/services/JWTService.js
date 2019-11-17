@@ -21,6 +21,7 @@ class JWTService {
       iss: 'MeetApp',
       sub: user.id,
       username: user.username,
+      homePosition: user.homePosition,
       exp: new Date().setDate(new Date().getDate() + 1) //current time +1 day
     }, JWT_SECRET);
   };
