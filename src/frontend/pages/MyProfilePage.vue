@@ -1,7 +1,12 @@
 <template>
   <article>
-      <user-details v-if="user" :user="user"/>
-      <event-list id="prtEvents" v-if="participationEvents" :events="this.participationEvents" hideNumbers="true"/>
+    <header>
+      <h1>Mein Profil</h1>
+      <h1 id="menu">...</h1>
+    </header>
+    <user-details v-if="user" :user="user"/>
+    <h2>Events an denen {{user.username}} teilnimmt</h2>
+    <event-list id="prtEvents" v-if="participationEvents" :events="this.participationEvents" hideNumbers="true"/>
   </article>
 </template>
 
@@ -36,10 +41,11 @@
           
           this.user = await UserService.getUserByID(jwtUser.userId);
 
-          const prtEvents = await EventService.getEventsByUserId(jwtUser);
+          // const prtEvents = await EventService.getEventsByUserId(jwtUser);
+          const prtEvents = true;
           
           if(prtEvents){
-            this.participationEvents = prtEvents.map((event) => {
+            this.participationEvents = this.user.hostedEvents.map((event) => {
               return {
                 title: event.name,
                 description: event.description,
@@ -63,8 +69,43 @@
   }
 </script>
 
-<style scoped>
-  #prtEvents {
-    padding: 25px 0 0 25px;
+<style scoped lang="scss">
+  @import "../assets/variables";
+  @import "../assets/mixins";
+  
+  article{
+    background: $bg-col-primary;
+    margin-top: 25px;
+    padding: 25px 25px 0 0;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
   }
+  
+  header{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  h1{
+    @include textTitle;
+    color: $font-col-primary;
+    margin: 0 0 0 25px;
+  }
+  
+  h2{
+    @include textTitle;
+    margin: 25px 0 0 25px;
+  }
+
+  #menu{
+    color: $font-col-active;
+    font-size: x-large;
+    padding: 0;
+  }
+  
+  #prtEvents{
+    padding: 15px 0 0 25px;
+  }
+  
 </style>
