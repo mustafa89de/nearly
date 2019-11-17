@@ -80,7 +80,19 @@ class ParticipationRepository {
         const bTime = b[0]._doc.time;
         return new Date(aTime) - new Date(bTime);
       });
-      return events;
+
+      const formattedEvents = events.map(event => {
+        return {
+          id: event[0]._doc._id,
+          name: event[0]._doc.name,
+          description: event[0]._doc.description,
+          longitude: event[0]._doc.loc.coordinates[0],
+          latitude: event[0]._doc.loc.coordinates[1],
+          time: event[0]._doc.time,
+          hostId: event[0]._doc.hostId
+        }
+      });
+      return formattedEvents;
     } catch (err) {
       console.error('DB Error:', err.message);
       throw err;
