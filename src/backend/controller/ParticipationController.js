@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const {userId, eventId} = req.body;
+    const {userId, eventId} = req.query;
     const participation = await ParticipationRepository.attendEvent(userId, eventId);
 
     if(participation === null){

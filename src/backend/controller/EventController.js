@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const {name, description, latitude, longitude, time, hostId} = req.query;
+    const {name, description, latitude, longitude, time, hostId} = req.body;
     const loc = {
       type: "Point",
       coordinates: [longitude, latitude]
