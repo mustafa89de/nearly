@@ -73,4 +73,18 @@ router.get('/:id', JWTService.requireJWT(), async (req, res) => {
   }
 });
 
+router.put('/homePosition', JWTService.requireJWT(), async (req, res) => {
+  try {
+    const {userId, longitude, latitude} = req.body;
+    const homePosition = {
+      type: "Point",
+      coordinates: [longitude, latitude]
+    };
+    await UserRepository.setHomePosition(userId, homePosition);
+    res.json();
+  } catch (err) {
+    res.status(500).json({message: err.message})
+  }
+});
+
 module.exports = router;
