@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const {userId, eventId} = req.body;
+    const {userId, eventId} = req.query;
     const participation = await ParticipationRepository.attendEvent(userId, eventId);
 
     if(participation === null){
@@ -37,8 +37,8 @@ router.delete('/', JWTService.requireJWT(), async (req, res) => {
 
 router.get('/:uid', JWTService.requireJWT(), async (req, res) => {
   try {
-    const payload = JWTService.extractPayload(req);
-    const participations = await ParticipationRepository.getUserParticipations(payload.sub);
+    const userId = req.user.id;
+    const participations = await ParticipationRepository.getUserParticipations(userId);
     res.json(participations);
   } catch (err) {
     console.log(err.status);

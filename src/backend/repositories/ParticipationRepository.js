@@ -60,25 +60,19 @@ class ParticipationRepository {
     try {
       const participations = await Participation.find({
         userId: userId
-      });
+      }).populate('eventId');
 
-      const events = [];
-      if (participations) {
-        for (const participation of participations) {
-          const eventId = participation.eventId;
-          const event = await Event.find({
-            _id: eventId,
-            time: {
-              $gte: new Date()
-            }
-          });
-          events.push(event);
+      const events = participations.map(participation => {
+        const event = participation._doc.eventId._doc;
+        return {
+          id: event._id,
+          name: event.name,
+          description: event.description,
+          longitude: event.loc.coordinates[0],
+          latitude: event.loc.coordinates[1],
+          time: event.time,
+          hostId: event.hostId
         }
-      }
-      events.sort((a, b) => {
-        const aTime = a[0]._doc.time;
-        const bTime = b[0]._doc.time;
-        return new Date(aTime) - new Date(bTime);
       });
       return events;
     } catch (err) {

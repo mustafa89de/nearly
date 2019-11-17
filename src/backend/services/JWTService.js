@@ -25,12 +25,6 @@ class JWTService {
       exp: new Date().setDate(new Date().getDate() + 1) //current time +1 day
     }, JWT_SECRET);
   };
-
-  extractPayload(req){
-    const token = req.headers.authorization;
-    const decoded = JWT.decode(token, {complete: true});
-    return decoded.payload;
-  }
 }
 
 module.exports = new JWTService();
