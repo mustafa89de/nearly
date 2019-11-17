@@ -6,7 +6,7 @@
     </header>
     <user-details v-if="user" :user="user"/>
     <h2>Events an denen {{user.username}} teilnimmt</h2>
-    <event-list id="prtEvents" v-if="participationEvents" :events="this.participationEvents" hideNumbers="true"/>
+    <event-list id="prtEvents" v-if="participationEvents" :events="this.participationEvents" hideNumbers/>
   </article>
 </template>
 
@@ -41,11 +41,10 @@
           
           this.user = await UserService.getUserByID(jwtUser.userId);
 
-          // const prtEvents = await EventService.getEventsByUserId(jwtUser);
-          const prtEvents = true;
+          const prtEvents = await EventService.getEventsByUserId(jwtUser);
           
           if(prtEvents){
-            this.participationEvents = this.user.hostedEvents.map((event) => {
+            this.participationEvents = prtEvents.map((event) => {
               return {
                 title: event.name,
                 description: event.description,
@@ -100,7 +99,7 @@
 
   #menu{
     color: $font-col-active;
-    font-size: x-large;
+    font-size: xx-large;
     padding: 0;
   }
   
