@@ -12,6 +12,10 @@ app.use(express.json());
 
 app.use('/api', controller); // Path chaining -> /api/...
 
+app.use('*', (req, res) => {
+    res.redirect("https://" + req.headers.host + req.url);
+});
+
 app.use(express.static('dist'));
 
 app.use('*', express.static(path.join(__dirname, '/../../dist/index.html')));
