@@ -31,7 +31,7 @@ class UserRepository {
 
   async setHomePosition(userId, homePosition) {
     try {
-      return await User.findByIdAndUpdate(userId, {homePosition: homePosition})
+      await User.findByIdAndUpdate(userId, {homePosition: homePosition})
     } catch (err) {
       console.error('DB Error:', err.message);
       throw err;
