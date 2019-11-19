@@ -4,6 +4,7 @@
 
 <script>
   import MapService from "../services/MapService";
+
   let markerRefs = [];
 
   export default {
@@ -78,6 +79,8 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     cursor: pointer;
     font-family: "Poppins", Arial, Helvetica, sans-serif;
+    position: relative;
+    z-index: 1;
   }
 </style>
 

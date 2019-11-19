@@ -35,7 +35,7 @@
       };
     },
     components: {
-      LocationPicker,
+      "location-picker": LocationPicker,
       "text-input": TextInput,
       "button-submit": Button
     },

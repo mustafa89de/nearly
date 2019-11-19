@@ -8,7 +8,7 @@
         @mapClick="handleMapClick"
     />
     <footer v-if="!minimized">
-      <button-submit type="submit" text="Fertig" @click="handleSave"/>
+      <custom-button type="button" text="Fertig" @click="handleSave"/>
     </footer>
   </section>
 </template>
@@ -24,7 +24,7 @@
   export default {
     components: {
       'map-box': Map,
-      "button-submit": Button
+      "custom-button": Button
     },
     data: function () {
       return {
@@ -35,7 +35,8 @@
       }
     },
     updated: function () {
-      MapService.resize()
+      MapService.resize();
+      MapService.setCenter({lon: this.lon, lat: this.lat});
     },
     methods: {
       handleContainerClick: function () {
