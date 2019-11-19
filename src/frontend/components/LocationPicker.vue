@@ -108,7 +108,7 @@
       background: $bg-col-primary;
       z-index: 1;
 
-      > input[type="submit"] {
+      > input[type="button"] {
         width: 100%;
         max-width: 400px;
         margin: 0 auto;

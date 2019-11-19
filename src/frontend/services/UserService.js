@@ -37,6 +37,11 @@ class UserService {
             throw err;
         }
     }
+
+  async saveHomePosition(homePosition) {
+    console.log('save home position', homePosition);
+    return Promise.resolve() // TODO: fetch endpoint and update homePosition in FE
+  }
 }
 
 export default new UserService();
