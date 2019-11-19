@@ -63,9 +63,9 @@
           console.error(err);
         }
       },
-      async handleHomePositionChange() {
+      async handleHomePositionChange(newPosition) {
         try {
-          await UserService.saveHomePosition()
+          await UserService.saveHomePosition(newPosition)
         } catch (e) {
           // TODO: error handling
         }
