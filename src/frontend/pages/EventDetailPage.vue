@@ -1,9 +1,10 @@
 <template>
   <article>
-    <div v-if="isLoading" > Loading...</div>
+    <div v-if="isLoading"> Loading...</div>
     <div v-if="error">{{error}}</div>
     <event-details class="eventDetails" v-if="event" :event="event"/>
-    <map-comp v-if="event" :initialCenter="mapcenter" :markers="markers" :initialZoom="12" hideNumbers="true" controlPosition="bottom-right"/>
+    <map-comp v-if="event" :initialBounds="bounds" :markers="markers" hideNumbers="true"
+              controlPosition="bottom-right"/>
   </article>
 </template>
 
@@ -11,7 +12,7 @@
   import EventService from "../services/EventService";
   import EventDetails from "../components/EventDetails";
   import Map from "../components/Map.vue";
-  import AuthService from "../services/AuthService";
+  import LocationService from "../services/LocationService";
 
   export default {
     components: {
@@ -28,13 +29,12 @@
     },
 
     computed: {
-      mapcenter: function(){
-        if(this.event) return {longitude: this.event.loc.coordinates[0], latitude: this.event.loc.coordinates[1]};
-        else return {};
+      bounds: function () {
+        const [lon, lat] = this.event.loc.coordinates;
+        return LocationService.toBounds({lon, lat});
       },
-      
-      markers: function(){
-        if(!this.event) return [];
+      markers: function () {
+        if (!this.event) return [];
         const coords = [{
           lon: this.event.loc.coordinates[0],
           lat: this.event.loc.coordinates[1]
@@ -47,7 +47,7 @@
       async init() {
         try {
           this.isLoading = true;
-          this.event  = await EventService.getEventById(this.$route.params.eid);
+          this.event = await EventService.getEventById(this.$route.params.eid);
           this.isLoading = false;
         } catch (err) {
           this.isLoading = false;
@@ -68,20 +68,20 @@
 <style scoped lang="scss">
   @import "../assets/variables";
   @import "../assets/mixins";
-  
-  article{
+
+  article {
     position: relative;
     flex: 1;
 
     display: flex;
     flex-direction: column;
   }
-  
-  .eventDetails{
+
+  .eventDetails {
     z-index: 1;
     flex: 0;
   }
-  
+
   #map {
     margin-top: -50px; // rounded borders
     position: relative;
