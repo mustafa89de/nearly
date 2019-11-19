@@ -16,6 +16,12 @@ app.use(express.static('dist'));
 
 app.use('*', express.static(path.join(__dirname, '/../../dist/index.html')));
 
+app.use('*', (req, res) => {
+  if (!req.secure) {
+    res.redirect("https://" + req.headers.host + req.url);
+  }
+});
+
 Passport.init();
 if (process.env.MODE !== 'TEST') {
   DBService.init();
