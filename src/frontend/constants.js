@@ -1,3 +1,5 @@
+const mapboxgl = require("mapbox-gl");
+
 export const ENDPOINTS = {
   USER: '/api/user',
   EVENT: '/api/event',
@@ -12,3 +14,5 @@ export const FALLBACK_HOME_POSITION = {
   lon: 13.41569879,
   lat: 52.50225623
 };
+
+export const GERMANY_BOUNDS = new mapboxgl.LngLat(10.526867, 51.036410).toBounds(500000);
