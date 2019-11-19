@@ -1,19 +1,14 @@
 <template>
   <article>
     <mapbox
-        v-if="isLoaded"
-        :initialBounds="initialBounds"
         :markers="markers"
         @markerClick="handleMarkerClick"
         @mapUpdate="handleMapUpdate"
     />
-    <section v-if="isLoaded" id="events">
+    <section id="events">
       <h2>Für dich</h2>
       <horizontal-event-list :events="events" @click="handleEventClick"/>
     </section>
-    <transition name="fade">
-      <p v-if="!isLoaded" class="loader">Lädt ...</p>
-    </transition>
   </article>
 </template>
 
@@ -22,9 +17,9 @@
   import EventService from "../services/EventService";
   import HorizontalEventList from "../components/HorizontalEventList";
   import LocationService from "../services/LocationService";
-  import {INITIAL_MAP_RADIUS} from "../constants";
+  import MapService from "../services/MapService";
 
-  const mapboxgl = require("mapbox-gl");
+  let intialMoveDone = false;
 
   export default {
     components: {
@@ -33,31 +28,37 @@
     },
     data: function () {
       return {
-        events: null,
-        initialBounds: null
+        events: null
       }
     },
     computed: {
       markers: function () {
+        if (!this.events) return null;
         return this.events.map(({lon, lat}) => {
           return {
             lon,
             lat,
           }
         })
-      },
-      isLoaded() {
-        return !!this.initialBounds && !!this.events;
       }
     },
     created: async function () {
-      const homePosition = await LocationService.getHomePosition(); // will never catch
-      const homeLL = mapboxgl.LngLat.convert(homePosition);
+      const initialBounds = await this.loadInitialBounds();
 
-      this.initialBounds = homeLL.toBounds(INITIAL_MAP_RADIUS);
-      this.fetchEvents(this.initialBounds);
+      MapService.on('moveend', () => {
+        if (!intialMoveDone) {
+          intialMoveDone = true;
+          this.fetchEvents(initialBounds);
+        }
+      });
     },
     methods: {
+      loadInitialBounds: async function () {
+        const homePosition = await LocationService.getHomePosition(); // will never catch
+        const bounds = LocationService.toBounds(homePosition);
+        MapService.setBounds(bounds);
+        return bounds;
+      },
       handleMarkerClick: function (index) {
         this.scrollTo(index);
       },
@@ -65,7 +66,9 @@
         this.$router.push('/event/' + this.events[index].id);
       },
       handleMapUpdate: function (bounds) {
-        this.fetchEvents(bounds)
+        if (intialMoveDone) {
+          this.fetchEvents(bounds)
+        }
       },
       fetchEvents: async function (bounds) {
         const boundsData = {
@@ -125,33 +128,6 @@
     > ul {
       padding-left: 25px;
     }
-  }
-
-  .loader {
-    display: flex;
-    font-family: "Poppins", sans-serif;
-    font-size: 28px;
-
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    font-weight: bold;
-    margin: 0;
-    background: $bg-col-secondary;
-    align-items: center;
-    justify-content: center;
-    color: $font-col-secondary;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    z-index: 1;
-  }
-
-  .fade-leave-active {
-    opacity: 0;
-    transition: .8s;
   }
 </style>
 

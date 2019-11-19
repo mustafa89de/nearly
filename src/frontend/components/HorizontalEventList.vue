@@ -1,5 +1,6 @@
 <template>
-  <ul class="horizontalEventList" v-if="events.length > 0">
+  <p v-if="!events" class="loader">Lädt...</p>
+  <ul v-else-if="events.length > 0" class="horizontalEventList">
     <event-list-item
         :key="item.id"
         v-for="(item, index) in events"
@@ -85,5 +86,24 @@
     font-weight: normal;
     margin: 0 0 0 25px;
 
+  }
+
+  .loader {
+    font-family: Arimo, sans-serif;
+    letter-spacing: 0.02em;
+    background: $button-col-secondary;
+    padding: 20px;
+    border-radius: 25px;
+    color: #fff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    height: 150px;
+    width: 250px;
+    font-size: 18px;
+    font-weight: normal;
+    margin: 0 0 0 25px;
   }
 </style>

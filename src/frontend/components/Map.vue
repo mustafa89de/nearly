@@ -4,16 +4,16 @@
 
 <script>
   import MapService from "../services/MapService";
+
   let markerRefs = [];
 
   export default {
     props: {
-      'initialCenter': Object,
-      'initialZoom': Number,
       'initialBounds': Object,
       'markers': Array,
       'hideNumbers': false,
-      'controlPosition': String
+      'controlPosition': String,
+      'disabled': Boolean
     },
     watch: {
       markers: function () {
@@ -21,11 +21,14 @@
       }
     },
     methods: {
-      handleClick(index) {
+      handleMarkerClick(index) {
         this.$emit('markerClick', index)
       },
       handlePositionChange(bounds) {
         this.$emit('mapUpdate', bounds)
+      },
+      handleMapClick(e) {
+        this.$emit('mapClick', e)
       },
       updateMarkers() {
         markerRefs.forEach(ref => {
@@ -39,21 +42,21 @@
           return MapService.addMarker({
             lon,
             lat,
-            text: this.hideNumbers?"":index + 1,
-            onClick: () => this.handleClick(index)
+            text: this.hideNumbers ? "" : index + 1,
+            onClick: () => this.handleMarkerClick(index)
           });
         });
       }
     },
     mounted: async function () {
       await MapService.initMap({
-        center: this.initialCenter,
-        zoom: this.initialZoom,
         bounds: this.initialBounds,
-        controlPosition: this.controlPosition || 'top-right'
+        controlPosition: this.controlPosition,
+        disabled: this.disabled
       });
       MapService.onDragEnd(this.handlePositionChange);
       MapService.onZoomEnd(this.handlePositionChange);
+      MapService.onClick(this.handleMapClick);
       this.updateMarkers();
     }
   }
@@ -73,9 +76,11 @@
     justify-content: center;
     color: #fff;
     font-size: 18px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     cursor: pointer;
     font-family: "Poppins", Arial, Helvetica, sans-serif;
+    position: relative;
+    z-index: 1;
   }
 </style>
 
