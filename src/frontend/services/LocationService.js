@@ -1,4 +1,6 @@
-import {FALLBACK_HOME_POSITION} from "../constants";
+import {FALLBACK_HOME_POSITION, INITIAL_MAP_RADIUS} from "../constants";
+
+const mapboxgl = require("mapbox-gl");
 
 class LocationService {
   getCurrentLocation() {
@@ -49,9 +51,13 @@ class LocationService {
     const lat2 = degreesToRadians(p2.lat);
 
     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+      Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return earthRadiusKm * c;
+  }
+
+  toBounds({lon, lat}) {
+    return new mapboxgl.LngLat(lon, lat).toBounds(INITIAL_MAP_RADIUS);
   }
 }
 
