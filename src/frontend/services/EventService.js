@@ -79,13 +79,10 @@ class EventService {
     }
   }
 
-  async getEventsByUserId(uid){
-    try{
+  async getEventsByUserId(uid) {
+    try {
       return await axios.get(ENDPOINTS.EVENTPARTICIPATION + uid);
-    }catch(err){
-      if(error.status === 404){
-        return null;
-      }
+    } catch (err) {
       console.error(err.message);
       throw err;
     }

@@ -24,26 +24,26 @@
       'user-details': UserDetails,
       'event-list': EventList
     },
-    
-    data(){
-      return{
+
+    data() {
+      return {
         user: null,
         participationEvents: null
       }
     },
-    
-    methods:{
-      async init(){
-        
+
+    methods: {
+      async init() {
+
         const jwtUser = AuthService.getUser(); // does not contain hostedEvents
-        
-        try{
-          
+
+        try {
+
           this.user = await UserService.getUserByID(jwtUser.userId);
 
-          const prtEvents = await EventService.getEventsByUserId(jwtUser);
-          
-          if(prtEvents){
+          const prtEvents = await EventService.getEventsByUserId(jwtUser.userId);
+
+          if (prtEvents) {
             this.participationEvents = prtEvents.map((event) => {
               return {
                 title: event.name,
@@ -54,17 +54,17 @@
               }
             });
           }
-          
-        }catch(err){
+
+        } catch (err) {
           console.error(err);
         }
       }
     },
-    
-    created(){
+
+    created() {
       this.init();
     }
-    
+
   }
 </script>
 
@@ -72,39 +72,36 @@
   @import "../assets/variables";
   @import "../assets/mixins";
   
-  article{
-    background: $bg-col-primary;
-    margin-top: 25px;
-    padding: 25px 25px 0 0;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
+  article {
+    @include pageCard
   }
   
-  header{
+  header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+    margin: 0 25px 0 25px;
   }
 
-  h1{
+  h1 {
     @include textTitle;
     color: $font-col-primary;
-    margin: 0 0 0 25px;
-  }
-  
-  h2{
-    @include textTitle;
-    margin: 25px 0 0 25px;
-  }
-
-  #menu{
-    color: $font-col-active;
-    font-size: xx-large;
+    margin: 0;
     padding: 0;
   }
   
-  #prtEvents{
-    padding: 15px 0 0 25px;
+  h2 {
+    @include textTitle;
+    margin: 15px 0 0 25px;
+  }
+
+  #menu {
+    color: $font-col-active;
+    font-size: large;
   }
   
+  #prtEvents {
+    padding: 15px 0 0 25px;
+  }
+
 </style>

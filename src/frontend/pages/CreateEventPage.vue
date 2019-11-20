@@ -112,12 +112,17 @@
 
 <style scoped lang="scss">
   @import "../assets/variables";
+  @import "../assets/mixins";
 
   article {
+    @include pageCard;
     padding: 25px;
+    /*
     display: flex;
     flex-direction: column;
     flex: 1;
+    
+     */
   }
 
   header {
