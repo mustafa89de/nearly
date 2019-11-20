@@ -8,6 +8,7 @@ import CreateEventPage from './pages/CreateEventPage';
 import EventDetailPage from './pages/EventDetailPage';
 import UserDetailPage from './pages/UserDetailPage';
 import EventEditPage from './pages/EventEditPage';
+import MyProfilePage from './pages/MyProfilePage';
 import HelpPage from './pages/HelpPage';
 import NotFoundPage from './pages/NotFoundPage';
 import LoginPage from "./pages/LoginPage";
@@ -17,6 +18,7 @@ import EventOverviewPage from "./pages/EventOverviewPage";
 Vue.use(VueRouter);
 
 import smoothscroll from 'smoothscroll-polyfill';
+
 smoothscroll.polyfill();
 
 
@@ -61,6 +63,11 @@ export const router = new VueRouter({
     {
       path: '/event/:eid/edit',
       component: EventEditPage,
+      beforeEnter: checkAuthentication
+    },
+    {
+      path: '/me',
+      component: MyProfilePage,
       beforeEnter: checkAuthentication
     },
     {
