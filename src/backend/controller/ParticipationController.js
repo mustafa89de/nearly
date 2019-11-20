@@ -1,5 +1,6 @@
 const JWTService = require("../services/JWTService");
 const ParticipationRepository = require('../repositories/ParticipationRepository');
+const AuthService = require('../services/AuthService');
 
 const express = require('express');
 const router = express.Router();
@@ -35,9 +36,9 @@ router.delete('/', JWTService.requireJWT(), async (req, res) => {
   }
 });
 
-router.get('/:uid', JWTService.requireJWT(), async (req, res) => {
+router.get('/:uid', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.params.uid;
     const participations = await ParticipationRepository.getUserParticipations(userId);
     res.json(participations);
   } catch (err) {
