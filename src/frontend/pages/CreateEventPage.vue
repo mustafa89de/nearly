@@ -6,12 +6,10 @@
     <form @submit="handleEventCreation">
       <text-input placeholder="Name" v-model="name"/>
       <textarea placeholder="Beschreibung" v-model="description"></textarea>
-      <text-input icon-type="latitude" placeholder="Latitude" v-model="latitude"/>
-      <text-input icon-type="longitude" id="longField" placeholder="Longitude" v-model="longitude"/>
       <text-input icon-type="calendar" placeholder="Datum" type="date" v-model="date"/>
       <text-input icon-type="clock" id="timeField" placeholder="Uhrzeit" type="time" v-model="time"/>
+      <location-picker @save="handleLocationSave"/>
       <p id="error" v-if="errorMessage">{{errorMessage}}</p>
-      <button-submit @click="setCurrentPosition" type="button" text="Standort laden"/>
       <button-submit type="submit" text="Erstellen"
                      :disabled="!name || !latitude || !longitude || !time"/>
     </form>
@@ -22,21 +20,22 @@
   import TextInput from "../components/TextInput.vue";
   import Button from "../components/Button.vue";
   import EventService from "../services/EventService";
-  import LocationService from "../services/LocationService";
+  import LocationPicker from "../components/LocationPicker";
 
   export default {
     data: function () {
       return {
         name: '',
         description: '',
-        latitude: '',
-        longitude: '',
+        latitude: null,
+        longitude: null,
         date: this.formatDate(this.getInitialDate()),
         time: this.formatTime(this.getInitialTime()),
         errorMessage: null
       };
     },
     components: {
+      "location-picker": LocationPicker,
       "text-input": TextInput,
       "button-submit": Button
     },
@@ -57,15 +56,9 @@
           this.errorMessage = "Ein unbekannter Fehler ist aufgetreten."
         }
       },
-      setCurrentPosition: async function (e) {
-        e.preventDefault();
-        try {
-          const {latitude, longitude} = await LocationService.getCurrentLocation();
-          this.latitude = this.roundCoord(latitude);
-          this.longitude = this.roundCoord(longitude);
-        } catch (err) {
-          console.error('Can not get current position', err.message)
-        }
+      handleLocationSave: function ({lon, lat}) {
+        this.longitude = lon;
+        this.latitude = lat;
       },
       formatDate: function (date) {
         const year = date.getFullYear();
@@ -86,15 +79,11 @@
 
         return `${hours}:${minutes}`;
       },
-      roundCoord: function (coord) {
-        return parseFloat(coord.toFixed(7));
-      },
       getInitialDate: function () {
         const ONE_DAY = 24 * 60 * 60 * 1000;
         const today = new Date();
         const tomorrow = today.getTime() + ONE_DAY;
         const initialDate = new Date(tomorrow);
-        console.log(initialDate);
         return initialDate;
       },
       getInitialTime: function () {
@@ -103,7 +92,6 @@
         initialTime.setMinutes(0);
         initialTime.setSeconds(0);
         initialTime.setMilliseconds(0);
-        console.log(initialTime);
         return initialTime;
       }
     }
@@ -117,98 +105,93 @@
   article {
     @include pageCard;
     padding: 25px;
-    /*
     display: flex;
     flex-direction: column;
     flex: 1;
-    
-     */
-  }
 
-  header {
-    flex: none;
-  }
+    > header {
+      flex: none;
 
-  form {
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  h1 {
-    font-family: Poppins, sans-serif;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin: 0;
-  }
-
-  .input, section {
-    margin-top: 40px;
-
-    &#longField {
-      margin-top: 25px;
+      > h1 {
+        font-family: Poppins, sans-serif;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin: 0;
+      }
     }
 
-    &#timeField {
-      margin-top: 25px;
-      margin-bottom: 25px;
-    }
-  }
+    > form {
+      flex: 1;
 
-  input[type="button"] {
-    align-self: center;
-    margin: auto 10px 25px;
-  }
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
 
-  input[type="submit"] {
-    align-self: center;
-    margin: 0 10px;
-  }
 
-  textarea {
-    background: rgba(131, 141, 154, 0.05);
-    padding: 10px;
-    margin-top: 50px;
-    color: $font-col-light;
+      > .input {
+        margin-top: 40px;
 
-    border: 0;
-    border-bottom: 1px solid #838D9A;
-    outline: 0;
-    height: 120px;
-    font-size: 18px;
+        &#timeField {
+          margin-top: 25px;
+          margin-bottom: 25px;
+        }
+      }
 
-    font-family: Arimo, sans-serif;
-    line-height: 21px;
-    display: flex;
-    align-items: flex-end;
-    letter-spacing: 0.02em;
-    resize: none;
+      > textarea {
+        background: rgba(131, 141, 154, 0.05);
+        padding: 10px;
+        margin-top: 50px;
+        color: $font-col-light;
 
-    transition: 500ms ease;
+        border: 0;
+        border-bottom: 1px solid #838D9A;
+        outline: 0;
+        height: 120px;
+        font-size: 18px;
 
-    &::placeholder {
-      color: $placeholder-col;
-      transition: color 500ms ease;
-    }
+        font-family: Arimo, sans-serif;
+        line-height: 21px;
+        display: flex;
+        align-items: flex-end;
+        letter-spacing: 0.02em;
+        resize: none;
 
-    &:focus {
-      border-color: $font-col-active;
-      color: $font-col-active;
+        transition: 500ms ease;
 
-      &::placeholder {
-        color: $placeholder-col-active;
+        &::placeholder {
+          color: $placeholder-col;
+          transition: color 500ms ease;
+        }
+
+        &:focus {
+          border-color: $font-col-active;
+          color: $font-col-active;
+
+          &::placeholder {
+            color: $placeholder-col-active;
+          }
+        }
+      }
+
+      #error {
+        color: $font-col-error;
+        margin: 0 auto 25px;
+        font-weight: bold;
+      }
+
+      > input[type="submit"] {
+        align-self: center;
+        margin: 0 10px;
+      }
+
+      .picker {
+        margin: 25px 0 50px;
       }
     }
   }
 
-  #error {
-    color: $font-col-error;
-    margin: 0 auto 25px;
-    font-weight: bold;
-  }
+
 </style>
