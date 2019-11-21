@@ -11,12 +11,11 @@ const Passport = require('./passport');
 app.use(express.json());
 
 app.use('*', (req, res, next) => {
-  if (!req.secure) {
+  if (!req.secure && req.get('x-forwarded-proto') !== 'https') {
     console.log('Perform HTTPS redirect for: ' + req.headers.host + req.url);
-    res.redirect("https://" + req.headers.host + req.url);
-  } else {
-    next();
+    return res.redirect("https://" + req.headers.host + req.url);
   }
+  next();
 });
 
 app.use('/api', controller); // Path chaining -> /api/...
