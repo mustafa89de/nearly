@@ -18,6 +18,10 @@
   import errorCircle from "../assets/icons/error-circle.svg";
   import placeAdd from "../assets/icons/place-add.svg";
   import home from "../assets/icons/home.svg";
+  import menu from "../assets/icons/menu.svg";
+  import edit from "../assets/icons/edit.svg";
+  import help from "../assets/icons/help.svg";
+  import logout from "../assets/icons/logout.svg";
 
   export default {
     props: {
@@ -55,6 +59,14 @@
             return placeAdd;
           case "home":
             return home;
+          case "menu":
+            return menu;
+          case "edit":
+            return edit;
+          case "help":
+            return help;
+          case "logout":
+            return logout;
           default:
             return bug;
         }
