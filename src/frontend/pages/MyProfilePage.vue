@@ -4,9 +4,10 @@
       <h1>Mein Profil</h1>
       <h1 id="menu">...</h1>
     </header>
-    <user-details v-if="user" :user="user"/>
-    <h2>Events an denen {{user.username}} teilnimmt</h2>
-    <event-list id="prtEvents" v-if="participationEvents" :events="this.participationEvents" hideNumbers/>
+    <user-details :user="user" :own="true"/>
+    <h2>Teilnehmende Veranstaltungen</h2>
+    <event-list id="prtEvents" :events="this.participationEvents" hideNumbers
+                @click="handleEventClick"/>
     <h2>Meine Home Position</h2>
     <location-picker @save="handleHomePositionChange"/>
   </article>
@@ -45,23 +46,20 @@
 
           this.user = await UserService.getUserByID(jwtUser.userId);
 
-          const prtEvents = await EventService.getEventsByUserId(jwtUser.userId);
-
-          if (prtEvents) {
-            this.participationEvents = prtEvents.map((event) => {
-              return {
-                title: event.name,
-                description: event.description,
-                lat: event.latitude,
-                lon: event.longitude,
-                time: event.time
-              }
-            });
-          }
-
+          const participationEvents = await EventService.getEventsByUserId(jwtUser.userId);
+          this.participationEvents = participationEvents.map(({name, latitude, longitude, ...e}) => ({
+            title: name,
+            lat: latitude,
+            lon: longitude,
+            ...e
+          }));
+          console.log(this.participationEvents)
         } catch (err) {
           console.error(err);
         }
+      },
+      handleEventClick: function (index) {
+        this.$router.push('/event/' + this.participationEvents[index].id);
       },
       async handleHomePositionChange(newPosition) {
         try {
@@ -85,6 +83,7 @@
 
   article {
     @include pageCard;
+    padding-bottom: 30px;
 
     .picker {
       margin: 25px 25px 35px;
@@ -107,7 +106,7 @@
 
   h2 {
     @include textTitle;
-    margin: 25px 0 0 25px;
+    margin: 50px 0 0 25px;
   }
 
   #menu {
