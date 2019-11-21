@@ -2,7 +2,8 @@
   <section>
     <h2>{{ user.username }}</h2>
     <p>{{ user.description }}</p>
-    <h3>Events von {{this.user.username}}</h3>
+    <h3 v-if="own">Meine Veranstaltungen</h3>
+    <h3 v-else>Events von {{this.user.username}}</h3>
     <event-list class="list" v-if="user" hideNumbers :events="formattedEvents" @click="handleEventClick"/>
   </section>
 </template>
@@ -11,14 +12,15 @@
   import HorizontalEventList from "../components/HorizontalEventList";
 
   export default {
-    props:{
-      user: null
+    props: {
+      user: null,
+      own: Boolean
     },
     components: {
       "event-list": HorizontalEventList
     },
     computed: {
-      formattedEvents: function(){
+      formattedEvents: function () {
         return this.user.hostedEvents.map(event => ({
           title: event.name,
           description: event.description,
@@ -29,7 +31,7 @@
       }
     },
     methods: {
-      handleEventClick: function(index){
+      handleEventClick: function (index) {
         this.$router.push('/event/' + this.user.hostedEvents[index].id);
       }
     }
@@ -39,6 +41,7 @@
 <style scoped lang="scss">
   @import "../assets/variables";
   @import "../assets/mixins";
+
   section {
     color: $font-col-primary;
 
@@ -59,7 +62,7 @@
       overflow: auto;
     }
 
-    .list{
+    .list {
       padding: 0 0 0 25px;
     }
   }

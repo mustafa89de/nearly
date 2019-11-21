@@ -4,9 +4,10 @@
       <h1>Mein Profil</h1>
       <h1 id="menu">...</h1>
     </header>
-    <user-details v-if="user" :user="user"/>
-    <h2>Events an denen {{user.username}} teilnimmt</h2>
-    <event-list id="prtEvents" v-if="participationEvents" :events="this.participationEvents" hideNumbers/>
+    <user-details v-if="user" :user="user" :own="true"/>
+    <h2>Teilnehmende Veranstaltungen</h2>
+    <event-list id="prtEvents" v-if="participationEvents" :events="this.participationEvents" hideNumbers
+                @click="handleEventClick"/>
   </article>
 </template>
 
@@ -16,10 +17,10 @@
   import AuthService from "../services/AuthService";
   import UserService from "../services/UserService";
   import EventService from "../services/EventService";
-  
+
   export default {
     name: "MyProfilePage",
-    
+
     components: {
       'user-details': UserDetails,
       'event-list': EventList
@@ -41,23 +42,20 @@
 
           this.user = await UserService.getUserByID(jwtUser.userId);
 
-          const prtEvents = await EventService.getEventsByUserId(jwtUser.userId);
-
-          if (prtEvents) {
-            this.participationEvents = prtEvents.map((event) => {
-              return {
-                title: event.name,
-                description: event.description,
-                lat: event.latitude,
-                lon: event.longitude,
-                time: event.time
-              }
-            });
-          }
-
+          const participationEvents = await EventService.getEventsByUserId(jwtUser.userId);
+          this.participationEvents = participationEvents.map(({name, latitude, longitude, ...e}) => ({
+            title: name,
+            lat: latitude,
+            lon: longitude,
+            ...e
+          }));
+          console.log(this.participationEvents)
         } catch (err) {
           console.error(err);
         }
+      },
+      handleEventClick: function (index) {
+        this.$router.push('/event/' + this.participationEvents[index].id);
       }
     },
 
@@ -71,11 +69,12 @@
 <style scoped lang="scss">
   @import "../assets/variables";
   @import "../assets/mixins";
-  
+
   article {
-    @include pageCard
+    @include pageCard;
+    padding-bottom: 30px;
   }
-  
+
   header {
     display: flex;
     justify-content: space-between;
@@ -89,17 +88,17 @@
     margin: 0;
     padding: 0;
   }
-  
+
   h2 {
     @include textTitle;
-    margin: 15px 0 0 25px;
+    margin: 50px 0 0 25px;
   }
 
   #menu {
     color: $font-col-active;
     font-size: large;
   }
-  
+
   #prtEvents {
     padding: 15px 0 0 25px;
   }
