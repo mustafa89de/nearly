@@ -11,7 +11,8 @@ class DBService {
       await mongoose.connect(DB_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useCreateIndex: true
+        useCreateIndex: true,
+        useFindAndModify: false
       });
 
       User.init();

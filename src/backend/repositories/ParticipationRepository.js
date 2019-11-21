@@ -55,6 +55,31 @@ class ParticipationRepository {
       throw err;
     }
   }
+
+  async getUserParticipations(userId){
+    try {
+      const participations = await Participation.find({
+        userId: userId
+      }).populate('eventId');
+
+      const events = participations.map(participation => {
+        const event = participation._doc.eventId._doc;
+        return {
+          id: event._id,
+          name: event.name,
+          description: event.description,
+          longitude: event.loc.coordinates[0],
+          latitude: event.loc.coordinates[1],
+          time: event.time,
+          hostId: event.hostId
+        }
+      });
+      return events;
+    } catch (err) {
+      console.error('DB Error:', err.message);
+      throw err;
+    }
+  }
 }
 
 module.exports = new ParticipationRepository();

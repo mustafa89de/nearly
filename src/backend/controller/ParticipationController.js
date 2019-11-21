@@ -1,5 +1,6 @@
 const JWTService = require("../services/JWTService");
 const ParticipationRepository = require('../repositories/ParticipationRepository');
+const AuthService = require('../services/AuthService');
 
 const express = require('express');
 const router = express.Router();
@@ -29,6 +30,17 @@ router.delete('/', JWTService.requireJWT(), async (req, res) => {
       res.status(404).json({message: `Deletion of participation with userId: ${userId} and eventId: ${eventId} unsuccessful`})
     }
     res.json();
+  } catch (err) {
+    console.log(err.status);
+    res.status(500).json({message: err.message})
+  }
+});
+
+router.get('/:uid', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
+  try {
+    const userId = req.params.uid;
+    const participations = await ParticipationRepository.getUserParticipations(userId);
+    res.json(participations);
   } catch (err) {
     console.log(err.status);
     res.status(500).json({message: err.message})
