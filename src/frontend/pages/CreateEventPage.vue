@@ -41,8 +41,11 @@
     },
     computed: {
       mergedDateTime: function () {
-        const [year, month, day] = this.date.split("-"); // Format is always yyyy-mm-dd
+        let [year, month, day] = this.date.split("-"); // Format is always yyyy-mm-dd
         const [hours, minutes] = this.time.split(":"); // Format is always hh:mm
+        if (!isNaN(month)) {
+          month = parseInt(month) - 1
+        }
         return new Date(year || 0, month || 0, day || 0, hours || 0, minutes || 0); // If splitting fails default is 0
       }
     },
