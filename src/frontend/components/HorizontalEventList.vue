@@ -19,8 +19,6 @@
 
 <script>
   import EventListItem from "./EventListItem";
-  import LocationService from "../services/LocationService";
-  import MapService from "../services/MapService";
 
   export default {
     components: {EventListItem},
@@ -32,14 +30,14 @@
       isToday: function (date) {
         const today = new Date();
         return date.getDate() === today.getDate() &&
-            date.getMonth() === today.getMonth() &&
-            date.getFullYear() === today.getFullYear()
+          date.getMonth() === today.getMonth() &&
+          date.getFullYear() === today.getFullYear()
       },
       isTomorrow: function (date) {
         const today = new Date();
         return date.getDate() === today.getDate() + 1 &&
-            date.getMonth() === today.getMonth() &&
-            date.getFullYear() === today.getFullYear()
+          date.getMonth() === today.getMonth() &&
+          date.getFullYear() === today.getFullYear()
       },
       handleClick: function (index) {
         this.$emit('click', index)
@@ -68,7 +66,7 @@
     }
   }
 
-  .error {
+  .error, .loader {
     font-family: Arimo, sans-serif;
     letter-spacing: 0.02em;
     background: $button-col-secondary;
@@ -86,24 +84,5 @@
     font-weight: normal;
     margin: 0 0 0 25px;
 
-  }
-
-  .loader {
-    font-family: Arimo, sans-serif;
-    letter-spacing: 0.02em;
-    background: $button-col-secondary;
-    padding: 20px;
-    border-radius: 25px;
-    color: #fff;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-
-    height: 150px;
-    width: 250px;
-    font-size: 18px;
-    font-weight: normal;
-    margin: 0 0 0 25px;
   }
 </style>

@@ -5,8 +5,8 @@
       <h1 id="menu">...</h1>
     </header>
     <user-details :user="user" :own="true"/>
-    <h2>Teilnehmende Veranstaltungen</h2>
-    <event-list id="prtEvents" :events="this.participationEvents" hideNumbers
+    <h3>Teilnehmende Veranstaltungen</h3>
+    <event-list :events="this.participationEvents" hideNumbers
                 @click="handleEventClick"/>
     <h2>Meine Home Position</h2>
     <location-picker @save="handleHomePositionChange"/>
@@ -53,7 +53,6 @@
             lon: longitude,
             ...e
           }));
-          console.log(this.participationEvents)
         } catch (err) {
           console.error(err);
         }
@@ -104,9 +103,9 @@
     padding: 0;
   }
 
-  h2 {
+  h3 {
     @include textTitle;
-    margin: 50px 0 0 25px;
+    margin: 50px 25px 25px;
   }
 
   #menu {
@@ -114,8 +113,7 @@
     font-size: large;
   }
 
-  #prtEvents {
-    padding: 15px 0 0 25px;
+  .horizontalEventList {
+    padding: 0 0 0 25px;
   }
-
 </style>
