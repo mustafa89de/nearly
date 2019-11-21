@@ -8,6 +8,9 @@
     <h3>Teilnehmende Veranstaltungen</h3>
     <event-list :events="this.participationEvents" hideNumbers
                 @click="handleEventClick"/>
+    <h3>Meine Home Position</h3>
+    <location-picker @save="handleHomePositionChange"/>
+    <p v-if="errorMsg" id="error">{{errorMsg}}</p>
   </article>
 </template>
 
@@ -17,19 +20,22 @@
   import AuthService from "../services/AuthService";
   import UserService from "../services/UserService";
   import EventService from "../services/EventService";
+  import LocationPicker from "../components/LocationPicker";
 
   export default {
     name: "MyProfilePage",
 
     components: {
       'user-details': UserDetails,
-      'event-list': EventList
+      'event-list': EventList,
+      'location-picker': LocationPicker
     },
 
     data() {
       return {
         user: null,
-        participationEvents: null
+        participationEvents: null,
+        errorMsg: null
       }
     },
 
@@ -55,6 +61,15 @@
       },
       handleEventClick: function (index) {
         this.$router.push('/event/' + this.participationEvents[index].id);
+      },
+      async handleHomePositionChange(newPosition) {
+        try {
+          await UserService.saveHomePosition(newPosition)
+          this.errorMsg = null;
+          throw new Error();
+        } catch (e) {
+          this.errorMsg = "Es ist ein Fehler beim setzen der Home Position aufgetreten."
+        }
       }
     },
 
@@ -71,7 +86,10 @@
 
   article {
     @include pageCard;
-    padding-bottom: 30px;
+
+    .picker {
+      margin: 25px 25px 35px;
+    }
   }
 
   header {
@@ -100,5 +118,12 @@
 
   .horizontalEventList {
     padding: 0 0 0 25px;
+  }
+
+  #error {
+    color: $font-col-error;
+    font-weight: bold;
+    margin: -20px 25px 35px;
+    letter-spacing: 0.2px;
   }
 </style>
