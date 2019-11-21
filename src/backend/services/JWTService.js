@@ -17,16 +17,10 @@ class JWTService {
   }
 
   signToken(user) {
-    const homePosition = user.homePosition ? {
-      lon: user.homePosition.coordinates[0],
-      lat: user.homePosition.coordinates[1]
-    } : null;
-
     return JWT.sign({
       iss: 'MeetApp',
       sub: user.id,
       username: user.username,
-      homePosition,
       exp: new Date().setDate(new Date().getDate() + 1) //current time +1 day
     }, JWT_SECRET);
   };
