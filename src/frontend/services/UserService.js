@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {ENDPOINTS} from "../constants";
+import AuthService from "./AuthService";
 
 class UserService {
   async register(username, email, password) {
@@ -38,13 +39,14 @@ class UserService {
     }
   }
 
-  async setHomePosition(uid, {lon, lat}) {
+  async setHomePosition({lon, lat}) {
+    const myUserId = AuthService.getUser().userId;
     const position = {
       longitude: lon,
       latitude: lat
     };
     try {
-      const res = await axios.put(ENDPOINTS.USER + "/" + uid + '/homePosition', position);
+      const res = await axios.put(ENDPOINTS.USER + "/" + myUserId + '/homePosition', position);
       return res.data;
     } catch (err) {
       console.error(err.message);
@@ -52,9 +54,10 @@ class UserService {
     }
   }
 
-  async getHomePosition(uid) {
+  async getHomePosition() {
+    const myUserId = AuthService.getUser().userId;
     try {
-      const res = await axios.get(ENDPOINTS.USER + "/" + uid + '/homePosition');
+      const res = await axios.get(ENDPOINTS.USER + "/" + myUserId + '/homePosition');
       return res.data;
     } catch (err) {
       console.error(err.message);

@@ -64,7 +64,7 @@
       },
       async handleHomePositionChange(newPosition) {
         try {
-          await UserService.setHomePosition(AuthService.getUser().userId, newPosition);
+          await UserService.setHomePosition(newPosition);
           this.$router.go();
           this.errorMsg = null;
           throw new Error();
