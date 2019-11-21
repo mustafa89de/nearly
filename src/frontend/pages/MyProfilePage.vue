@@ -45,7 +45,7 @@
 
           this.user = await UserService.getUserByID(jwtUser.userId);
 
-          const prtEvents = await EventService.getEventsByUserId(jwtUser);
+          const prtEvents = await EventService.getEventsByUserId(jwtUser.userId);
 
           if (prtEvents) {
             this.participationEvents = prtEvents.map((event) => {
@@ -84,11 +84,7 @@
   @import "../assets/mixins";
 
   article {
-    background: $bg-col-primary;
-    margin-top: 25px;
-    padding: 25px 25px 0 0;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
+    @include pageCard;
 
     .picker {
       margin: 25px 25px 35px;
@@ -99,12 +95,14 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+    margin: 0 25px 0 25px;
   }
 
   h1 {
     @include textTitle;
     color: $font-col-primary;
-    margin: 0 0 0 25px;
+    margin: 0;
+    padding: 0;
   }
 
   h2 {
@@ -114,8 +112,7 @@
 
   #menu {
     color: $font-col-active;
-    font-size: xx-large;
-    padding: 0;
+    font-size: large;
   }
 
   #prtEvents {

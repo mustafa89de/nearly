@@ -47,8 +47,7 @@
   @import "../assets/mixins";
 
   article {
-    padding: 25px 0 0 0;
-    display: flex;
+    @include pageCard;
     flex-direction: column;
 
     .not-found{

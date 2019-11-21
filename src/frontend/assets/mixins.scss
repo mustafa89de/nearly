@@ -35,3 +35,11 @@
     font-weight: 800;
     text-transform: uppercase;
 }
+
+@mixin pageCard {
+  background: $bg-col-primary;
+  margin-top: 25px;
+  padding: 25px 0 0 0;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
