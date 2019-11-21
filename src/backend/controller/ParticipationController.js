@@ -36,9 +36,9 @@ router.delete('/', JWTService.requireJWT(), async (req, res) => {
   }
 });
 
-router.get('/:uid', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
+router.get('/:id', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
   try {
-    const userId = req.params.uid;
+    const userId = req.params.id;
     const participations = await ParticipationRepository.getUserParticipations(userId);
     res.json(participations);
   } catch (err) {

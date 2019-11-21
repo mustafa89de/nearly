@@ -22,6 +22,9 @@
   let marker;
 
   export default {
+    props: {
+      sendInitialChange: Boolean
+    },
     components: {
       'map-box': Map,
       "custom-button": Button
@@ -81,7 +84,9 @@
       const bounds = LocationService.toBounds({lon, lat});
       MapService.setBounds(bounds);
       marker = MapService.addMarker({lon, lat, draggable: false, onDragEnd: this.handleMarkerDrag})
-      this.$emit('save', {lon: this.lon, lat: this.lat});
+      if (this.sendInitialChange === true) {
+        this.$emit('save', {lon: this.lon, lat: this.lat});
+      }
     }
   };
 </script>
@@ -108,7 +113,7 @@
       background: $bg-col-primary;
       z-index: 1;
 
-      > input[type="submit"] {
+      > input[type="button"] {
         width: 100%;
         max-width: 400px;
         margin: 0 auto;

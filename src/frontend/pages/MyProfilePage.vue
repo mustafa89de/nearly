@@ -8,6 +8,9 @@
     <h3>Teilnehmende Veranstaltungen</h3>
     <event-list :events="this.participationEvents" hideNumbers
                 @click="handleEventClick"/>
+    <h3>Meine Home Position</h3>
+    <location-picker @save="handleHomePositionChange"/>
+    <p v-if="errorMsg" id="error">{{errorMsg}}</p>
     <slide-menu :username="user.username" :sliderVisible="sliderVisible" />
   </article>
 </template>
@@ -18,8 +21,9 @@
   import AuthService from "../services/AuthService";
   import UserService from "../services/UserService";
   import EventService from "../services/EventService";
-  import Icon from "../components/Icon"
-  import SlideMenu from "../components/SlideMenu"
+  import Icon from "../components/Icon";
+  import SlideMenu from "../components/SlideMenu";
+  import LocationPicker from "../components/LocationPicker";
 
   export default {
     name: "MyProfilePage",
@@ -28,14 +32,16 @@
       'user-details': UserDetails,
       'event-list': EventList,
       "icon": Icon,
-      "slide-menu": SlideMenu
+      "slide-menu": SlideMenu,
+      'location-picker': LocationPicker
     },
 
     data() {
       return {
         user: null,
         participationEvents: null,
-        sliderVisible: false
+        sliderVisible: false,
+        errorMsg: null
       }
     },
 
@@ -68,10 +74,18 @@
       hideSlider: function(e){
         if(e.target.classList.contains("background")){
           this.sliderVisible = !this.sliderVisible;
+      },
+      async handleHomePositionChange(newPosition) {
+        try {
+          await UserService.setHomePosition(newPosition);
+          this.$router.go();
+          this.errorMsg = null;
+          throw new Error();
+        } catch (e) {
+          this.errorMsg = "Es ist ein Fehler beim setzen der Home Position aufgetreten."
         }
       }
     },
-
     created() {
       this.init();
     }
@@ -85,7 +99,10 @@
 
   article {
     @include pageCard;
-    padding-bottom: 30px;
+
+    .picker {
+      margin: 25px 25px 35px;
+    }
   }
 
   header {
@@ -115,5 +132,12 @@
 
   .horizontalEventList {
     padding: 0 0 0 25px;
+  }
+
+  #error {
+    color: $font-col-error;
+    font-weight: bold;
+    margin: -20px 25px 35px;
+    letter-spacing: 0.2px;
   }
 </style>
