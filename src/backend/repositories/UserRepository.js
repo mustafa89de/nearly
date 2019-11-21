@@ -38,6 +38,19 @@ class UserRepository {
     }
   }
 
+  async getHomePosition(userId) {
+    try {
+      const user = await User.findById(userId);
+      return {
+        longitude: user.homePosition.coordinates[0],
+        latitude: user.homePosition.coordinates[1]
+      }
+    } catch (err) {
+      console.error('DB Error:', err.message);
+      throw err;
+    }
+  }
+
   async removeUser(email) {
     try {
       await User.deleteOne({email: email});
