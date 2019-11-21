@@ -20,7 +20,7 @@ class LocationService {
 
   getHomePosition() {
     return new Promise(async (resolve, reject) => {
-      const homePosition = AuthService.getUser().homePosition
+      const homePosition = AuthService.getUser().homePosition;
       if (homePosition) {
         resolve(homePosition);
       } else {
