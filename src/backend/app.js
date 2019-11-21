@@ -10,17 +10,18 @@ const Passport = require('./passport');
 
 app.use(express.json());
 
+app.use('*', (req, res) => {
+  if (!req.secure) {
+    console.log('Perform HTTPS redirect for: ' + req.headers.host + req.url);
+    res.redirect("https://" + req.headers.host + req.url);
+  }
+});
+
 app.use('/api', controller); // Path chaining -> /api/...
 
 app.use(express.static('dist'));
 
 app.use('*', express.static(path.join(__dirname, '/../../dist/index.html')));
-
-app.use('*', (req, res) => {
-  if (!req.secure) {
-    res.redirect("https://" + req.headers.host + req.url);
-  }
-});
 
 Passport.init();
 if (process.env.MODE !== 'TEST') {
