@@ -1,8 +1,8 @@
 <template>
-  <article>
+  <article @click="this.hideSlider">
     <header>
       <h1>Mein Profil</h1>
-      <h1 id="menu">...</h1>
+      <a href="#" @click="toggleSlider"><icon class="menu" iconType="menu" iconColor="primary"/></a>
     </header>
     <user-details :user="user" :own="true"/>
     <h3>Teilnehmende Veranstaltungen</h3>
@@ -11,6 +11,7 @@
     <h3>Meine Home Position</h3>
     <location-picker @save="handleHomePositionChange"/>
     <p v-if="errorMsg" id="error">{{errorMsg}}</p>
+    <slide-menu :username="user.username" :sliderVisible="sliderVisible" />
   </article>
 </template>
 
@@ -20,6 +21,8 @@
   import AuthService from "../services/AuthService";
   import UserService from "../services/UserService";
   import EventService from "../services/EventService";
+  import Icon from "../components/Icon";
+  import SlideMenu from "../components/SlideMenu";
   import LocationPicker from "../components/LocationPicker";
 
   export default {
@@ -28,6 +31,8 @@
     components: {
       'user-details': UserDetails,
       'event-list': EventList,
+      "icon": Icon,
+      "slide-menu": SlideMenu,
       'location-picker': LocationPicker
     },
 
@@ -35,6 +40,7 @@
       return {
         user: null,
         participationEvents: null,
+        sliderVisible: false,
         errorMsg: null
       }
     },
@@ -62,6 +68,13 @@
       handleEventClick: function (index) {
         this.$router.push('/event/' + this.participationEvents[index].id);
       },
+      toggleSlider: function(e){
+        this.sliderVisible = !this.sliderVisible;
+      },
+      hideSlider: function(e){
+        if(e.target.classList.contains("background")){
+          this.sliderVisible = !this.sliderVisible;
+      },
       async handleHomePositionChange(newPosition) {
         try {
           await UserService.setHomePosition(newPosition);
@@ -73,7 +86,6 @@
         }
       }
     },
-
     created() {
       this.init();
     }
@@ -96,15 +108,20 @@
   header {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     margin: 0 25px 0 25px;
-  }
 
-  h1 {
-    @include textTitle;
-    color: $font-col-primary;
-    margin: 0;
-    padding: 0;
+    h1 {
+      @include textTitle;
+      color: $font-col-primary;
+      margin: 0;
+      padding: 0;
+    }
+
+    .menu {
+      height: 32px;
+      width: 32px;
+    }
   }
 
   h3 {
@@ -112,10 +129,6 @@
     margin: 50px 25px 25px;
   }
 
-  #menu {
-    color: $font-col-active;
-    font-size: large;
-  }
 
   .horizontalEventList {
     padding: 0 0 0 25px;
