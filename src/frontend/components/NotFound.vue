@@ -15,10 +15,8 @@
 
   article {
     h1 {
-      font-family: "Poppins", Arial, Helvetica, sans-serif;
+      @include textTitle;
       font-size: 5rem;
-      letter-spacing: 0.10em;
-      font-weight: 800;
       color: $font-col-active;
       margin: 0 0 50px 0;
     }

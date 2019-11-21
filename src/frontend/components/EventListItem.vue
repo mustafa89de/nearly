@@ -90,10 +90,10 @@
 
 <style scoped lang="scss">
   @import "../assets/variables";
+  @import "../assets/mixins";
 
   li {
-    font-family: Arimo, sans-serif;
-    letter-spacing: 0.02em;
+    @include textBody;
     background: $button-col-secondary;
     padding: 20px;
     border-radius: 25px;
@@ -122,9 +122,10 @@
       align-items: center;
       -webkit-box-pack: center;
       justify-content: center;
-      font-family: "Poppins", Arial, Helvetica, sans-serif;
-      color: $red;
+      @include textTitle;
+      letter-spacing: 0;
       font-size: 14px;
+      color: $red;
     }
 
     .title {
@@ -139,8 +140,8 @@
     }
 
     .meta {
-      margin: 0;
       font-size: 12px;
+      margin: 0;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
