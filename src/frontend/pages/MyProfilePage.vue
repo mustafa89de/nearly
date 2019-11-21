@@ -4,9 +4,9 @@
       <h1>Mein Profil</h1>
       <h1 id="menu">...</h1>
     </header>
-    <user-details v-if="user" :user="user" :own="true"/>
+    <user-details :user="user" :own="true"/>
     <h2>Teilnehmende Veranstaltungen</h2>
-    <event-list id="prtEvents" v-if="participationEvents" :events="this.participationEvents" hideNumbers
+    <event-list id="prtEvents" :events="this.participationEvents" hideNumbers
                 @click="handleEventClick"/>
   </article>
 </template>
