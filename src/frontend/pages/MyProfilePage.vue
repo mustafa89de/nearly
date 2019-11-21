@@ -74,6 +74,7 @@
       hideSlider: function(e){
         if(e.target.classList.contains("background")){
           this.sliderVisible = !this.sliderVisible;
+        }
       },
       async handleHomePositionChange(newPosition) {
         try {
