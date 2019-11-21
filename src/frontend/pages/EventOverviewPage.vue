@@ -6,7 +6,7 @@
         @mapUpdate="handleMapUpdate"
     />
     <section id="events">
-      <h2>Für dich</h2>
+      <h2>Events</h2>
       <horizontal-event-list :events="events" @click="handleEventClick"/>
     </section>
   </article>
@@ -97,6 +97,7 @@
 
 <style scoped lang="scss">
   @import "../assets/variables";
+  @import "../assets/mixins";
 
   article {
     min-width: 100%;
@@ -116,11 +117,7 @@
     padding: 50px 0 25px;
 
     > h2 {
-      font-family: Poppins, sans-serif;
-      font-size: 18px;
-      line-height: 27px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+      @include textTitle;
       margin: 0 25px 25px;
     }
 

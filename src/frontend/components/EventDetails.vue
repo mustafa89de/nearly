@@ -30,18 +30,18 @@
       'text-field': TextField,
       'button-send': Button
     },
-    
+
     props: {
       event: Object,
     },
-    
+
     data(){
       return {
         error: null,
         isParticipant: this.event.isParticipant
       };
     },
-    
+
     computed: {
       isCreator: function () {
         if(this.event){
@@ -51,16 +51,16 @@
           return false;
         }
       },
-      
+
       eventDate: function(){
         return new Date(this.event.time).toLocaleDateString();
       },
-      
+
       eventTime: function(){
         return new Date(this.event.time).toLocaleTimeString('de-De', {hour: '2-digit', minute: '2-digit'})
       },
     },
-    
+
     methods: {
       async editEvent(e) {
         try {
@@ -79,7 +79,7 @@
           this.error = "Bei der Anmeldung ist leider etwas schief gelaufen.";
         }
       },
-      
+
       async signOutForEvent(){
         try{
           await EventService.signOutForEvent(this.event._id);
@@ -99,7 +99,7 @@
         }
       },
     },
-    
+
     async created() {
       await this.getHostName();
     },
@@ -109,7 +109,7 @@
 <style scoped lang="scss">
   @import "../assets/variables";
   @import "../assets/mixins";
-  
+
   article {
     flex: 1;
     display: flex;
@@ -122,42 +122,34 @@
   }
 
   h1 {
-    font-family: Poppins, sans-serif;
+    @include textTitle;
     color: $font-col-primary;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
     margin: 0;
   }
 
   p.description {
-    font-size: 18px;
-    font-family: Arimo, sans-serif;
-    line-height: 21px;
-    letter-spacing: 0.02em;
+    @include textBody;
   }
-  
+
   p.error{
     color: $font-col-error;
   }
-  
+
   .fieldContainer {
     flex: 1;
     display: flex;
     flex-flow: row wrap;
   }
-  
+
   .detailField{
     min-width: 50%;
   }
-  
+
   .joinButton {
     margin-top: 5%;
     align-self: center;
   }
-  
+
   .hostLink{
     text-decoration: none;
     color: $font-col-primary;
@@ -165,5 +157,5 @@
       color: $font-col-active;
     }
   }
-  
+
 </style>

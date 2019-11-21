@@ -113,12 +113,7 @@
       flex: none;
 
       > h1 {
-        font-family: Poppins, sans-serif;
-        font-style: normal;
-        font-weight: bold;
-        font-size: 18px;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
+        @include textTitle;
         margin: 0;
       }
     }
@@ -152,11 +147,10 @@
         height: 120px;
         font-size: 18px;
 
-        font-family: Arimo, sans-serif;
+        @include textBody;
         line-height: 21px;
         display: flex;
         align-items: flex-end;
-        letter-spacing: 0.02em;
         resize: none;
 
         transition: 500ms ease;

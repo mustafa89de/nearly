@@ -64,6 +64,7 @@
 
 <style lang="scss">
   @import "../assets/variables";
+  @import "../assets/mixins";
 
   .map-marker {
     background: $red;
@@ -78,7 +79,8 @@
     font-size: 18px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     cursor: pointer;
-    font-family: "Poppins", Arial, Helvetica, sans-serif;
+    @include textTitle;
+    letter-spacing: 0;
     position: absolute;
     z-index: 1;
   }

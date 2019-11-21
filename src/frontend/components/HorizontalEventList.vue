@@ -48,6 +48,7 @@
 
 <style scoped lang="scss">
   @import "../assets/variables";
+  @import "../assets/mixins";
 
   ul {
     list-style: none;
@@ -67,7 +68,7 @@
   }
 
   .error, .loader {
-    font-family: Arimo, sans-serif;
+    @include textBody;
     letter-spacing: 0.02em;
     background: $button-col-secondary;
     padding: 20px;
