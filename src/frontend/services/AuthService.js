@@ -7,20 +7,20 @@ class AuthService {
   constructor() {
     // if axios detects a 401 => logout
     axios.interceptors.response.use(
-        response => response,
-        error => {
-          if (error.response.status === 401) this.logout();
-          return Promise.reject(error);
-        }
+      response => response,
+      error => {
+        if (error.response.status === 401) this.logout();
+        return Promise.reject(error);
+      }
     );
 
     // if authenticated add auth header
     axios.interceptors.request.use(
-        config => {
-          if (this.isAuthenticated()) config.headers.authorization = JWTService.getJWT();
-          return config;
-        },
-        error => Promise.reject(error)
+      config => {
+        if (this.isAuthenticated()) config.headers.authorization = JWTService.getJWT();
+        return config;
+      },
+      error => Promise.reject(error);
     );
   }
 
@@ -43,10 +43,11 @@ class AuthService {
   }
 
   getUser() {
-    const {sub, username} = JWTService.getPayload();
+    const {sub, username, homePosition} = JWTService.getPayload();
     return {
       userId: sub,
-      username
+      username,
+      homePosition
     };
   }
 
