@@ -99,7 +99,6 @@
   @import "../assets/variables";
 
   article {
-    min-height: 100%;
     min-width: 100%;
     display: flex;
     flex: 1;
