@@ -1,10 +1,11 @@
 <template>
   <section>
-    <h2>{{ user.username }}</h2>
-    <p>{{ user.description }}</p>
+    <h2>{{ user ? user.username : '...'}}</h2>
+    <p>{{ user ? user.description: '...' }}</p>
     <h3 v-if="own">Meine Veranstaltungen</h3>
+    <h3 v-else-if="!user">Events von ...</h3>
     <h3 v-else>Events von {{this.user.username}}</h3>
-    <event-list class="list" v-if="user" hideNumbers :events="formattedEvents" @click="handleEventClick"/>
+    <event-list hideNumbers :events="formattedEvents" @click="handleEventClick"/>
   </section>
 </template>
 
@@ -21,6 +22,8 @@
     },
     computed: {
       formattedEvents: function () {
+        if (!this.user) return null;
+
         return this.user.hostedEvents.map(event => ({
           title: event.name,
           description: event.description,
@@ -52,7 +55,7 @@
 
     h3 {
       @include textTitle;
-      margin: 0 25px 15px;
+      margin: 0 25px 25px;
     }
 
     p {
@@ -62,7 +65,7 @@
       overflow: auto;
     }
 
-    .list {
+    .horizontalEventList {
       padding: 0 0 0 25px;
     }
   }
