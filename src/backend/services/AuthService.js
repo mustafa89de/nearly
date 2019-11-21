@@ -1,8 +1,8 @@
 class AuthService {
   compareId(req, res, next) {
-    const paramId = req.params.uid;
+    const paramId = req.params.id;
     const userId = req.user.id;
-    if (paramId === userId){
+    if (paramId === userId) {
       next();
     } else {
       return res.status(403).json('userId not equal to tokenId')

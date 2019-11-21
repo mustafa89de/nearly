@@ -24,6 +24,7 @@ app.use(express.static('dist'));
 
 app.use('*', express.static(path.join(__dirname, '/../../dist/index.html')));
 
+
 Passport.init();
 if (process.env.MODE !== 'TEST') {
   DBService.init();

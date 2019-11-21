@@ -9,7 +9,7 @@ class AuthService {
     axios.interceptors.response.use(
       response => response,
       error => {
-        if (error.response.status === 401) this.logout();
+        if (error && error.response && error.response.status === 401) this.logout();
         return Promise.reject(error);
       }
     );
@@ -43,11 +43,10 @@ class AuthService {
   }
 
   getUser() {
-    const {sub, username, homePosition} = JWTService.getPayload();
+    const {sub, username} = JWTService.getPayload();
     return {
       userId: sub,
-      username,
-      homePosition
+      username
     };
   }
 
