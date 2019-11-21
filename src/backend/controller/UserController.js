@@ -1,3 +1,4 @@
+const AuthService = require('../services/AuthService');
 const UserRepository = require("../repositories/UserRepository");
 const EventRepository = require("../repositories/EventRepository");
 
@@ -36,7 +37,7 @@ router.post('/', async (req, res) => {
 * }
 */
 
-router.get('/:id', JWTService.requireJWT(), async (req, res) => {
+router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
   try {
     const {id} = req.params;
     const user = await UserRepository.getUserById(id);
@@ -73,10 +74,9 @@ router.get('/:id', JWTService.requireJWT(), async (req, res) => {
   }
 });
 
-router.put('/homePosition', JWTService.requireJWT(), async (req, res) => {
+router.put('/:id/homePosition', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
   try {
-    const payload = JWTService.extractPayload(req);
-    const userId = payload.sub;
+    const userId = req.user.id;
     const {longitude, latitude} = req.body;
     const homePosition = {
       type: "Point",
@@ -84,6 +84,15 @@ router.put('/homePosition', JWTService.requireJWT(), async (req, res) => {
     };
     await UserRepository.setHomePosition(userId, homePosition);
     res.json();
+  } catch (err) {
+    res.status(500).json({message: err.message})
+  }
+});
+
+router.get('/:id/homePosition', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
+  try {
+   const homePosition = await UserRepository.getHomePosition(req.user.id);
+   res.json(homePosition);
   } catch (err) {
     res.status(500).json({message: err.message})
   }
