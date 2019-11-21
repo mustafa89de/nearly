@@ -91,8 +91,8 @@ router.put('/:id/homePosition', JWTService.requireJWT(), AuthService.compareId, 
 
 router.get('/:id/homePosition', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
   try {
-   const homePosition = await UserRepository.getHomePosition(req.user.id);
-   res.json(homePosition);
+    const homePosition = await UserRepository.getHomePosition(req.user.id);
+    res.json(homePosition);
   } catch (err) {
     res.status(500).json({message: err.message})
   }

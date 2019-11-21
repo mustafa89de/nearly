@@ -23,7 +23,11 @@ class LocationService {
     return new Promise(async (resolve, reject) => {
       const homePosition = await UserService.getHomePosition(AuthService.getUser().userId);
       if (homePosition) {
-        resolve(homePosition);
+        const {latitude, longitude} = homePosition;
+        resolve({
+          lon: longitude,
+          lat: latitude
+        });
       } else {
         try {
           const {latitude, longitude} = await this.getCurrentLocation();

@@ -38,9 +38,13 @@ class UserService {
     }
   }
 
-  async setHomePosition(uid, homePosition) {
+  async setHomePosition(uid, {lon, lat}) {
+    const position = {
+      longitude: lon,
+      latitude: lat
+    };
     try {
-      const res = await axios.put(ENDPOINTS.USER + "/" + uid + '/homePosition', homePosition);
+      const res = await axios.put(ENDPOINTS.USER + "/" + uid + '/homePosition', position);
       return res.data;
     } catch (err) {
       console.error(err.message);
