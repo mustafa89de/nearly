@@ -41,6 +41,9 @@ class UserRepository {
   async getHomePosition(userId) {
     try {
       const user = await User.findById(userId);
+      if (!user.homePosition.type) {
+        return null
+      }
       return {
         longitude: user.homePosition.coordinates[0],
         latitude: user.homePosition.coordinates[1]
