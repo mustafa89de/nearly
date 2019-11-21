@@ -1,4 +1,5 @@
 import {FALLBACK_HOME_POSITION, INITIAL_MAP_RADIUS} from "../constants";
+import UserService from "./UserService";
 import AuthService from "./AuthService";
 
 const mapboxgl = require("mapbox-gl");
@@ -20,7 +21,7 @@ class LocationService {
 
   getHomePosition() {
     return new Promise(async (resolve, reject) => {
-      const homePosition = AuthService.getUser().homePosition
+      const homePosition = await UserService.getHomePosition(AuthService.getUser().userId);
       if (homePosition) {
         resolve(homePosition);
       } else {

@@ -17,7 +17,7 @@ app.use(express.static('dist'));
 app.use('*', express.static(path.join(__dirname, '/../../dist/index.html')));
 
 app.use('*', (req, res) => {
-  if (!req.secure) {
+  if (!req.secure && req.host !== 'localhost') {
     res.redirect("https://" + req.headers.host + req.url);
   }
 });
