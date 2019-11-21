@@ -1,7 +1,7 @@
 <template>
   <main :class="{'loggedIn' : loggedIn}">
     <router-view/>
-    <nav-bar v-if="loggedIn"/>
+    <nav-bar :state="state" v-if="loggedIn"/>
   </main>
 </template>
 
@@ -15,13 +15,22 @@
     },
     data: function () {
       return {
-        loggedIn: AuthService.isAuthenticated()
+        loggedIn: AuthService.isAuthenticated(),
+        state: "overview"
       }
     },
     updated() {
       const isAuthenticated = AuthService.isAuthenticated();
       if (isAuthenticated !== this.loggedIn) {
         this.loggedIn = isAuthenticated
+      }
+    },
+    watch: {
+      $route(to, from){
+        if(to.path === "/") this.state = "overview";
+        else if(to.path === "/event/create") this.state = "create";
+        else if(to.path === "/me") this.state = "me";
+        else this.state = "overview";
       }
     }
   }

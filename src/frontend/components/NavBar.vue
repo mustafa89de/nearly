@@ -2,13 +2,13 @@
   <footer>
     <nav>
       <router-link to="/">
-        <icon iconType="home"/>
+        <icon :iconColor="state === 'overview' ? 'primary' : 'blackLight'" iconType="home"/>
       </router-link>
       <router-link to="/event/create">
-        <icon iconType="place-add"/>
+        <icon :iconColor="state === 'create' ? 'primary' : 'blackLight'" iconType="place-add"/>
       </router-link>
       <router-link to="/me">
-        <icon iconType="person"/>
+        <icon :iconColor="state === 'me' ? 'primary' : 'blackLight'" iconType="person"/>
       </router-link>
     </nav>
   </footer>
@@ -18,6 +18,9 @@
   import Icon from "./Icon";
 
   export default {
+    props: {
+      state: String // overview, create, me
+    },
     components: {
       'icon': Icon
     }
