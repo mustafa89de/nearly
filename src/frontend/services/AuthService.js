@@ -20,7 +20,7 @@ class AuthService {
         if (this.isAuthenticated()) config.headers.authorization = JWTService.getJWT();
         return config;
       },
-      error => Promise.reject(error);
+      error => Promise.reject(error)
     );
   }
 
