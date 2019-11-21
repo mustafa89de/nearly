@@ -7,7 +7,7 @@
       <router-link to="/event/create">
         <icon iconType="place-add"/>
       </router-link>
-      <router-link to="/links">
+      <router-link to="/me">
         <icon iconType="person"/>
       </router-link>
     </nav>
