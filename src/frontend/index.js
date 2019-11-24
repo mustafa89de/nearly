@@ -3,7 +3,6 @@ import VueRouter from 'vue-router';
 import App from './App';
 
 import RegistrationPage from './pages/RegistrationPage';
-import HomePage from './pages/HomePage';
 import CreateEventPage from './pages/CreateEventPage';
 import EventDetailPage from './pages/EventDetailPage';
 import UserDetailPage from './pages/UserDetailPage';
@@ -14,10 +13,9 @@ import NotFoundPage from './pages/NotFoundPage';
 import LoginPage from "./pages/LoginPage";
 import {checkAuthentication, redirectIfLoggedIn} from "./services/NavigationGuards";
 import EventOverviewPage from "./pages/EventOverviewPage";
+import smoothscroll from 'smoothscroll-polyfill';
 
 Vue.use(VueRouter);
-
-import smoothscroll from 'smoothscroll-polyfill';
 
 smoothscroll.polyfill();
 
@@ -38,11 +36,6 @@ export const router = new VueRouter({
     {
       path: '/',
       component: EventOverviewPage,
-      beforeEnter: checkAuthentication
-    },
-    {
-      path: '/links',
-      component: HomePage,
       beforeEnter: checkAuthentication
     },
     {

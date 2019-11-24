@@ -11,7 +11,7 @@
     <h3>Meine Home Position</h3>
     <location-picker @save="handleHomePositionChange"/>
     <p v-if="errorMsg" id="error">{{errorMsg}}</p>
-    <slide-menu :username="user.username" :sliderVisible="sliderVisible" />
+    <slide-menu :username="user ? user.username : null" :sliderVisible="sliderVisible"/>
   </article>
 </template>
 

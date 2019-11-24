@@ -1,7 +1,7 @@
 <template>
   <article>
     <section :class="['slider', {'slider-visible': sliderVisible}]">
-      <h1>{{username}}</h1>
+      <h1>{{username || '...'}}</h1>
       <div class="divider" />
       <router-link to="#" :class="['link', {'link-visible': sliderVisible}]"><icon iconType="edit" iconColor="black" /><span>Profil bearbeiten</span></router-link>
       <router-link to="#" :class="['link',{'link-visible': sliderVisible}]"><icon iconType="clock" iconColor="black" /><span>Event-Verlauf</span></router-link>
