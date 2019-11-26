@@ -56,6 +56,20 @@ class EventRepository {
       throw err;
     }
   }
+
+  async deleteEvent(eventId){
+    try {
+      let removal = await Event.deleteOne({
+        _id: eventId
+      });
+
+      return removal.n > 0;
+
+    } catch (err) {
+      console.error('DB Error:', err.message);
+      throw err;
+    }
+  }
 }
 
 module.exports = new EventRepository();
