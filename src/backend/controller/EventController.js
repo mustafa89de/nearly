@@ -3,6 +3,7 @@ const EventRepository = require("../repositories/EventRepository");
 const UserRepository = require("../repositories/UserRepository");
 const ParticipationRepository = require("../repositories/ParticipationRepository");
 const MapService = require("../services/MapService");
+const AuthService = require("../services/AuthService");
 
 const express = require('express');
 const router = express.Router();
@@ -89,4 +90,17 @@ router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
   }
 });
 
+router.delete('/:id', JWTService.requireJWT(), AuthService.compareHostId, async (req, res) =>{
+  try {
+    const eventId = req.params.id;
+    const removal = await EventRepository.deleteEvent(eventId);
+    if (!removal){
+      res.status(404).json({message: `Deletion of event with eventId: ${eventId} unsuccessful`})
+    }
+    res.json();
+  } catch (err) {
+    console.log(err.status);
+    res.status(500).json({message: err.message});
+  }
+});
 module.exports = router;
