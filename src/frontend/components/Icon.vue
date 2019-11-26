@@ -84,31 +84,31 @@
 
   .primary {
     path {
-      fill: $font-col-active;
-    }
-  }
-
-  .secondary {
-    path {
-      fill: $orange;
+      fill: $icon-col-primary;
     }
   }
 
   .white {
     path {
-      fill: $font-col-secondary;
+      fill: $icon-col-white;
     }
   }
 
   .black {
     path {
-      fill: $font-col-primary;
+      fill: $icon-col-black;
     }
   }
 
-  .blackLight {
+  .light-black {
     path {
-      fill: $font-col-light;
+      fill: $icon-col-light-black;
+    }
+  }
+
+  .error {
+    path {
+      fill: $red;
     }
   }
 </style>

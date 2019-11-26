@@ -2,32 +2,43 @@
 $white: #FFFFFF;
 $black: #111821;
 $light-black: #838D9A;
-$grey: #AAAAAA;
+$grey: #E6E6E8;
 
 $red: #E44021;
-$orange: #F69B11;
+
+$petroleum: #166C72;
+$dark-petroleum: #12565a;
 
 // Fonts
 $font-col-primary: $black;
 $font-col-secondary: $white;
 $font-col-light: $light-black;
-$font-col-active: $red;
+$font-col-active: $petroleum;
 $font-col-error: $red;
 
+// Icons
+$icon-col-primary: $petroleum;
+$icon-col-black: $black;
+$icon-col-white: $white;
+$icon-col-light-black: $light-black;
+
 // Links
-$link-color: $orange;
+$link-color: $petroleum;
 
 // Backgrounds
 $bg-col-primary: $white;
-$bg-col-secondary: $red;
+$bg-col-secondary: $petroleum;
+
+// Textfield
+$text-field-col: rgba(230, 230, 232, 0.2);
 
 // Buttons
-$button-col-primary: $orange;
-$button-col-secondary: $red;
+$button-col-primary: $petroleum;
+$button-col-secondary: $dark-petroleum;
 $button-col-disabled: $grey;
 
 // Placeholders
-$placeholder-col: rgba($light-black, .5);
+$placeholder-col: rgba($font-col-light, .5);
 $placeholder-col-active: rgba($font-col-active, .5);
 
 // Shadows
@@ -37,3 +48,4 @@ $shadow-dark: 0px 4px 10px rgba(0, 0, 0, 0.5);
 // Sizes
 $nav-height: 56px;
 $slider-width: 300px;
+$map-marker-size: 32px;
