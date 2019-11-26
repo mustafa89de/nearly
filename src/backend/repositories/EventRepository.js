@@ -57,7 +57,7 @@ class EventRepository {
     }
   }
 
-  async updateEvent(eventId, name, time, hostId, description, longitude, latitude){
+  async updateEvent(eventId, name, time, description, longitude, latitude){
     try {
       const loc  = {
         type: "Point",
@@ -66,7 +66,6 @@ class EventRepository {
       await Event.findByIdAndUpdate(eventId,{
         name: name,
         time: time,
-        hostId: hostId,
         description: description,
         loc: loc
       });
