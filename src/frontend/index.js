@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import App from './App';
+import sw from './assets/app.sw.js'
 
 import RegistrationPage from './pages/RegistrationPage';
 import CreateEventPage from './pages/CreateEventPage';
@@ -18,6 +19,17 @@ import smoothscroll from 'smoothscroll-polyfill';
 Vue.use(VueRouter);
 
 smoothscroll.polyfill();
+
+(async function(){
+  if('serviceWorker' in navigator){
+    try{
+      const reg = await navigator.serviceWorker.register(sw, { scope: '/' });
+      console.log('Registration succeeded. Scope is ' + reg.scope);
+    }catch(error){
+      console.log('Registration failed with ' + error);
+    }
+  }
+})();
 
 
 export const router = new VueRouter({
