@@ -4,6 +4,7 @@ const webpack = require("webpack");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 module.exports = {
   entry: './src/frontend/index.js',
@@ -36,6 +37,25 @@ module.exports = {
       template: 'src/frontend/index.html',
     }),
     new CleanWebpackPlugin(),
+    new WebpackPwaManifest({ // must be after HtmlWebpackPlugin
+      name: 'nearly',
+      short_name: 'nearlyPWA',
+      background_color: '#ffffff',
+      theme_color: "#FFFFFF",
+      display: "standalone",
+      scope: "/",
+      crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
+      icons: [
+        {
+          src: path.resolve("src/frontend/assets/pwaicons/192.png"),
+          sizes: '192x192'
+        },
+        {
+          src: path.resolve("src/frontend/assets/pwaicons/192.png"),
+          sizes: '512x512'
+        }
+      ]
+    }),
     new webpack.DefinePlugin({
       'MAPBOX_TOKEN': process.env.MAPBOX_TOKEN
     })
