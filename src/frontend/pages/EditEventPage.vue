@@ -1,6 +1,14 @@
 <template>
   <article>
-    <event-editor title='Event bearbeiten' v-model="event"/>
+    <event-editor
+        title='Event bearbeiten'
+        :name="event === null ? event.name : null"
+        :description="event === null ? event.description : null"
+        :lon="event === null ? event.lon : null"
+        :lat="event === null ? event.lat : null"
+        :time="event === null ? event.time : null"
+        @change="handleChange"
+    />
     <p id="error" v-if="errorMsg">{{errorMsg}}</p>
     <custom-button type="button" text="Speichern" @click="handleSave"/>
   </article>
@@ -32,6 +40,11 @@
         } catch (e) {
           this.errorMsg = 'Ein unbekannter Fehler ist aufgetreten.'
         }
+      },
+      handleChange: function ({key, value}) {
+        let oldEvent = {...this.event};
+        oldEvent[key] = value;
+        this.event = oldEvent;
       },
       handleSave: async function () {
         try {

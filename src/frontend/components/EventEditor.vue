@@ -6,32 +6,32 @@
     <form>
       <text-input
           placeholder="Name"
-          :value="value ? value.name : '...'"
+          :value="name"
           @input="handleChange('name', $event)"
       />
       <textarea
           placeholder="Beschreibung"
-          :value="value ? value.description : '...'"
+          :value="description"
           @input="handleChange('description', $event.target.value)"
       ></textarea>
       <text-input
           icon-type="calendar"
           placeholder="Datum"
           type="date"
-          :value="value ? this.formattedDate : ''"
-          @input="handleChange('date', $event)"
+          v-model="date"
       />
       <text-input
           icon-type="clock"
           id="timeField"
           placeholder="Uhrzeit"
           type="time"
-          :value="value ? this.formattedTime : ''"
-          @input="handleChange('time', $event)"
+          v-model="time"
       />
       <location-picker
-          @save="handleChange('location', $event)"
-          :location="value ? {lat: value.lat, lon:value.lon} :null"
+          @save="handleLocationChange"
+          :location="lat && lon ? {lat, lon} : null"
+          :show-home-position="showHomePosition"
+          :send-initial-change="showHomePosition"
       />
     </form>
   </section>
@@ -45,18 +45,27 @@
   export default {
     props: {
       title: String,
-      value: Object
+      showHomePosition: Boolean,
+      name: String,
+      description: String,
+      lat: Number,
+      lon: Number,
+      datetime: String,
+    },
+    data: function () {
+      return {
+        date: this.formatDate(this.datetime),
+        time: this.formatTime(this.datetime),
+      }
     },
     components: {
       "location-picker": LocationPicker,
       "text-input": TextInput,
       "button-submit": Button
     },
-    computed: {
-      formattedDate: function () {
-        if (!this.value.time) return null;
-
-        const date = new Date(this.value.time);
+    methods: {
+      formatDate(datetime) {
+        const date = new Date(datetime);
         const year = date.getFullYear();
         let month = date.getMonth() + 1;
         if (month < 10) month = '0' + month;
@@ -66,10 +75,8 @@
 
         return `${year}-${month}-${day}`;
       },
-      formattedTime: function () {
-        if (!this.value.time) return null;
-
-        const date = new Date(this.value.time);
+      formatTime(datetime) {
+        const date = new Date(datetime);
         let hours = date.getHours();
         if (hours < 10) hours = '0' + hours;
 
@@ -77,14 +84,34 @@
         if (minutes < 10) minutes = '0' + minutes;
 
         return `${hours}:${minutes}`;
+      },
+      handleChange: function (key, value) {
+        this.$emit('change', {key, value});
+      },
+      handleLocationChange: function ({lon, lat}) {
+        this.handleChange('lat', lat);
+        this.handleChange('lon', lon);
+      },
+      handleDateTimeChange: function (date, time) {
+        let [year, month, day] = date.split("-"); // Format is always yyyy-mm-dd
+
+        if (!isNaN(month)) {
+          month = parseInt(month) - 1
+        }
+
+        const [hours, minutes] = time.split(":"); // Format is always hh:mm
+
+        const mergedDateTime = new Date(year || 0, month || 0, day || 0, hours || 0, minutes || 0); // If splitting fails default is 0
+        this.$emit('change', {key: 'time', value: mergedDateTime.toString()});
       }
     },
-    methods: {
-      handleChange: function (key, value) {
-        let newEvent = this.value;
-        newEvent[key] = value;
-        this.$emit('input', newEvent);
-      }
+    watch: {
+      date: function (newDate) {
+        this.handleDateTimeChange(newDate, this.time)
+      },
+      time: function (newTime) {
+        this.handleDateTimeChange(this.date, newTime)
+      },
     }
   };
 </script>
