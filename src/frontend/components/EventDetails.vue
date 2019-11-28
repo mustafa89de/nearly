@@ -64,7 +64,7 @@
     methods: {
       async editEvent(e) {
         try {
-          await this.$router.push('/event/'+ this.event._id + '/edit');
+          await this.$router.push('/event/' + this.event.id + '/edit');
         } catch (err) {
           console.error(err);
         }
@@ -72,7 +72,7 @@
 
       async signInForEvent(e) {
         try {
-          await EventService.signInForEvent(this.event._id);
+          await EventService.signInForEvent(this.event.id);
           this.isParticipant = true;
         }catch (err) {
           console.error(err);
@@ -82,7 +82,7 @@
 
       async signOutForEvent(){
         try{
-          await EventService.signOutForEvent(this.event._id);
+          await EventService.signOutForEvent(this.event.id);
           this.isParticipant = false;
         }catch(err){
           console.error(err);

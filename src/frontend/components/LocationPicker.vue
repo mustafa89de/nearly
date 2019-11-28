@@ -20,10 +20,13 @@
   import Button from "./Button";
 
   let marker;
+  let lastMinimized = null;
 
   export default {
     props: {
-      sendInitialChange: Boolean
+      sendInitialChange: Boolean,
+      showHomePosition: Boolean,
+      location: Object
     },
     components: {
       'map-box': Map,
@@ -38,8 +41,18 @@
       }
     },
     updated: function () {
-      MapService.resize();
-      MapService.setCenter({lon: this.lon, lat: this.lat});
+      if (lastMinimized !== this.minimized) {
+        MapService.resize();
+        if (this.minimized) {
+          let currentLocation;
+          if (this.lon && this.lat) {
+            currentLocation = {lon: this.lon, lat: this.lat};
+          } else {
+            currentLocation = this.location;
+          }
+          MapService.setCenter(currentLocation);
+        }
+      }
     },
     methods: {
       handleContainerClick: function () {
@@ -68,24 +81,45 @@
         this.minimized = false;
         MapService.enableInteractions();
         MapService.addControls();
-        marker.setDraggable(true);
+        if (marker) {
+          marker.setDraggable(true);
+        }
       },
       minimize: function () {
         this.minimized = true;
         MapService.disableInteractions();
         MapService.removeControls();
-        marker.setDraggable(false);
+        if (marker) {
+          marker.setDraggable(false);
+        }
       }
     },
     async created() {
-      const {lon, lat} = await LocationService.getHomePosition();
-      this.lat = lat;
-      this.lon = lon;
-      const bounds = LocationService.toBounds({lon, lat});
-      MapService.setBounds(bounds);
-      marker = MapService.addMarker({lon, lat, draggable: false, onDragEnd: this.handleMarkerDrag})
-      if (this.sendInitialChange === true) {
-        this.$emit('save', {lon: this.lon, lat: this.lat});
+      if (this.showHomePosition) {
+        const {lon, lat} = await LocationService.getHomePosition();
+        this.lat = lat;
+        this.lon = lon;
+        const bounds = LocationService.toBounds({lon, lat});
+        MapService.setBounds(bounds);
+        marker = MapService.addMarker({lon, lat, draggable: false, onDragEnd: this.handleMarkerDrag});
+        if (this.sendInitialChange === true) {
+          this.$emit('save', {lon: this.lon, lat: this.lat});
+        }
+      }
+    },
+    watch: {
+      location: function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+          if (marker) {
+            marker.remove();
+            marker = null;
+          } else {
+            const {lon, lat} = newValue;
+            const bounds = LocationService.toBounds({lon, lat});
+            MapService.setBounds(bounds);
+            marker = MapService.addMarker({lon, lat, draggable: false, onDragEnd: this.handleMarkerDrag})
+          }
+        }
       }
     }
   };

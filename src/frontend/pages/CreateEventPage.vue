@@ -8,7 +8,8 @@
       <textarea placeholder="Beschreibung" v-model="description"></textarea>
       <text-input icon-type="calendar" placeholder="Datum" type="date" v-model="date"/>
       <text-input icon-type="clock" id="timeField" placeholder="Uhrzeit" type="time" v-model="time"/>
-      <location-picker @save="handleLocationSave" :send-initial-change="true"/>
+      <location-picker @save="handleLocationSave" :send-initial-change="true" :show-home-position="true"
+      />
       <p id="error" v-if="errorMessage">{{errorMessage}}</p>
       <button-submit type="submit" text="Erstellen"
                      :disabled="!name || !latitude || !longitude || !time"/>

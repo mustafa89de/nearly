@@ -9,7 +9,7 @@
     <event-list :events="this.participationEvents" hideNumbers
                 @click="handleEventClick"/>
     <h3>Meine Home Position</h3>
-    <location-picker @save="handleHomePositionChange"/>
+    <location-picker @save="handleHomePositionChange" :show-home-position="true"/>
     <p v-if="errorMsg" id="error">{{errorMsg}}</p>
     <slide-menu :username="user ? user.username : null" :sliderVisible="sliderVisible"/>
   </article>
