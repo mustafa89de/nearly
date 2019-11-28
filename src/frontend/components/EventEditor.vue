@@ -120,7 +120,7 @@
         this.handleDateTimeChange(newDate, this.event.time)
       },
       time: function (newTime) {
-        this.handleDateTimeChange(this.event.date, newTime)
+        this.handleDateTimeChange(this.event.time, newTime)
       },
       event: function (newEvent, oldEvent) {
         if ((!oldEvent || !oldEvent.time) && newEvent.time) { // after initial time has set
