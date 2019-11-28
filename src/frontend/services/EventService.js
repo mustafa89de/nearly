@@ -90,8 +90,12 @@ class EventService {
   }
 
   async saveEvent(event) {
-    console.log('Save event', event);
-    return Promise.resolve();
+    try {
+      await axios.put(ENDPOINTS.EVENT + '/' + event.id, event);
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
   }
 
 }
