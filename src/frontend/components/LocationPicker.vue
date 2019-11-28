@@ -113,12 +113,12 @@
           if (marker) {
             marker.remove();
             marker = null;
-          } else {
-            const {lon, lat} = newValue;
-            const bounds = LocationService.toBounds({lon, lat});
-            MapService.setBounds(bounds);
-            marker = MapService.addMarker({lon, lat, draggable: false, onDragEnd: this.handleMarkerDrag})
           }
+
+          const {lon, lat} = newValue;
+          const bounds = LocationService.toBounds({lon, lat});
+          MapService.setBounds(bounds);
+          marker = MapService.addMarker({lon, lat, draggable: false, onDragEnd: this.handleMarkerDrag})
         }
       }
     }
