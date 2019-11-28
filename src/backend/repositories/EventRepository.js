@@ -58,6 +58,24 @@ class EventRepository {
     }
   }
 
+  async updateEvent(eventId, name, time, description, longitude, latitude){
+    try {
+      const loc  = {
+        type: "Point",
+        coordinates: [longitude, latitude]
+      };
+      await Event.findByIdAndUpdate(eventId,{
+        name: name,
+        time: time,
+        description: description,
+        loc: loc
+      });
+    } catch (err) {
+      console.error('DB Error:', err.message);
+      throw err;
+    }
+  }
+
   async deleteEvent(eventId){
     try {
       const eventRemoval = await Event.deleteOne({

@@ -90,6 +90,17 @@ router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
   }
 });
 
+router.put('/:id', JWTService.requireJWT(), AuthService.compareHostId, async (req, res) =>{
+  try {
+    const eventId = req.params.id;
+    const {name, time, description, longitude, latitude} = req.body;
+    await EventRepository.updateEvent(eventId, name, time, description, longitude, latitude);
+    res.json();
+  }catch (err) {
+    res.status(500).json({message: err.message});
+  }
+});
+
 router.delete('/:id', JWTService.requireJWT(), AuthService.compareHostId, async (req, res) =>{
   try {
     const eventId = req.params.id;
@@ -103,4 +114,6 @@ router.delete('/:id', JWTService.requireJWT(), AuthService.compareHostId, async 
     res.status(500).json({message: err.message});
   }
 });
+
+
 module.exports = router;
