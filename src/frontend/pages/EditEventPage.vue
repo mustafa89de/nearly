@@ -44,9 +44,9 @@
         }
       },
       handleChange: function ({key, value}) {
-        let oldEvent = {...this.event};
-        oldEvent[key] = value;
-        this.event = oldEvent;
+        if (this.event) {
+          this.event[key] = value;
+        }
       },
       handleSave: async function () {
         try {
