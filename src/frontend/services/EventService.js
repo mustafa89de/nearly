@@ -89,9 +89,16 @@ class EventService {
     }
   }
 
-  async saveEvent(event) {
+  async saveEvent({id, name, description, lat, lon, time}) {
     try {
-      await axios.put(ENDPOINTS.EVENT + '/' + event.id, event);
+      const event = {
+        name,
+        description,
+        latitude: lat,
+        longitude: lon,
+        time
+      };
+      await axios.put(ENDPOINTS.EVENT + '/' + id, event);
     } catch (err) {
       console.error(err.message);
       throw err;
