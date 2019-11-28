@@ -6,12 +6,12 @@
     <form>
       <text-input
           placeholder="Name"
-          :value="name"
+          :value="event ? event.name : '...'"
           @input="handleChange('name', $event)"
       />
       <textarea
           placeholder="Beschreibung"
-          :value="description"
+          :value="event ? event.description : '...'"
           @input="handleChange('description', $event.target.value)"
       ></textarea>
       <text-input
@@ -29,7 +29,7 @@
       />
       <location-picker
           @save="handleLocationChange"
-          :location="lat && lon ? {lat, lon} : null"
+          :location="location"
           :show-home-position="showHomePosition"
           :send-initial-change="showHomePosition"
       />
@@ -46,16 +46,24 @@
     props: {
       title: String,
       showHomePosition: Boolean,
-      name: String,
-      description: String,
-      lat: Number,
-      lon: Number,
-      datetime: String,
+      event: Object
     },
     data: function () {
       return {
-        date: this.formatDate(this.datetime),
-        time: this.formatTime(this.datetime),
+        date: this.event ? this.formatDate(this.event.time) : '',
+        time: this.event ? this.formatTime(this.event.time) : '',
+      }
+    },
+    computed: {
+      location: function () {
+        const event = this.event;
+        if (event) {
+          const {lat, lon} = event;
+          if (lat && lon) {
+            return {lat, lon}
+          }
+        }
+        return null
       }
     },
     components: {
@@ -93,6 +101,8 @@
         this.handleChange('lon', lon);
       },
       handleDateTimeChange: function (date, time) {
+        if (!date || !time) return;
+
         let [year, month, day] = date.split("-"); // Format is always yyyy-mm-dd
 
         if (!isNaN(month)) {
@@ -107,13 +117,19 @@
     },
     watch: {
       date: function (newDate) {
-        this.handleDateTimeChange(newDate, this.time)
+        this.handleDateTimeChange(newDate, this.event.time)
       },
       time: function (newTime) {
-        this.handleDateTimeChange(this.date, newTime)
+        this.handleDateTimeChange(this.event.date, newTime)
       },
+      event: function (newEvent, oldEvent) {
+        if ((!oldEvent || !oldEvent.time) && newEvent.time) { // after initial time has set
+          this.date = this.formatDate(newEvent.time);
+          this.time = this.formatTime(newEvent.time);
+        }
+      }
     }
-  };
+  }
 </script>
 
 <style scoped lang="scss">

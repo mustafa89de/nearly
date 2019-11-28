@@ -1,16 +1,18 @@
 <template>
   <article>
     <event-editor
+        :event="event"
         title='Event bearbeiten'
-        :name="event === null ? event.name : null"
-        :description="event === null ? event.description : null"
-        :lon="event === null ? event.lon : null"
-        :lat="event === null ? event.lat : null"
-        :time="event === null ? event.time : null"
         @change="handleChange"
+        :showHomePosition="true"
     />
     <p id="error" v-if="errorMsg">{{errorMsg}}</p>
-    <custom-button type="button" text="Speichern" @click="handleSave"/>
+    <custom-button
+        type="button"
+        text="Speichern"
+        @click="handleSave"
+        :disabled="!event || !event.name || !event.lon || !event.lat || !event.time"
+    />
   </article>
 </template>
 

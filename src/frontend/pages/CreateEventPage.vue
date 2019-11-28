@@ -1,19 +1,18 @@
 <template>
   <article>
     <event-editor
-        :name="name"
-        :description="description"
-        :lon="lon"
-        :lat="lat"
-        :datetime="time"
-        title='Event bearbeiten'
+        :event="event"
+        title='Event erstellen'
         @change="handleChange"
         :showHomePosition="true"
     />
     <p id="error" v-if="errorMsg">{{errorMsg}}</p>
-    <custom-button type="button" text="Erstellen" @click="handleEventCreation"
-                   :disabled="!name || !lon || !lat || !time"/>
-
+    <custom-button
+        type="button"
+        text="Erstellen"
+        @click="handleEventCreation"
+        :disabled="!event.name || !event.lon || !event.lat || !event.time"
+    />
   </article>
 </template>
 
@@ -21,16 +20,7 @@
   import EventEditor from "../components/EventEditor";
   import Button from "../components/Button";
   import EventService from "../services/EventService";
-
-  const ONE_DAY = 24 * 60 * 60 * 1000;
-  const today = new Date();
-  const tomorrow = today.getTime() + ONE_DAY;
-  const initialTime = new Date(tomorrow);
-  initialTime.setHours(20);
-  initialTime.setMinutes(0);
-  initialTime.setSeconds(0);
-  initialTime.setMilliseconds(0);
-
+  import {INITIAL_EVENT} from "../constants";
 
   export default {
     components: {
@@ -39,22 +29,19 @@
     },
     data: function () {
       return {
-        name: '',
-        description: '',
-        lat: null,
-        lon: null,
-        time: initialTime.toString(),
+        event: INITIAL_EVENT,
         errorMsg: null
       }
     },
     methods: {
       handleChange: function ({key, value}) {
-        this[key] = value;
+        this.event[key] = value;
       },
       handleEventCreation: async function (e) {
         e.preventDefault();
         try {
-          await EventService.createEvent(this.name, this.description, this.lat, this.lon, this.time);
+          const {name, description, lat, lon, time} = this.event;
+          await EventService.createEvent(name, description, lat, lon, time);
           this.$router.push('/');
         } catch (err) {
           this.errorMsg = "Ein unbekannter Fehler ist aufgetreten."
