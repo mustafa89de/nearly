@@ -42,7 +42,12 @@
         })
       }
     },
+    destroyed: function(){
+      document.body.classList.add("colored");
+    },
     created: async function () {
+      document.body.classList.remove("colored");
+
       const initialBounds = await this.loadInitialBounds();
 
       MapService.on('moveend', () => {
@@ -108,7 +113,7 @@
   #events {
     z-index: 1;
     position: absolute;
-    background: #fff;
+    background: $bg-col-primary;
     width: 100%;
     max-width: 500px;
     bottom: 0;

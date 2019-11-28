@@ -2,13 +2,13 @@
   <footer>
     <nav>
       <router-link to="/">
-        <icon :iconColor="state === 'overview' ? 'primary' : 'blackLight'" iconType="home"/>
+        <icon :iconColor="state === 'overview' ? 'primary' : 'light-black'" iconType="home"/>
       </router-link>
       <router-link to="/event/create">
-        <icon :iconColor="state === 'create' ? 'primary' : 'blackLight'" iconType="place-add"/>
+        <icon :iconColor="state === 'create' ? 'primary' : 'light-black'" iconType="place-add"/>
       </router-link>
       <router-link to="/me">
-        <icon :iconColor="state === 'me' ? 'primary' : 'blackLight'" iconType="person"/>
+        <icon :iconColor="state === 'me' ? 'primary' : 'light-black'" iconType="person"/>
       </router-link>
     </nav>
   </footer>
