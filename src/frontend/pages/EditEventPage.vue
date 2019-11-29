@@ -14,6 +14,7 @@
         :disabled="!event || !event.name || !event.lon || !event.lat || !event.time"
     />
     <custom-button
+        bordered
         type="button"
         text="Löschen"
         @click="handleDelete"
@@ -105,14 +106,6 @@
     > input {
       align-self: center;
       margin-bottom: 25px;
-
-      &:nth-of-type(2) {
-        padding-top: 10px;
-        padding-bottom: 10px;
-        color: $button-col-primary;
-        border: 5px solid $button-col-primary;
-        background-color: $bg-col-primary;
-      }
     }
 
     #error {

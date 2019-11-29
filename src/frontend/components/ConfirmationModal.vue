@@ -9,12 +9,13 @@
           @click="$emit('confirm')"
       />
       <custom-button
+          bordered
           type="button"
           :text="abortText || 'Abbrechen'"
           @click="$emit('abort')"
       />
     </section>
-    <div id="background"/>
+    <div id="background" @click="$emit('abort')"/>
   </article>
 </template>
 
@@ -70,14 +71,6 @@
       > input {
         align-self: center;
         margin-bottom: 25px;
-
-        &:nth-of-type(2) {
-          padding-top: 10px;
-          padding-bottom: 10px;
-          color: $button-col-primary;
-          border: 5px solid $button-col-primary;
-          background-color: $bg-col-primary;
-        }
       }
     }
 
