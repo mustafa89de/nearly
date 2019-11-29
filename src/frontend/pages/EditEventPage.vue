@@ -80,7 +80,7 @@
         try {
           await EventService.deleteEvent(this.event.id);
           this.showDeleteModal = false;
-          this.$router.go(-2); // 2 because last site is event detail page
+          this.$router.push('/me');
         } catch (e) {
           this.errorMsg = 'Ein unbekannter Fehler ist aufgetreten.';
           this.showDeleteModal = false;

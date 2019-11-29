@@ -106,8 +106,12 @@ class EventService {
   }
 
   async deleteEvent(id) {
-    console.log('Delete Event: ' + id);
-    return Promise.reject()
+    try {
+      await axios.delete(ENDPOINTS.EVENT + '/' + id);
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
   }
 
 }
