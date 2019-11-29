@@ -105,6 +105,11 @@ class EventService {
     }
   }
 
+  async deleteEvent(id) {
+    console.log('Delete Event: ' + id);
+    return Promise.reject()
+  }
+
 }
 
 export default new EventService();
