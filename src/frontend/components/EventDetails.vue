@@ -8,7 +8,7 @@
       <text-field class="detailField" iconType="clock" iconColor="primary" :value="eventTime"/>
     </div>
     <a class="hostLink" :href="'/user/'+ event.hostId">
-       <text-field iconType="person" iconColor="primary" :value="event.hostName"/>
+      <text-field iconType="person" iconColor="primary" :value="event.hostName || '-'"/>
     </a>
     <button-send v-if="isCreator" @click="editEvent" class="joinButton" type="button" text="bearbeiten"/>
     <button-send v-if="isParticipant" @click="signOutForEvent" class="joinButton" type="button" text="absagen"/>
@@ -19,7 +19,6 @@
 
 <script>
   import AuthService from "../services/AuthService";
-  import UserService from "../services/UserService";
   import TextField from "../components/TextField";
   import Button from "../components/Button.vue";
   import EventService from "../services/EventService";
@@ -88,21 +87,8 @@
           console.error(err);
           this.error = "Bei der Abmeldung ist leider etwas schief gelaufen.";
         }
-      },
-
-      async getHostName() {
-        try{
-          this.hostName = await UserService.getUserByID(this.event.hostId);
-        }catch(err){
-          console.error(err);
-          this.hostName = this.event.hostId;
-        }
-      },
-    },
-
-    async created() {
-      await this.getHostName();
-    },
+      }
+    }
   }
 </script>
 
