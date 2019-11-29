@@ -18,7 +18,7 @@ class JWTService {
 
   signToken(user) {
     return JWT.sign({
-      iss: 'MeetApp',
+      iss: 'nearly',
       sub: user.id,
       username: user.username,
       exp: new Date().setDate(new Date().getDate() + 1) //current time +1 day

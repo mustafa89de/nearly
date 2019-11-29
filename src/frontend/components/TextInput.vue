@@ -47,7 +47,7 @@
     computed: {
       getIconColor: function () {
         if (this.isActive) return "primary";
-        else return "blackLight";
+        else return "light-black";
       }
     }
   };

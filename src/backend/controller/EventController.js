@@ -115,5 +115,4 @@ router.delete('/:id', JWTService.requireJWT(), AuthService.compareHostId, async 
   }
 });
 
-
 module.exports = router;

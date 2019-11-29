@@ -1,7 +1,7 @@
 <template>
   <article>
     <header>
-      <h1>Meeting</h1>
+      <logo id="logo"/>
     </header>
     <section class="card">
       <h2>Login</h2>
@@ -28,6 +28,7 @@
   import TextInput from "../components/TextInput.vue";
   import Button from "../components/Button.vue";
   import Icon from "../components/Icon.vue";
+  import Logo from "../assets/logo/nearly.svg";
   import AuthService from "../services/AuthService";
 
   export default {
@@ -42,7 +43,8 @@
     components: {
       "input-text": TextInput,
       "button-submit": Button,
-      "icon": Icon
+      "icon": Icon,
+      "logo": Logo
     },
     methods: {
       handleLogin: async function (e) {
@@ -73,10 +75,10 @@
       }
     },
     mounted() {
-      document.body.classList.add('red');
+      document.body.classList.add('colored');
     },
     destroyed() {
-      document.body.classList.remove('red');
+      document.body.classList.remove('colored');
     }
   };
 </script>
@@ -99,11 +101,8 @@
       display: flex;
       align-items: center;
 
-      h1 {
-        margin: 0;
-        color: $font-col-secondary;
-        font-family: "DM Serif Display", "Times New Roman", Times, serif;
-        font-size: 2rem;
+      #logo{
+        width: 50%;
       }
     }
 
@@ -169,7 +168,7 @@
           }
 
           &:hover {
-            color: $red;
+            color: $petroleum;
           }
         }
       }

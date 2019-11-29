@@ -94,10 +94,10 @@
 
   li {
     @include textBody;
-    background: $button-col-secondary;
+    background: $button-col-primary;
     padding: 20px;
     border-radius: 25px;
-    color: #fff;
+    color: $font-col-secondary;
     position: relative;
     flex: 0 0 250px;
     height: 150px;
@@ -114,8 +114,8 @@
 
       background: $white;
       border-radius: 9999px;
-      height: 28px;
-      width: 28px;
+      height: $map-marker-size * 0.9;
+      width: $map-marker-size * 0.9;
       display: -webkit-box;
       display: flex;
       -webkit-box-align: center;
@@ -125,7 +125,7 @@
       @include textTitle;
       letter-spacing: 0;
       font-size: 14px;
-      color: $red;
+      color: $petroleum;
     }
 
     .title {

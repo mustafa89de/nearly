@@ -7,7 +7,7 @@
       <router-link to="#" :class="['link',{'link-visible': sliderVisible}]"><icon iconType="clock" iconColor="black" /><span>Event-Verlauf</span></router-link>
       <router-link to="#" :class="['link',{'link-visible': sliderVisible}]"><icon iconType="help" iconColor="black" /><span>Hilfe</span></router-link>
       <div class="divider" />
-      <a href="#" @click="handleLogout" :class="['logout', 'link', {'link-visible': sliderVisible}]"><icon iconType="logout" iconColor="primary" /><span>Abmelden</span></a>
+      <a href="#" @click="handleLogout" :class="['logout', 'link', {'link-visible': sliderVisible}]"><icon iconType="logout" iconColor="error" /><span>Abmelden</span></a>
     </section>
     <div :class="['background', {'background-visible': sliderVisible}]"></div>
   </article>
@@ -70,7 +70,7 @@
       margin-bottom: 12px !important;
       transition-delay: 300ms !important;
       span{
-        color: $font-col-active;
+        color: $font-col-error;
       }
     }
 

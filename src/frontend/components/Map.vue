@@ -67,15 +67,15 @@
   @import "../assets/mixins";
 
   .map-marker {
-    background: $red;
-    border: 3px solid #fff;
+    background: $petroleum;
+    border: $map-marker-size * 0.1 solid $font-col-secondary;
     border-radius: 9999px;
-    height: 35px;
-    width: 35px;
+    height: $map-marker-size;
+    width: $map-marker-size;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: $font-col-secondary;
     font-size: 18px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     cursor: pointer;

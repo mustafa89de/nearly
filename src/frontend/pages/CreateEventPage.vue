@@ -139,13 +139,13 @@
       }
 
       > textarea {
-        background: rgba(131, 141, 154, 0.05);
+        background: $text-field-col;
         padding: 10px;
         margin-top: 50px;
         color: $font-col-light;
 
         border: 0;
-        border-bottom: 1px solid #838D9A;
+        border-bottom: 1px solid $light-black;
         outline: 0;
         height: 120px;
         font-size: 18px;
