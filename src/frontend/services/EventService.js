@@ -89,6 +89,11 @@ class EventService {
     }
   }
 
+  async saveEvent(event) {
+    console.log('Save event', event);
+    return Promise.resolve();
+  }
+
 }
 
 export default new EventService();

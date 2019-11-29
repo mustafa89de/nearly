@@ -2,25 +2,24 @@
   <article>
     <event-editor
         :event="event"
-        title='Event erstellen'
+        title='Event bearbeiten'
         @change="handleChange"
         showHomePosition
     />
     <p id="error" v-if="errorMsg">{{errorMsg}}</p>
     <custom-button
         type="button"
-        text="Erstellen"
-        @click="handleEventCreation"
-        :disabled="!event.name || !event.lon || !event.lat || !event.time"
+        text="Speichern"
+        @click="handleSave"
+        :disabled="!event || !event.name || !event.lon || !event.lat || !event.time"
     />
   </article>
 </template>
 
 <script>
   import EventEditor from "../components/EventEditor";
-  import Button from "../components/Button";
   import EventService from "../services/EventService";
-  import {INITIAL_EVENT} from "../constants";
+  import Button from "../components/Button";
 
   export default {
     components: {
@@ -29,22 +28,32 @@
     },
     data: function () {
       return {
-        event: INITIAL_EVENT,
+        event: null,
         errorMsg: null
       }
     },
+    created() {
+      this.fetchEvent(this.$route.params.eid)
+    },
     methods: {
-      handleChange: function ({key, value}) {
-        this.event[key] = value;
-      },
-      handleEventCreation: async function (e) {
-        e.preventDefault();
+      fetchEvent: async function (id) {
         try {
-          const {name, description, lat, lon, time} = this.event;
-          await EventService.createEvent(name, description, lat, lon, time);
-          this.$router.push('/');
-        } catch (err) {
-          this.errorMsg = "Ein unbekannter Fehler ist aufgetreten."
+          this.event = await EventService.getEventById(id);
+        } catch (e) {
+          this.errorMsg = 'Ein unbekannter Fehler ist aufgetreten.'
+        }
+      },
+      handleChange: function ({key, value}) {
+        if (this.event) {
+          this.event[key] = value;
+        }
+      },
+      handleSave: async function () {
+        try {
+          await EventService.saveEvent(this.event);
+          this.$router.push('/event/' + this.event.id);
+        } catch (e) {
+          this.errorMsg = 'Ein unbekannter Fehler ist aufgetreten.'
         }
       }
     }
@@ -71,4 +80,5 @@
       font-weight: bold;
     }
   }
+
 </style>

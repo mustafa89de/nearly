@@ -16,3 +16,18 @@ export const FALLBACK_HOME_POSITION = {
 };
 
 export const GERMANY_BOUNDS = new mapboxgl.LngLat(10.526867, 51.036410).toBounds(500000);
+
+
+const initialTime = new Date();
+initialTime.setHours(20);
+initialTime.setMinutes(0);
+initialTime.setSeconds(0);
+initialTime.setMilliseconds(0);
+
+export const INITIAL_EVENT = {
+  name: '',
+  description: '',
+  lat: null,
+  lon: null,
+  time: initialTime.toString()
+};
