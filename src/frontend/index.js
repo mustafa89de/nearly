@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import App from './App';
-import sw from './assets/app.sw.js'
+import {handleMessage} from "./assets/pwaservices/SwService";
+import serviceWorker from './assets/app.sw.js';
 
 import RegistrationPage from './pages/RegistrationPage';
 import CreateEventPage from './pages/CreateEventPage';
@@ -20,17 +21,12 @@ Vue.use(VueRouter);
 
 smoothscroll.polyfill();
 
-(async function(){
-  if('serviceWorker' in navigator){
-    try{
-      const reg = await navigator.serviceWorker.register(sw, { scope: '/' });
-      console.log('Registration succeeded. Scope is ' + reg.scope);
-    }catch(error){
-      console.log('Registration failed with ' + error);
-    }
+(function () {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register(serviceWorker, {scope: '/'});
+    navigator.serviceWorker.addEventListener('message', handleMessage);
   }
 })();
-
 
 export const router = new VueRouter({
   mode: 'history',

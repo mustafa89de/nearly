@@ -1,5 +1,6 @@
 <template>
   <main :class="{'loggedIn' : loggedIn}">
+    <offline-overlay/>
     <router-view/>
     <nav-bar :state="state" v-if="loggedIn"/>
   </main>
@@ -7,11 +8,13 @@
 
 <script>
   import NavBar from "./components/NavBar";
+  import OfflineOverlay from "./components/OfflineOverlay";
   import AuthService from "./services/AuthService";
 
   export default {
     components: {
-      'nav-bar': NavBar
+      'nav-bar': NavBar,
+      'offline-overlay': OfflineOverlay
     },
     data: function () {
       return {
@@ -63,6 +66,7 @@
   }
 
   main {
+    position: relative;
     flex: 1;
     width: 100%;
     max-width: 500px;
