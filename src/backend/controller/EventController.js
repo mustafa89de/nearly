@@ -68,7 +68,7 @@ router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
     const {id, name, description, time, loc, hostId} = event;
 
     const user = await UserRepository.getUserById(event.hostId);
-    const username = user ? user.username : '-';
+    const username = user ? user.username : null;
 
     const isParticipant = await ParticipationRepository.checkIfParticipant(req.user.id, event.id);
 

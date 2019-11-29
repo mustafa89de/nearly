@@ -4,7 +4,7 @@
         :event="event"
         title='Event erstellen'
         @change="handleChange"
-        :showHomePosition="true"
+        showHomePosition
     />
     <p id="error" v-if="errorMsg">{{errorMsg}}</p>
     <custom-button

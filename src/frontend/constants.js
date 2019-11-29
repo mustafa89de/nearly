@@ -18,10 +18,7 @@ export const FALLBACK_HOME_POSITION = {
 export const GERMANY_BOUNDS = new mapboxgl.LngLat(10.526867, 51.036410).toBounds(500000);
 
 
-const ONE_DAY = 24 * 60 * 60 * 1000;
-const today = new Date();
-const tomorrow = today.getTime() + ONE_DAY;
-const initialTime = new Date(tomorrow);
+const initialTime = new Date();
 initialTime.setHours(20);
 initialTime.setMinutes(0);
 initialTime.setSeconds(0);
