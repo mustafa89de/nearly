@@ -4,12 +4,12 @@
       <h1>Mein Profil</h1>
       <a href="#" @click="toggleSlider"><icon class="menu" iconType="menu" iconColor="primary"/></a>
     </header>
-    <user-details :user="user" :own="true"/>
+    <user-details :user="user" own/>
     <h3>Teilnehmende Veranstaltungen</h3>
     <event-list :events="this.participationEvents" hideNumbers
                 @click="handleEventClick"/>
     <h3>Meine Home Position</h3>
-    <location-picker @save="handleHomePositionChange" :show-home-position="true"/>
+    <location-picker @save="handleHomePositionChange" show-home-position/>
     <p v-if="errorMsg" id="error">{{errorMsg}}</p>
     <slide-menu :username="user ? user.username : null" :sliderVisible="sliderVisible"/>
   </article>
