@@ -1,18 +1,18 @@
 <template>
   <article>
-    <h1>{{event.name}}</h1>
+    <h1>{{event? event.name : '...'}}</h1>
     <!-- TODO: Implement share Button -->
-    <p class="description">{{ event.description }}</p>
+    <p class="description">{{ event ? event.description : '...' }}</p>
     <div class="fieldContainer">
       <text-field class="detailField" iconType="calendar" iconColor="primary" :value="eventDate"/>
       <text-field class="detailField" iconType="clock" iconColor="primary" :value="eventTime"/>
     </div>
-    <a class="hostLink" :href="'/user/'+ event.hostId">
-      <text-field iconType="person" iconColor="primary" :value="event.hostName || '-'"/>
+    <a class="hostLink" :href="event && event.hostName ? '/user/'+ event.hostId : null">
+      <text-field iconType="person" iconColor="primary" :value="event ? (event.hostName || '-') : '...'"/>
     </a>
-    <button-send v-if="isCreator" @click="editEvent" class="joinButton" type="button" text="bearbeiten"/>
-    <button-send v-if="isParticipant" @click="signOutForEvent" class="joinButton" type="button" text="absagen"/>
-    <button-send v-else @click="signInForEvent" class="joinButton" type="button" text="mitmachen"/>
+    <button-send v-if="isCreator" @click="editEvent" type="button" text="bearbeiten"/>
+    <button-send v-if="event && event.isParticipant" bordered @click="signOutForEvent" type="button" text="absagen"/>
+    <button-send v-else @click="signInForEvent" type="button" text="mitmachen"/>
     <p class="error" v-if="error">{{error}}</p>
   </article>
 </template>
@@ -25,7 +25,7 @@
 
   export default {
     name: "EventDetails",
-    components:{
+    components: {
       'text-field': TextField,
       'button-send': Button
     },
@@ -34,28 +34,29 @@
       event: Object,
     },
 
-    data(){
+    data() {
       return {
-        error: null,
-        isParticipant: this.event.isParticipant
+        error: null
       };
     },
 
     computed: {
       isCreator: function () {
-        if(this.event){
+        if (this.event) {
           const thisUserId = AuthService.getUser().userId;
           return thisUserId === this.event.hostId;
-        }else{
+        } else {
           return false;
         }
       },
 
-      eventDate: function(){
+      eventDate: function () {
+        if (!this.event) return '...';
         return new Date(this.event.time).toLocaleDateString();
       },
 
-      eventTime: function(){
+      eventTime: function () {
+        if (!this.event) return '...';
         return new Date(this.event.time).toLocaleTimeString('de-De', {hour: '2-digit', minute: '2-digit'})
       },
     },
@@ -72,18 +73,18 @@
       async signInForEvent(e) {
         try {
           await EventService.signInForEvent(this.event.id);
-          this.isParticipant = true;
-        }catch (err) {
+          this.event.isParticipant = true;
+        } catch (err) {
           console.error(err);
           this.error = "Bei der Anmeldung ist leider etwas schief gelaufen.";
         }
       },
 
-      async signOutForEvent(){
-        try{
+      async signOutForEvent() {
+        try {
           await EventService.signOutForEvent(this.event.id);
-          this.isParticipant = false;
-        }catch(err){
+          this.event.isParticipant = false;
+        } catch (err) {
           console.error(err);
           this.error = "Bei der Abmeldung ist leider etwas schief gelaufen.";
         }
@@ -105,43 +106,45 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 0px 0px 50px 50px;
     padding: 5%;
-  }
 
-  h1 {
-    @include textTitle;
-    color: $font-col-primary;
-    margin: 0;
-  }
+    h1 {
+      @include textTitle;
+      color: $font-col-primary;
+      margin: 0;
+    }
 
-  p.description {
-    @include textBody;
-  }
+    p.description {
+      @include textBody;
+    }
 
-  p.error{
-    color: $font-col-error;
-  }
+    p.error {
+      color: $font-col-error;
+    }
 
-  .fieldContainer {
-    flex: 1;
-    display: flex;
-    flex-flow: row wrap;
-  }
+    .fieldContainer {
+      flex: 1;
+      display: flex;
+      flex-flow: row wrap;
+    }
 
-  .detailField{
-    min-width: 50%;
-  }
+    .detailField {
+      min-width: 50%;
+    }
 
-  .joinButton {
-    margin-top: 5%;
-    align-self: center;
-  }
+    > input[type="button"] {
+      margin-top: 5%;
+      align-self: center;
+    }
 
-  .hostLink{
-    text-decoration: none;
-    color: $font-col-primary;
-    :hover{
-      color: $font-col-active;
+    .hostLink {
+      text-decoration: none;
+      color: $font-col-primary;
+
+      :hover {
+        color: $font-col-active;
+      }
     }
   }
+
 
 </style>
