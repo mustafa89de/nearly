@@ -89,9 +89,29 @@ class EventService {
     }
   }
 
-  async saveEvent(event) {
-    console.log('Save event', event);
-    return Promise.resolve();
+  async saveEvent({id, name, description, lat, lon, time}) {
+    try {
+      const event = {
+        name,
+        description,
+        latitude: lat,
+        longitude: lon,
+        time
+      };
+      await axios.put(ENDPOINTS.EVENT + '/' + id, event);
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+  }
+
+  async deleteEvent(id) {
+    try {
+      await axios.delete(ENDPOINTS.EVENT + '/' + id);
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
   }
 
 }

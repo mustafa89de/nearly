@@ -158,6 +158,7 @@
     &.minimized {
       position: relative;
       height: 200px;
+      flex: none;
     }
 
     &:not(.minimized) {

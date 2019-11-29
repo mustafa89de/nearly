@@ -58,13 +58,13 @@ class EventRepository {
     }
   }
 
-  async updateEvent(eventId, name, time, description, longitude, latitude){
+  async updateEvent(eventId, name, time, description, longitude, latitude) {
     try {
-      const loc  = {
+      const loc = {
         type: "Point",
         coordinates: [longitude, latitude]
       };
-      await Event.findByIdAndUpdate(eventId,{
+      await Event.findByIdAndUpdate(eventId, {
         name: name,
         time: time,
         description: description,
@@ -76,7 +76,7 @@ class EventRepository {
     }
   }
 
-  async deleteEvent(eventId){
+  async deleteEvent(eventId) {
     try {
       const eventRemoval = await Event.deleteOne({
         _id: eventId

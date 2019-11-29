@@ -13,6 +13,21 @@
         @click="handleSave"
         :disabled="!event || !event.name || !event.lon || !event.lat || !event.time"
     />
+    <custom-button
+        bordered
+        type="button"
+        text="Löschen"
+        @click="handleDelete"
+        :disabled="!event"
+    />
+    <confirmation-modal
+        v-if="showDeleteModal"
+        title="Löschen"
+        text="Bist du dir sicher, dass du das Event löschen möchtest?"
+        confirm-text="Löschen"
+        @confirm="confirmDelete"
+        @abort="abortDelete"
+    />
   </article>
 </template>
 
@@ -20,16 +35,19 @@
   import EventEditor from "../components/EventEditor";
   import EventService from "../services/EventService";
   import Button from "../components/Button";
+  import ConfirmationModal from "../components/ConfirmationModal";
 
   export default {
     components: {
+      ConfirmationModal,
       'event-editor': EventEditor,
       'custom-button': Button
     },
     data: function () {
       return {
         event: null,
-        errorMsg: null
+        errorMsg: null,
+        showDeleteModal: false
       }
     },
     created() {
@@ -55,6 +73,22 @@
         } catch (e) {
           this.errorMsg = 'Ein unbekannter Fehler ist aufgetreten.'
         }
+      },
+      handleDelete() {
+        this.showDeleteModal = true
+      },
+      async confirmDelete() {
+        try {
+          await EventService.deleteEvent(this.event.id);
+          this.showDeleteModal = false;
+          this.$router.push('/me');
+        } catch (e) {
+          this.errorMsg = 'Ein unbekannter Fehler ist aufgetreten.';
+          this.showDeleteModal = false;
+        }
+      },
+      abortDelete() {
+        this.showDeleteModal = false
       }
     }
   }

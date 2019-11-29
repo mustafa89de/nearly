@@ -137,7 +137,6 @@
   @import "../assets/mixins";
 
   section {
-    @include pageCard;
     padding: 25px;
     display: flex;
     flex-direction: column;
