@@ -1,4 +1,5 @@
 const Event = require('../models/Event');
+const Participation = require('../models/Participation');
 
 class EventRepository {
   async createEvent(name, time, hostId, description, loc) {
@@ -69,6 +70,25 @@ class EventRepository {
         description: description,
         loc: loc
       });
+    } catch (err) {
+      console.error('DB Error:', err.message);
+      throw err;
+    }
+  }
+
+  async deleteEvent(eventId){
+    try {
+      const eventRemoval = await Event.deleteOne({
+        _id: eventId
+      });
+
+      if (eventRemoval.n > 0) {
+        await Participation.deleteMany({
+          eventId: eventId
+        })
+      }
+      return eventRemoval.n > 0;
+
     } catch (err) {
       console.error('DB Error:', err.message);
       throw err;
