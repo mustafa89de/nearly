@@ -107,7 +107,7 @@ class EventService {
 
   async deleteEvent(id) {
     console.log('Delete Event: ' + id);
-    return Promise.reject()
+    return Promise.resolve()
   }
 
 }
