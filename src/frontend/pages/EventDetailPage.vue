@@ -30,16 +30,13 @@
 
     computed: {
       bounds: function () {
-        const [lon, lat] = this.event.loc.coordinates;
+        const {lon, lat} = this.event;
         return LocationService.toBounds({lon, lat});
       },
       markers: function () {
         if (!this.event) return [];
-        const coords = [{
-          lon: this.event.loc.coordinates[0],
-          lat: this.event.loc.coordinates[1]
-        }];
-        return coords;
+        const {lon, lat} = this.event;
+        return [{lon, lat}];
       }
     },
 
@@ -59,7 +56,7 @@
       },
     },
 
-    mounted() {
+    created() {
       this.init()
     }
   }

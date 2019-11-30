@@ -1,6 +1,6 @@
 <template>
   <router-link v-if="type === 'link'" :to="to">{{text}}</router-link>
-  <input v-else :type="type" :value="text" @click="handleClick" :disabled="disabled"/>
+  <input v-else :type="type" :value="text" @click="handleClick" :disabled="disabled" :class="{'bordered' : bordered}"/>
 </template>
 
 <script>
@@ -10,7 +10,8 @@
       text: String,
       onClick: Function,
       disabled: Boolean,
-      to: String
+      to: String,
+      bordered: Boolean
     },
     methods: {
       handleClick: function (e) {
@@ -32,7 +33,7 @@
     padding: 15px;
     border: none;
     border-radius: 30px;
-    transition: background-color 500ms ease, box-shadow 500ms ease;
+    transition: color 500ms ease, background-color 500ms ease, box-shadow 500ms ease;
     appearance: none;
     outline: none;
     cursor: pointer;
@@ -40,7 +41,7 @@
     text-decoration: none;
 
     &:active {
-        background-color: darken($button-col-secondary, 10%);
+      background-color: darken($button-col-secondary, 10%);
     }
 
     &:disabled {
@@ -50,6 +51,19 @@
     &:hover:not(:disabled) {
       box-shadow: $shadow-default;
       background-color: $button-col-secondary
+    }
+
+    &.bordered {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      color: $button-col-primary;
+      border: 5px solid $button-col-primary;
+      background-color: $bg-col-primary;
+
+      &:hover {
+        background-color: $button-col-primary;
+        color: $font-col-secondary;
+      }
     }
   }
 </style>

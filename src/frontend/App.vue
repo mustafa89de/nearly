@@ -28,13 +28,21 @@
         this.loggedIn = isAuthenticated
       }
     },
-    watch: {
-      $route(to, from){
-        if(to.path === "/") this.state = "overview";
-        else if(to.path === "/event/create") this.state = "create";
-        else if(to.path === "/me") this.state = "me";
+    methods: {
+      syncNavBarState(path) {
+        if (path === "/") this.state = "overview";
+        else if (path === "/event/create") this.state = "create";
+        else if (path === "/me") this.state = "me";
         else this.state = "overview";
       }
+    },
+    watch: {
+      $route(to, from) {
+        this.syncNavBarState(to.path);
+      }
+    },
+    created() {
+      this.syncNavBarState(this.$route.path);
     }
   }
 </script>

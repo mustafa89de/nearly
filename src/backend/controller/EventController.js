@@ -63,29 +63,30 @@ router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
 
     const event = await EventRepository.getEventById(req.params.eid);
 
-    if(!event) res.status(404).json({message: "The requested event does not exist!"});
+    if (!event) res.status(404).json({message: "The requested event does not exist!"});
 
-    const {_id, name, description, time, loc, hostId} = event;
+    const {id, name, description, time, loc, hostId} = event;
 
-    const username = (await UserRepository.getUserById(event.hostId)).username;
+    const user = await UserRepository.getUserById(event.hostId);
+    const username = user ? user.username : null;
 
-    const isParticipant = await ParticipationRepository.checkIfParticipant(req.user.id, event._id);
-
+    const isParticipant = await ParticipationRepository.checkIfParticipant(req.user.id, event.id);
 
     const resData = {
-      _id,
+      id,
       name,
       description,
       time,
-      loc,
+      lat: loc.coordinates[1],
+      lon: loc.coordinates[0],
       hostId,
       hostName: username,
       isParticipant: isParticipant
     };
 
     res.status(200).json(resData);
-  }catch(err){
-    console.log(err.status);
+  } catch (err) {
+    console.log(err.status, err);
     res.status(500).json({message: err.message});
   }
 });
@@ -97,6 +98,20 @@ router.put('/:id', JWTService.requireJWT(), AuthService.compareHostId, async (re
     await EventRepository.updateEvent(eventId, name, time, description, longitude, latitude);
     res.json();
   }catch (err) {
+    res.status(500).json({message: err.message});
+  }
+});
+
+router.delete('/:id', JWTService.requireJWT(), AuthService.compareHostId, async (req, res) =>{
+  try {
+    const eventId = req.params.id;
+    const removal = await EventRepository.deleteEvent(eventId);
+    if (!removal){
+      res.status(404).json({message: `Deletion of event with eventId: ${eventId} unsuccessful`})
+    }
+    res.json();
+  } catch (err) {
+    console.log(err.status);
     res.status(500).json({message: err.message});
   }
 });

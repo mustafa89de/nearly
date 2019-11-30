@@ -1,5 +1,4 @@
 import {mount} from '@vue/test-utils';
-import RegistrationPage from './RegistrationPage.vue';
 import CreateEventPage from "./CreateEventPage";
 import EventService from "../services/EventService";
 
