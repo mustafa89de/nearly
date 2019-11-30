@@ -2,7 +2,7 @@
   <article id="offlineoverlay">
     <section class="content">
       <div class="message">Du bist offline!</div>
-      <reload-button type="button" text="reload" />
+      <reload-button type="button" text="reload" @click="handleEventCreation"/>
     </section>
   </article>
 </template>
@@ -13,6 +13,12 @@
   export default {
     components:{
       'reload-button': Button
+    },
+    
+    methods:{
+      handleEventCreation: function(){
+        document.location.reload();
+      }
     }
   }
 </script>
