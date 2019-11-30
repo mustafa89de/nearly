@@ -60,7 +60,7 @@
     flex-direction: column;
     align-items: center;
 
-    &.red {
+    &.colored {
       background-color: $bg-col-secondary;
     }
   }

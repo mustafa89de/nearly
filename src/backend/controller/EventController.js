@@ -3,6 +3,7 @@ const EventRepository = require("../repositories/EventRepository");
 const UserRepository = require("../repositories/UserRepository");
 const ParticipationRepository = require("../repositories/ParticipationRepository");
 const MapService = require("../services/MapService");
+const AuthService = require("../services/AuthService");
 
 const express = require('express');
 const router = express.Router();
@@ -85,6 +86,17 @@ router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
     res.status(200).json(resData);
   }catch(err){
     console.log(err.status);
+    res.status(500).json({message: err.message});
+  }
+});
+
+router.put('/:id', JWTService.requireJWT(), AuthService.compareHostId, async (req, res) =>{
+  try {
+    const eventId = req.params.id;
+    const {name, time, description, longitude, latitude} = req.body;
+    await EventRepository.updateEvent(eventId, name, time, description, longitude, latitude);
+    res.json();
+  }catch (err) {
     res.status(500).json({message: err.message});
   }
 });

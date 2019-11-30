@@ -70,10 +70,10 @@
   .error, .loader {
     @include textBody;
     letter-spacing: 0.02em;
-    background: $button-col-secondary;
+    background: $button-col-primary;
     padding: 20px;
     border-radius: 25px;
-    color: #fff;
+    color: $font-col-secondary;
     position: relative;
     display: flex;
     flex-direction: column;
