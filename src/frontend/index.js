@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import App from './App';
-import {handleMessage} from "./assets/pwaservices/SwService";
+import {handleMessage} from "./assets/pwaservices/swMessageHandler";
 import serviceWorker from './assets/app.sw.js';
 
 import RegistrationPage from './pages/RegistrationPage';

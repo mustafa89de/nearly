@@ -9,14 +9,14 @@
 
 <script>
   import Button from "./Button";
-  
+
   export default {
-    components:{
+    components: {
       'reload-button': Button
     },
-    
-    methods:{
-      handleEventCreation: function(){
+
+    methods: {
+      handleEventCreation: function () {
         document.location.reload();
       }
     }
@@ -26,7 +26,7 @@
 <style scoped lang="scss">
   @import "../assets/variables";
   
-  article{
+  article {
     position: fixed;
     width: 100%;
     max-width: 500px;
@@ -37,7 +37,7 @@
     
     margin: 0;
     padding: 25px;
-  
+    
     background-color: $grey;
     color: $font-col-active;
     border-bottom-left-radius: 25px;
@@ -45,7 +45,7 @@
     box-shadow: $shadow-default;
   }
   
-  .content{
+  .content {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -53,7 +53,7 @@
     align-items: baseline;
   }
   
-  .message{
+  .message {
     width: 28%;
     padding: 0;
   }

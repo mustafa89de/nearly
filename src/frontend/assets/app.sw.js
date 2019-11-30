@@ -6,75 +6,52 @@ const SWMESSAGES = {
 const OFFLINECHECKERTIME = 5000;
 let appIsOnline = true;
 
+self.addEventListener('install', function (event) {
+  self.skipWaiting();
+});
+
 self.addEventListener('fetch', (event) => {
   return event.respondWith(
     fetch(event.request)
       .then((response) => {
         if (!appIsOnline) {
           appIsOnline = true;
-          sendOnlineMessages(event.clientId).catch((err) => {
+          sendMessage(event.clientId, SWMESSAGES.ONLINE).catch((err) => {
             console.error(err.message);
           });
-        };
+        }
         return response;
       })
       .catch(() => {
         if (appIsOnline) {
           appIsOnline = false;
-          sendOfflineMessages(event.clientId).catch((err) => {
+          sendMessage(event.clientId, SWMESSAGES.OFFLINE).catch((err) => {
             console.error(err.message);
           });
-          checkOfflineState(event.request, event.clientId, OFFLINECHECKERTIME);
         }
+        checkOfflineState(event.request, event.clientId, OFFLINECHECKERTIME);
       })
   )
 });
 
-let sendOfflineMessages = async function (cid) {
+let sendMessage = async function (cid, message) {
   try {
     if (!cid) return;
     const client = await self.clients.get(cid);
     if (!client) return;
     client.postMessage({
-      msg: SWMESSAGES.OFFLINE
+      msg: message
     })
   } catch (err) {
-    console.error("Sending offline message from SW failed")
+    console.error(`Sending message: '${message}' from SW failed`);
   }
-};
-
-let sendOnlineMessages = async function (cid) {
-  try {
-    if (!cid) return;
-    const client = await self.clients.get(cid);
-    if (!client) return;
-    client.postMessage({
-      msg: SWMESSAGES.ONLINE
-    })
-  } catch (err) {
-    console.error("Sending Online message from SW failed")
-  }
-};
-
-let sendReloadMessage = async function (cid) {
-  try {
-    if (!cid) return;
-    const client = await self.clients.get(cid);
-    if (!client) return;
-    client.postMessage({
-      msg: SWMESSAGES.RELOAD
-    })
-  } catch (err) {
-    console.error("Sending Reload message from SW failed")
-  }
-};
+}
 
 let checkOfflineState = function (request, clientId, timeout) {
   setTimeout(() => {
-    console.log("try to fetch again");
     fetch(request)
       .then(() => {
-        sendReloadMessage(clientId);
+        sendMessage(clientId, SWMESSAGES.RELOAD);
       })
       .catch(() => {
         checkOfflineState(request, clientId, timeout);
