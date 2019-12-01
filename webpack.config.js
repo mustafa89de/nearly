@@ -4,6 +4,7 @@ const webpack = require("webpack");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/frontend/index.js',
@@ -31,6 +32,9 @@ module.exports = {
   },
   plugins: [
     new VueLoaderPlugin(),
+    new CopyWebpackPlugin([
+      {from: 'public', to: ''}
+    ]),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/frontend/index.html',
