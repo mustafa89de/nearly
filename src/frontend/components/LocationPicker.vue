@@ -6,6 +6,8 @@
     <map-box
         :disabled="minimized"
         @mapClick="handleMapClick"
+        :showRadius="showRadius"
+        @radiusCallback="drawRadius"
     />
     <footer v-if="!minimized">
       <custom-button type="button" text="Fertig" @click="handleSave"/>
@@ -26,7 +28,8 @@
     props: {
       sendInitialChange: Boolean,
       showHomePosition: Boolean,
-      location: Object
+      location: Object,
+      showRadius: Boolean
     },
     components: {
       'map-box': Map,
@@ -69,6 +72,7 @@
       handleMarkerDrag: function ({lat, lon}) {
         this.lat = lat;
         this.lon = lon;
+        if(this.showRadius) MapService.updateRadius({lon, lat}, 10);
         MapService.setCenter({lon, lat})
       },
       handleSave: function (e) {
@@ -92,6 +96,10 @@
         if (marker) {
           marker.setDraggable(false);
         }
+      },
+      drawRadius: function () {
+        console.log("callback");
+        MapService.updateRadius({ lon: this.lon, lat: this.lat}, 1);
       }
     },
     async created() {
@@ -104,6 +112,12 @@
         marker = MapService.addMarker({lon, lat, draggable: false, onDragEnd: this.handleMarkerDrag});
         if (this.sendInitialChange === true) {
           this.$emit('save', {lon: this.lon, lat: this.lat});
+        }
+        if(this.showRadius) {
+          marker.on("drag", () => {
+            const {lng, lat} = marker.getLngLat();
+            MapService.updateRadius({lon: lng, lat: lat}, 1);
+          });
         }
       }
     },

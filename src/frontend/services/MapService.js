@@ -1,15 +1,26 @@
 import mapboxgl from "mapbox-gl";
-import {GERMANY_BOUNDS, MAP_ID} from "../constants";
+import {
+  GERMANY_BOUNDS,
+  MAP_ID
+} from "../constants";
 
 const STYLE = 'mapbox://styles/mapbox/light-v10';
 
 class MapService {
   constructor() {
-    this.controls = new mapboxgl.NavigationControl();
+    this.controls = [
+      new mapboxgl.NavigationControl(),
+      new mapboxgl.GeolocateControl({
+        positionOptions: {
+          enableHighAccuracy: true
+        },
+        trackUserLocation: true
+      })
+    ];
     this.controlPosition = null;
   }
 
-  initMap({bounds, controlPosition, disabled}) {
+  initMap({bounds, controlPosition, disabled, showRadius}) {
     return new Promise(resolve => {
       mapboxgl.accessToken = MAPBOX_TOKEN; // Wird beim compilieren durch Webpack Define Plugin ersetzt
 
@@ -17,11 +28,12 @@ class MapService {
 
       let options = {
         container: MAP_ID,
-        style: STYLE
+        style: STYLE,
+        attributionControl: false
       };
 
       if (bounds) {
-        options.bounds = bounds
+        options.bounds = bounds;
       } else {
         options.bounds = GERMANY_BOUNDS;
       }
@@ -30,13 +42,16 @@ class MapService {
 
       this.map = new mapboxgl.Map(options);
       if (disabled !== true) {
-        this.addControls()
+        this.addControls();
       }
       this.map.on('load', () => {
+        // if(showRadius){
+        //   this.initRadius();
+        // }
         resolve();
       });
     });
-  };
+  }
 
   on(eventName, handler) {
     this.map.on(eventName, handler);
@@ -55,11 +70,15 @@ class MapService {
   }
 
   removeControls() {
-    this.map.removeControl(this.controls);
+    this.controls.forEach(control => {
+      this.map.removeControl(control);
+    });
   }
 
   addControls() {
-    this.map.addControl(this.controls, this.controlPosition);
+    this.controls.forEach(control => {
+      this.map.addControl(control, this.controlPosition);
+    });
   }
 
   setCenter({lon, lat}) {
@@ -73,7 +92,7 @@ class MapService {
   }
 
   setBounds(bounds) {
-    this.map.fitBounds(bounds, {speed: 2})
+    this.map.fitBounds(bounds, {speed: 2});
   }
 
   resize() {
@@ -125,6 +144,52 @@ class MapService {
 
     return marker;
   }
+  // initRadius() {
+  //   this.map.addSource("radius", {
+  //     "type": "geojson",
+  //     "data": {
+  //       "type": "Feature"
+  //     }
+  //   });
+  //   this.map.addLayer({
+  //     "id": "testrectangle",
+  //     "source": "radius",
+  //     "type": "fill",
+  //     "layout": {},
+  //     "paint": {
+  //       "fill-color": "#088",
+  //       "fill-opacity": 0.8
+  //     }
+  //   });
+  // }
+  // updateRadius(lonlat, radius) {
+  //   this.map.getSource("radius").setData({
+  //     'type': 'Feature',
+  //     'geometry': {
+  //       'type': 'Polygon',
+  //       'coordinates': [
+  //         [
+  //           [
+  //             lonlat.lon,
+  //             lonlat.lat
+  //           ],
+  //           [
+  //             lonlat.lon + 0.005,
+  //             lonlat.lat
+  //           ],
+  //           [
+  //             lonlat.lon,
+  //             lonlat.lat + 0.005
+  //           ],
+  //           [
+  //             lonlat.lon,
+  //             lonlat.lat
+  //           ]
+  //         ]
+  //       ]
+  //     }
+  //   });
+  // }
 }
 
 export default new MapService();
