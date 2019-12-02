@@ -4,7 +4,7 @@
     :text="modalText"
     :confirmText="'reconnect'"
     :abortText="'i don\'t care'"
-    @abort="switchShowHide($event)"
+    @abort="switchShowHide"
     @confirm="reloadPage"
   />
 </template>
@@ -25,9 +25,6 @@
     },
     methods: {
       switchShowHide: function (e) {
-        if(e){
-          if(e.type === 'online' && !this.showModal) return; // avoid showing modal, when switched to online
-        }
         this.showModal = !this.showModal;
       },
       reloadPage: function(){
@@ -36,7 +33,7 @@
       }
     },
     created() {
-      window.addEventListener('online', this.switchShowHide);
+      window.addEventListener('online', this.reloadPage);
       window.addEventListener('offline', this.switchShowHide);
     }
   }
