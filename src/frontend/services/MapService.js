@@ -19,6 +19,7 @@ class MapService {
       })
     ];
     this.controlPosition = null;
+    this.radiusCoords = [];
   }
 
   initMap({bounds, controlPosition, disabled, showRadius}) {
@@ -46,7 +47,9 @@ class MapService {
         this.addControls();
       }
       this.map.on('load', () => {
-        if(showRadius) this.initRadius();
+        if(showRadius) {
+          this.initRadius();
+        }
         resolve();
       });
     });
@@ -161,10 +164,11 @@ class MapService {
       }
     });
   }
-  updateRadius(lonlat, radius) {
+  calcRadiusCoords(lonlat, radius) {
+    console.log("calculating coords");
+    this.radiusCoords = [];
     const distanceLon = radius / (111.320 * Math.cos((lonlat.lat * Math.PI) / 180));
     const distanceLat = radius / 110.574;
-    const coords = [];
     const points = 64;
     let theta, x, y;
 
@@ -173,10 +177,14 @@ class MapService {
       x = distanceLon * Math.cos(theta);
       y = distanceLat * Math.sin(theta);
 
-      coords.push([lonlat.lon + x, lonlat.lat + y]);
+      this.radiusCoords.push([x, y]);
     }
-    coords.push(coords[0]);
-
+    this.radiusCoords.push(this.radiusCoords[0]);
+  }
+  drawRadius(lonlat){
+    let coords = this.radiusCoords.map(coord => {
+      return [lonlat.lon + coord[0], lonlat.lat + coord[1]];
+    });
     this.map.getSource("radius").setData({
       'type': 'Feature',
       'geometry': {

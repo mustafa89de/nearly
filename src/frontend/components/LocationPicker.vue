@@ -72,7 +72,7 @@
       handleMarkerDrag: function ({lat, lon}) {
         this.lat = lat;
         this.lon = lon;
-        if(this.showRadius) MapService.updateRadius({lon, lat}, 1);
+        if(this.showRadius) MapService.drawRadius({lon, lat});
         MapService.setCenter({lon, lat})
       },
       handleSave: function (e) {
@@ -98,7 +98,8 @@
         }
       },
       drawRadius: function () {
-        MapService.updateRadius({ lon: this.lon, lat: this.lat}, 1);
+        MapService.calcRadiusCoords({ lon: this.lon, lat: this.lat}, 1);
+        MapService.drawRadius({ lon: this.lon, lat: this.lat});
       }
     },
     async created() {
@@ -115,7 +116,7 @@
         if(this.showRadius) {
           marker.on("drag", () => {
             const {lng, lat} = marker.getLngLat();
-            MapService.updateRadius({lon: lng, lat: lat}, 1);
+            MapService.drawRadius({lon: lng, lat: lat});
           });
         }
       }
