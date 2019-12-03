@@ -22,6 +22,7 @@
   import edit from "../assets/icons/edit.svg";
   import help from "../assets/icons/help.svg";
   import logout from "../assets/icons/logout.svg";
+  import radius from "../assets/icons/radius.svg";
 
   export default {
     props: {
@@ -67,6 +68,8 @@
             return help;
           case "logout":
             return logout;
+          case "radius":
+            return radius;
           default:
             return bug;
         }

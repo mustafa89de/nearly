@@ -165,7 +165,6 @@ class MapService {
     });
   }
   calcRadiusCoords(lonlat, radius) {
-    console.log("calculating coords");
     this.radiusCoords = [];
     const distanceLon = radius / (111.320 * Math.cos((lonlat.lat * Math.PI) / 180));
     const distanceLat = radius / 110.574;

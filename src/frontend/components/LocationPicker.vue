@@ -10,6 +10,7 @@
         @radiusCallback="drawRadius"
     />
     <footer v-if="!minimized">
+      <radius-slider class="radius" v-if="showRadius" @onChange="drawRadius"/>
       <custom-button type="button" text="Fertig" @click="handleSave"/>
     </footer>
   </section>
@@ -20,6 +21,7 @@
   import MapService from "../services/MapService";
   import LocationService from "../services/LocationService";
   import Button from "./Button";
+  import RadiusSlider from "./RadiusSlider";
 
   let marker;
   let lastMinimized = null;
@@ -32,8 +34,9 @@
       showRadius: Boolean
     },
     components: {
-      'map-box': Map,
-      "custom-button": Button
+      "map-box": Map,
+      "custom-button": Button,
+      "radius-slider": RadiusSlider
     },
     data: function () {
       return {
@@ -97,8 +100,8 @@
           marker.setDraggable(false);
         }
       },
-      drawRadius: function () {
-        MapService.calcRadiusCoords({ lon: this.lon, lat: this.lat}, 1);
+      drawRadius: function (radius) { // this callback function needs to wait for the map to finish loading
+        MapService.calcRadiusCoords({ lon: this.lon, lat: this.lat}, radius ? radius : 1);
         MapService.drawRadius({ lon: this.lon, lat: this.lat});
       }
     },
@@ -156,10 +159,16 @@
 
     > footer {
       flex: none;
-      padding: 50px 75px 25px;
+      padding: 25px 50px 25px;
       border-radius: 50px 50px 0 0;
       background: $bg-col-primary;
       z-index: 1;
+
+      > .radius {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto 25px auto;
+      }
 
       > input[type="button"] {
         width: 100%;

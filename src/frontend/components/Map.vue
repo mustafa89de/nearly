@@ -11,7 +11,7 @@
     props: {
       initialBounds: Object,
       markers: Array,
-      hideNumbers: Boolean,
+      hideNumbers: false,
       controlPosition: String,
       disabled: Boolean,
       showRadius: Boolean
