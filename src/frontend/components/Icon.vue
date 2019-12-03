@@ -22,6 +22,7 @@
   import edit from "../assets/icons/edit.svg";
   import help from "../assets/icons/help.svg";
   import logout from "../assets/icons/logout.svg";
+  import share from "../assets/icons/share.svg";
 
   export default {
     props: {
@@ -67,6 +68,8 @@
             return help;
           case "logout":
             return logout;
+          case "share":
+            return share;
           default:
             return bug;
         }

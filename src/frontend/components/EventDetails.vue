@@ -1,7 +1,9 @@
 <template>
   <article>
-    <h1>{{event.name}}</h1>
-    <!-- TODO: Implement share Button -->
+    <header>
+      <h1>{{event.name}}</h1>
+      <a href="#" @click="shareEvent"><icon class="share" iconType="share" iconColor="primary"/></a>
+    </header>
     <p class="description">{{ event.description }}</p>
     <div class="fieldContainer">
       <text-field class="detailField" iconType="calendar" iconColor="primary" :value="eventDate"/>
@@ -22,25 +24,24 @@
   import TextField from "../components/TextField";
   import Button from "../components/Button.vue";
   import EventService from "../services/EventService";
+  import Icon from "../components/Icon.vue";
 
   export default {
     name: "EventDetails",
     components:{
       'text-field': TextField,
-      'button-send': Button
+      'button-send': Button,
+      'icon': Icon
     },
-
     props: {
       event: Object,
     },
-
     data(){
       return {
         error: null,
         isParticipant: this.event.isParticipant
       };
     },
-
     computed: {
       isCreator: function () {
         if(this.event){
@@ -50,16 +51,13 @@
           return false;
         }
       },
-
       eventDate: function(){
         return new Date(this.event.time).toLocaleDateString();
       },
-
       eventTime: function(){
         return new Date(this.event.time).toLocaleTimeString('de-De', {hour: '2-digit', minute: '2-digit'})
       },
     },
-
     methods: {
       async editEvent(e) {
         try {
@@ -68,7 +66,6 @@
           console.error(err);
         }
       },
-
       async signInForEvent(e) {
         try {
           await EventService.signInForEvent(this.event.id);
@@ -78,7 +75,6 @@
           this.error = "Bei der Anmeldung ist leider etwas schief gelaufen.";
         }
       },
-
       async signOutForEvent(){
         try{
           await EventService.signOutForEvent(this.event.id);
@@ -86,6 +82,19 @@
         }catch(err){
           console.error(err);
           this.error = "Bei der Abmeldung ist leider etwas schief gelaufen.";
+        }
+      },
+      async shareEvent(){
+        if(navigator.share){
+          try{
+            await navigator.share({
+              title: "nearly",
+              text: this.event.name,
+              url: window.location.href
+            });
+          } catch(e){
+            console.log("event couldn't be shared ", e);
+          }
         }
       }
     }
@@ -107,10 +116,22 @@
     padding: 5%;
   }
 
-  h1 {
-    @include textTitle;
-    color: $font-col-primary;
-    margin: 0;
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+      @include textTitle;
+      color: $font-col-primary;
+      margin: 0;
+      padding: 0;
+    }
+
+    .share {
+      height: 32px;
+      width: 32px;
+    }
   }
 
   p.description {
