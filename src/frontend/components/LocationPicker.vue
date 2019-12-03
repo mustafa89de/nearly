@@ -72,7 +72,7 @@
       handleMarkerDrag: function ({lat, lon}) {
         this.lat = lat;
         this.lon = lon;
-        if(this.showRadius) MapService.updateRadius({lon, lat}, 10);
+        if(this.showRadius) MapService.updateRadius({lon, lat}, 1);
         MapService.setCenter({lon, lat})
       },
       handleSave: function (e) {
@@ -98,7 +98,6 @@
         }
       },
       drawRadius: function () {
-        console.log("callback");
         MapService.updateRadius({ lon: this.lon, lat: this.lat}, 1);
       }
     },

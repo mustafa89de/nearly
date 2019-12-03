@@ -3,6 +3,7 @@ import {
   GERMANY_BOUNDS,
   MAP_ID
 } from "../constants";
+import { POINT_CONVERSION_COMPRESSED } from "constants";
 
 const STYLE = 'mapbox://styles/mapbox/light-v10';
 
@@ -45,9 +46,7 @@ class MapService {
         this.addControls();
       }
       this.map.on('load', () => {
-        // if(showRadius){
-        //   this.initRadius();
-        // }
+        if(showRadius) this.initRadius();
         resolve();
       });
     });
@@ -144,52 +143,48 @@ class MapService {
 
     return marker;
   }
-  // initRadius() {
-  //   this.map.addSource("radius", {
-  //     "type": "geojson",
-  //     "data": {
-  //       "type": "Feature"
-  //     }
-  //   });
-  //   this.map.addLayer({
-  //     "id": "testrectangle",
-  //     "source": "radius",
-  //     "type": "fill",
-  //     "layout": {},
-  //     "paint": {
-  //       "fill-color": "#088",
-  //       "fill-opacity": 0.8
-  //     }
-  //   });
-  // }
-  // updateRadius(lonlat, radius) {
-  //   this.map.getSource("radius").setData({
-  //     'type': 'Feature',
-  //     'geometry': {
-  //       'type': 'Polygon',
-  //       'coordinates': [
-  //         [
-  //           [
-  //             lonlat.lon,
-  //             lonlat.lat
-  //           ],
-  //           [
-  //             lonlat.lon + 0.005,
-  //             lonlat.lat
-  //           ],
-  //           [
-  //             lonlat.lon,
-  //             lonlat.lat + 0.005
-  //           ],
-  //           [
-  //             lonlat.lon,
-  //             lonlat.lat
-  //           ]
-  //         ]
-  //       ]
-  //     }
-  //   });
-  // }
+  initRadius() {
+    this.map.addSource("radius", {
+      "type": "geojson",
+      "data": {
+        "type": "Feature"
+      }
+    });
+    this.map.addLayer({
+      "id": "testrectangle",
+      "source": "radius",
+      "type": "fill",
+      "layout": {},
+      "paint": {
+        "fill-color": "#166C72",
+        "fill-opacity": 0.1
+      }
+    });
+  }
+  updateRadius(lonlat, radius) {
+    const distanceLon = radius / (111.320 * Math.cos((lonlat.lat * Math.PI) / 180));
+    const distanceLat = radius / 110.574;
+    const coords = [];
+    const points = 64;
+    let theta, x, y;
+
+    for(let i = 0; i < points; i += 1){
+      theta = (i / points) * (2 * Math.PI);
+      x = distanceLon * Math.cos(theta);
+      y = distanceLat * Math.sin(theta);
+
+      coords.push([lonlat.lon + x, lonlat.lat + y]);
+    }
+    coords.push(coords[0]);
+
+    this.map.getSource("radius").setData({
+      'type': 'Feature',
+      'geometry': {
+        'type': 'Polygon',
+        'coordinates': [coords]
+      }
+    });
+  }
 }
 
 export default new MapService();
