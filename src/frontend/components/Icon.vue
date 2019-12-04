@@ -23,6 +23,9 @@
   import help from "../assets/icons/help.svg";
   import logout from "../assets/icons/logout.svg";
   import share from "../assets/icons/share.svg";
+  import link from "../assets/icons/link.svg";
+  import facebook from "../assets/icons/facebook.svg";
+  import twitter from "../assets/icons/twitter.svg";
 
   export default {
     props: {
@@ -70,6 +73,12 @@
             return logout;
           case "share":
             return share;
+          case "link":
+            return link;
+          case "facebook":
+            return facebook;
+          case "twitter":
+            return twitter;
           default:
             return bug;
         }
