@@ -4,6 +4,7 @@ const DB_URL = process.env.DB_URL;
 const User = require('../models/User');
 const Event = require('../models/Event');
 const Participation = require('../models/Participation');
+const Push = require('../models/Push');
 
 class DBService {
   async init() {
@@ -18,6 +19,7 @@ class DBService {
       User.init();
       Event.init();
       Participation.init();
+      Push.init();
 
       console.log('Successfully established database connection');
     } catch (err) {
