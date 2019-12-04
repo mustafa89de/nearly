@@ -6,8 +6,7 @@ const router = express.Router();
 
 router.post('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const userId = req.user.id;
-    const subscription = req.body;
+    const {userId, subscription} = req.body;
 
     await PushRepository.saveSubscription(userId, subscription);
 
