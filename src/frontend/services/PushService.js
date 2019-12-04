@@ -36,12 +36,11 @@ class PushService {
       console.error(err.message);
       throw err;
     }
-
   }
 
   async unsubscribePush(){
     try {
-      const registration = await navigator.serviceWorker.register('../worker.js')
+      const registration = await navigator.serviceWorker.register('../worker.js');
       const subscription = await registration.pushManager.getSubscription();
       await subscription.unsubscribe()
 
@@ -55,8 +54,6 @@ class PushService {
       console.error(err.message);
       throw err;
     }
-
-
   }
 }
 
