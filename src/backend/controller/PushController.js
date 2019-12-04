@@ -16,4 +16,17 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
   }
 });
 
+router.delete('/', JWTService.requireJWT(), async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const removal = await PushRepository.deleteSubscription(userId);
+    if (!removal) {
+      res.status(404).json({message: `Deletion of subscription of user ${userId} unsuccessful`});
+    }
+    res.json();
+  } catch (err) {
+    res.status(500).json({message: err.message});
+  }
+});
+
 module.exports = router;
