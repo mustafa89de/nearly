@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {ENDPOINTS} from "../constants";
+import AuthService from "./AuthService";
 
 const publicVapidKey = process.env.PUBLIC_VAPID_KEY;
 
@@ -26,6 +27,7 @@ class PushService {
       const stringifiedSubscription = JSON.stringify(subscription);
 
       await axios.post(ENDPOINTS.PUSH, {
+        userId: AuthService.getUser().userId,
         subscription: stringifiedSubscription
       });
       console.log('subscription sent to BE');
@@ -34,6 +36,26 @@ class PushService {
       console.error(err.message);
       throw err;
     }
+
+  }
+
+  async unsubscribePush(){
+    try {
+      const registration = await navigator.serviceWorker.register('../worker.js')
+      const subscription = await registration.pushManager.getSubscription();
+      await subscription.unsubscribe()
+
+      await axios.delete(ENDPOINTS.PUSH, {
+        params: {
+          id: AuthService.getUser().userId
+        }
+      })
+
+    }catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+
 
   }
 }
