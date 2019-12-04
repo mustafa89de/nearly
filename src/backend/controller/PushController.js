@@ -4,7 +4,7 @@ const PushRepository = require('../repositories/PushRepository');
 const express = require('express');
 const router = express.Router();
 
-router.post('/subscribe', JWTService.requireJWT(), async (req, res) => {
+router.post('/', JWTService.requireJWT(), async (req, res) => {
   try {
     const userId = req.user.id;
     const subscription = req.body;
