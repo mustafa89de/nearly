@@ -25,3 +25,5 @@ class PushRepository {
     }
   }
 }
+
+module.exports = new PushRepository();
