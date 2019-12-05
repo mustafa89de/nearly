@@ -137,7 +137,6 @@
   @import "../assets/mixins";
 
   section {
-    padding: 25px;
     display: flex;
     flex-direction: column;
     flex: 1;
