@@ -1,12 +1,13 @@
 <template>
   <div>
     <text-field :value="formattedRadius" iconType="radius" iconColor="primary"/>
-    <input type="range" v-model="currentRadius" min="0.1" max="10" step="0.1"/>
+    <input type="range" v-model="currentRadius" min="100" max="5000" step="100"/>
   </div>
 </template>
 
 <script>
-  import TextField from "./TextField"
+  import TextField from "./TextField";
+  import { INITIAL_MAP_RADIUS } from "../constants";
 
   export default {
     prop: {
@@ -14,7 +15,7 @@
     },
     data: function() {
       return {
-        currentRadius: this.userRadius ? this.userRadius : 1
+        currentRadius: this.userRadius ? this.userRadius : INITIAL_MAP_RADIUS
       }
     },
     components: {
@@ -22,7 +23,8 @@
     },
     computed: {
       formattedRadius: function() {
-        return this.currentRadius % 1 != 0 || this.currentRadius == 10 ? this.currentRadius + " km" : this.currentRadius + ".0 km";
+        if(this.currentRadius < 1000) return this.currentRadius + " m";
+        else return this.currentRadius / 1000 + " km";
       }
     },
     watch: {

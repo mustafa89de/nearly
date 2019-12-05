@@ -154,18 +154,24 @@ class MapService {
       }
     });
     this.map.addLayer({
-      "id": "testrectangle",
+      "id": "radiuslayer",
       "source": "radius",
       "type": "fill",
       "layout": {},
       "paint": {
         "fill-color": "#166C72",
-        "fill-opacity": 0.1
+        "fill-opacity": 0,
+        "fill-opacity-transition": { duration: 1000 }
       }
     });
   }
-  calcRadiusCoords(lonlat, radius) {
+  calcRadiusCoords(lonlat, rad) {
     this.radiusCoords = [];
+    // 1 longitudinal degree is around 111.320 km, depending on the latitude
+    // 1 latitudinal degree is around 110.574 km
+    // basically calculates offset distance to start position and goes around
+    // in a circle by using cos and sin
+    let radius = rad / 1000;
     const distanceLon = radius / (111.320 * Math.cos((lonlat.lat * Math.PI) / 180));
     const distanceLat = radius / 110.574;
     const points = 64;
@@ -191,6 +197,9 @@ class MapService {
         'coordinates': [coords]
       }
     });
+  }
+  fadeRadius(){
+    this.map.setPaintProperty("radiuslayer", "fill-opacity", 0.1);
   }
 }
 

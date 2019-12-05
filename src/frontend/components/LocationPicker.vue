@@ -10,7 +10,7 @@
         @radiusCallback="drawRadius"
     />
     <footer v-if="!minimized">
-      <radius-slider class="radius" v-if="showRadius" @onChange="drawRadius"/>
+      <radius-slider class="radius" v-if="showRadius" @onChange="drawRadius" :userRadius="currentRadius"/>
       <custom-button type="button" text="Fertig" @click="handleSave"/>
     </footer>
   </section>
@@ -22,6 +22,7 @@
   import LocationService from "../services/LocationService";
   import Button from "./Button";
   import RadiusSlider from "./RadiusSlider";
+  import { INITIAL_MAP_RADIUS } from "../constants";
 
   let marker;
   let lastMinimized = null;
@@ -31,7 +32,8 @@
       sendInitialChange: Boolean,
       showHomePosition: Boolean,
       location: Object,
-      showRadius: Boolean
+      showRadius: Boolean,
+      currentRadius: Number
     },
     components: {
       "map-box": Map,
@@ -101,8 +103,9 @@
         }
       },
       drawRadius: function (radius) { // this callback function needs to wait for the map to finish loading
-        MapService.calcRadiusCoords({ lon: this.lon, lat: this.lat}, radius ? radius : 1);
+        MapService.calcRadiusCoords({ lon: this.lon, lat: this.lat}, radius ? radius : INITIAL_MAP_RADIUS);
         MapService.drawRadius({ lon: this.lon, lat: this.lat});
+        MapService.fadeRadius();
       }
     },
     async created() {
