@@ -1,9 +1,9 @@
-const Push = require('../models/Push');
+const PushSubscriptions = require('../models/Push');
 
 class PushRepository {
   async saveSubscription(userId, subscription) {
     try {
-      const push = Push({userId, subscription});
+      const push = PushSubscriptions({userId, subscription});
       await push.save();
     } catch (err) {
       console.error('DB Error:', err.message);
@@ -13,7 +13,7 @@ class PushRepository {
 
   async deleteSubscription(userId){
     try {
-      const removal = Push.deleteOne({
+      const removal = PushSubscriptions.deleteOne({
         _id: userId
       });
 
