@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema({
       required: false
     }
   },
-  radius: {type: mongoose.Decimal128, required: false, default: null}
+  radius: {type: Number, required: false, default: null}
 });
 
 module.exports = mongoose.model('User', userSchema);

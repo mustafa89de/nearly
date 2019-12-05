@@ -31,6 +31,7 @@ router.post('/', async (req, res) => {
 *     name: String,
 *     description: String,
 *     time: DateTimeString,
+*     radius: Float,
 *     longitude: Float,
 *     latitude: Float
 *   )
@@ -46,7 +47,7 @@ router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
       res.status(404).json({message: `User with id "${id}" does not exist.`});
     }
 
-    const {username, description} = user;
+    const {username, description, radius} = user;
 
     const hostedEvents = await EventRepository.getEventsByHost(id);
 
@@ -64,6 +65,7 @@ router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
     const userDetails = {
       username,
       description,
+      radius,
       hostedEvents: hostedEventsDto
     };
 
