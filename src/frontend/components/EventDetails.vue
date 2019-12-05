@@ -1,7 +1,10 @@
 <template>
-  <article>
-    <h1>{{event.name}}</h1>
-    <!-- TODO: Implement share Button -->
+  <article class="detail">
+    <header>
+      <h1>{{event.name}}</h1>
+      <a v-if="canShare" href="#" @click="shareEvent"><icon class="share" iconType="share" iconColor="primary"/></a>
+      <a v-else href="#" @click="openShareModal"><icon class="share" iconType="share" iconColor="primary"/></a>
+    </header>
     <p class="description">{{ event.description }}</p>
     <div class="fieldContainer">
       <text-field class="detailField" iconType="calendar" iconColor="primary" :value="eventDate"/>
@@ -14,6 +17,7 @@
     <button-send v-if="isParticipant" @click="signOutForEvent" class="joinButton" type="button" text="absagen"/>
     <button-send v-else @click="signInForEvent" class="joinButton" type="button" text="mitmachen"/>
     <p class="error" v-if="error">{{error}}</p>
+    <share-modal v-if="showShareModal" :eventURL="getURL" @close="closeShare"/>
   </article>
 </template>
 
@@ -22,27 +26,29 @@
   import TextField from "../components/TextField";
   import Button from "../components/Button.vue";
   import EventService from "../services/EventService";
+  import Icon from "../components/Icon.vue";
+  import ShareModal from "../components/ShareModal.vue"
 
   export default {
     name: "EventDetails",
     components:{
       'text-field': TextField,
-      'button-send': Button
+      'button-send': Button,
+      'icon': Icon,
+      'share-modal': ShareModal
     },
-
     props: {
       event: Object,
     },
-
     data(){
       return {
         error: null,
-        isParticipant: this.event.isParticipant
+        isParticipant: this.event.isParticipant,
+        showShareModal: false
       };
     },
-
     computed: {
-      isCreator: function () {
+      isCreator: function(){
         if(this.event){
           const thisUserId = AuthService.getUser().userId;
           return thisUserId === this.event.hostId;
@@ -50,16 +56,19 @@
           return false;
         }
       },
-
       eventDate: function(){
         return new Date(this.event.time).toLocaleDateString();
       },
-
       eventTime: function(){
         return new Date(this.event.time).toLocaleTimeString('de-De', {hour: '2-digit', minute: '2-digit'})
       },
+      canShare: function(){
+        return navigator.share;
+      },
+      getURL: function(){
+        return window.location.href;
+      }
     },
-
     methods: {
       async editEvent(e) {
         try {
@@ -68,7 +77,6 @@
           console.error(err);
         }
       },
-
       async signInForEvent(e) {
         try {
           await EventService.signInForEvent(this.event.id);
@@ -78,7 +86,6 @@
           this.error = "Bei der Anmeldung ist leider etwas schief gelaufen.";
         }
       },
-
       async signOutForEvent(){
         try{
           await EventService.signOutForEvent(this.event.id);
@@ -87,6 +94,25 @@
           console.error(err);
           this.error = "Bei der Abmeldung ist leider etwas schief gelaufen.";
         }
+      },
+      async shareEvent(){
+        if(navigator.share){
+          try{
+            await navigator.share({
+              title: "nearly",
+              text: this.event.name,
+              url: window.location.href
+            });
+          } catch(e){
+            console.log("event couldn't be shared ", e);
+          }
+        }
+      },
+      openShareModal(){
+        this.showShareModal = true;
+      },
+      closeShare(){
+        this.showShareModal = false;
       }
     }
   }
@@ -96,7 +122,7 @@
   @import "../assets/variables";
   @import "../assets/mixins";
 
-  article {
+  .detail {
     flex: 1;
     display: flex;
     flex-flow: column;
@@ -107,10 +133,22 @@
     padding: 5%;
   }
 
-  h1 {
-    @include textTitle;
-    color: $font-col-primary;
-    margin: 0;
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+      @include textTitle;
+      color: $font-col-primary;
+      margin: 0;
+      padding: 0;
+    }
+
+    .share {
+      height: 32px;
+      width: 32px;
+    }
   }
 
   p.description {
