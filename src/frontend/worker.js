@@ -1,8 +1,6 @@
-const title = 'Nearly';
-
 self.addEventListener('push', e => {
   const data = e.data.json();
-  self.registration.showNotification(title, {
+  self.registration.showNotification(data.title, {
     body: data.body,
     data: data.eventId,
     requireInteraction: true,
