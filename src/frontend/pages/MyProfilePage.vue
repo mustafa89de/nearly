@@ -24,6 +24,7 @@
   import Icon from "../components/Icon";
   import SlideMenu from "../components/SlideMenu";
   import LocationPicker from "../components/LocationPicker";
+  import { INITIAL_MAP_RADIUS } from "../constants";
 
   export default {
     name: "MyProfilePage",
@@ -79,6 +80,7 @@
       async handleHomePositionChange(newPosition) {
         try {
           await UserService.setHomePosition(newPosition);
+          await UserService.setRadius(newPosition.radius);
           this.$router.go();
           this.errorMsg = null;
           throw new Error();

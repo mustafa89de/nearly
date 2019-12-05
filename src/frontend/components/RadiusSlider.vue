@@ -8,14 +8,14 @@
 <script>
   import TextField from "./TextField";
   import { INITIAL_MAP_RADIUS } from "../constants";
+  import UserService from "../services/UserService";
 
   export default {
-    prop: {
-      userRadius: Number
-    },
+    prop: ["radius"],
     data: function() {
+      console.log(this.radius);
       return {
-        currentRadius: this.userRadius ? this.userRadius : INITIAL_MAP_RADIUS
+        currentRadius: this.radius
       }
     },
     components: {
@@ -28,7 +28,7 @@
       }
     },
     watch: {
-      currentRadius: function() {
+      currentRadius: function(){
         this.$emit("onChange", this.currentRadius);
       }
     }

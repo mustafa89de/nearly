@@ -10,7 +10,7 @@
         @radiusCallback="drawRadius"
     />
     <footer v-if="!minimized">
-      <radius-slider class="radius" v-if="showRadius" @onChange="drawRadius" :userRadius="currentRadius"/>
+      <radius-slider class="radius" v-if="showRadius" @onChange="drawRadius" :radius="100"/>
       <custom-button type="button" text="Fertig" @click="handleSave"/>
     </footer>
   </section>
@@ -20,6 +20,7 @@
   import Map from "./Map";
   import MapService from "../services/MapService";
   import LocationService from "../services/LocationService";
+  import UserService from "../services/UserService";
   import Button from "./Button";
   import RadiusSlider from "./RadiusSlider";
   import { INITIAL_MAP_RADIUS } from "../constants";
@@ -32,8 +33,7 @@
       sendInitialChange: Boolean,
       showHomePosition: Boolean,
       location: Object,
-      showRadius: Boolean,
-      currentRadius: Number
+      showRadius: Boolean
     },
     components: {
       "map-box": Map,
@@ -45,7 +45,8 @@
         minimized: true,
         initialBounds: null,
         lat: null,
-        lon: null
+        lon: null,
+        radius: null
       }
     },
     updated: function () {
@@ -83,7 +84,7 @@
       handleSave: function (e) {
         e.preventDefault();
         e.stopPropagation();
-        this.$emit('save', {lon: this.lon, lat: this.lat});
+        this.$emit('save', {lon: this.lon, lat: this.lat, radius: this.radius});
         this.minimize();
       },
       maximize: function () {
@@ -103,6 +104,7 @@
         }
       },
       drawRadius: function (radius) { // this callback function needs to wait for the map to finish loading
+        if(radius) this.radius = radius;
         MapService.calcRadiusCoords({ lon: this.lon, lat: this.lat}, radius ? radius : INITIAL_MAP_RADIUS);
         MapService.drawRadius({ lon: this.lon, lat: this.lat});
         MapService.fadeRadius();
@@ -120,6 +122,8 @@
           this.$emit('save', {lon: this.lon, lat: this.lat});
         }
         if(this.showRadius) {
+          const userRadius = await UserService.getRadius();
+          this.radius = userRadius;
           marker.on("drag", () => {
             const {lng, lat} = marker.getLngLat();
             MapService.drawRadius({lon: lng, lat: lat});

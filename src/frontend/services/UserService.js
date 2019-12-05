@@ -64,6 +64,29 @@ class UserService {
       throw err;
     }
   }
+
+  async setRadius(radius) {
+    const myUserId = AuthService.getUser().userId;
+    try {
+      const res = await axios.put(ENDPOINTS.USER + "/" + myUserId + '/radius', { radius });
+      console.log("radius set");
+      return res.data;
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+  }
+
+  async getRadius() {
+    const myUserId = AuthService.getUser().userId;
+    try {
+      const res = await axios.get(ENDPOINTS.USER + "/" + myUserId + '/radius');
+      return res.data;
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+  }
 }
 
 export default new UserService();
