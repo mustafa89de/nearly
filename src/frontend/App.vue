@@ -90,4 +90,9 @@
   textarea {
     border-radius: 0;
   }
+
+  article {
+    position: relative;
+    flex: 1;
+  }
 </style>

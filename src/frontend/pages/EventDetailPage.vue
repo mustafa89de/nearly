@@ -58,25 +58,26 @@
 
     display: flex;
     flex-direction: column;
-  }
 
-  .eventDetails {
-    z-index: 1;
-    flex: 0;
-  }
+    .eventDetails {
+      z-index: 1;
+      flex: 0;
+    }
 
-  #map {
-    margin-top: -50px; // rounded borders
-    position: relative;
-    flex: 1;
-    min-height: 250px;
+    #map {
+      margin-top: -50px; // rounded borders
+      position: relative;
+      flex: 1;
+      min-height: 250px;
 
-    @media screen and (min-width: 500px) {
-      margin-top: 0;
-      height: auto;
-      bottom: 56px; // nav bar height
-      position: fixed;
-      flex: initial;
+      @media screen and (min-width: 500px) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 56px; // nav bar height
+        flex: initial;
+      }
     }
   }
 </style>

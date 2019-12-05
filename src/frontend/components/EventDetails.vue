@@ -1,5 +1,5 @@
 <template>
-  <article class="detail">
+  <section class="detail">
     <header>
       <h1>{{event? event.name : '...'}}</h1>
       <a v-if="canShare" href="#" @click="shareEvent">
@@ -22,7 +22,7 @@
     <button-send v-else @click="signInForEvent" type="button" text="mitmachen"/>
     <p class="error" v-if="error">{{error}}</p>
     <share-modal v-if="showShareModal" :eventURL="getURL" @close="closeShare"/>
-  </article>
+  </section>
 </template>
 
 <script>
@@ -174,7 +174,7 @@
       min-width: 50%;
     }
 
-    .joinButton {
+    > input[type="button"] {
       margin-top: 5%;
       align-self: center;
     }
