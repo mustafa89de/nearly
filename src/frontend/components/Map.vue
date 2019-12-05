@@ -9,11 +9,12 @@
 
   export default {
     props: {
-      'initialBounds': Object,
-      'markers': Array,
-      'hideNumbers': false,
-      'controlPosition': String,
-      'disabled': Boolean
+      initialBounds: Object,
+      markers: Array,
+      hideNumbers: false,
+      controlPosition: String,
+      disabled: Boolean,
+      showRadius: Boolean
     },
     watch: {
       markers: function () {
@@ -52,12 +53,14 @@
       await MapService.initMap({
         bounds: this.initialBounds,
         controlPosition: this.controlPosition,
-        disabled: this.disabled
+        disabled: this.disabled,
+        showRadius: this.showRadius
       });
       MapService.onDragEnd(this.handlePositionChange);
       MapService.onZoomEnd(this.handlePositionChange);
       MapService.onClick(this.handleMapClick);
       this.updateMarkers();
+      if(this.showRadius) setTimeout(() => { this.$emit("radiusCallback"); }, 500);
     }
   }
 </script>

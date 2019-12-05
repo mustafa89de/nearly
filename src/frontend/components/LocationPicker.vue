@@ -6,8 +6,11 @@
     <map-box
         :disabled="minimized"
         @mapClick="handleMapClick"
+        :showRadius="showRadius"
+        @radiusCallback="drawRadius"
     />
     <footer v-if="!minimized">
+      <radius-slider class="radius" v-if="showRadius" @onChange="drawRadius" :userRadius="currentRadius"/>
       <custom-button type="button" text="Fertig" @click="handleSave"/>
     </footer>
   </section>
@@ -18,6 +21,8 @@
   import MapService from "../services/MapService";
   import LocationService from "../services/LocationService";
   import Button from "./Button";
+  import RadiusSlider from "./RadiusSlider";
+  import { INITIAL_MAP_RADIUS } from "../constants";
 
   let marker;
   let lastMinimized = null;
@@ -26,11 +31,14 @@
     props: {
       sendInitialChange: Boolean,
       showHomePosition: Boolean,
-      location: Object
+      location: Object,
+      showRadius: Boolean,
+      currentRadius: Number
     },
     components: {
-      'map-box': Map,
-      "custom-button": Button
+      "map-box": Map,
+      "custom-button": Button,
+      "radius-slider": RadiusSlider
     },
     data: function () {
       return {
@@ -69,6 +77,7 @@
       handleMarkerDrag: function ({lat, lon}) {
         this.lat = lat;
         this.lon = lon;
+        if(this.showRadius) MapService.drawRadius({lon, lat});
         MapService.setCenter({lon, lat})
       },
       handleSave: function (e) {
@@ -92,6 +101,11 @@
         if (marker) {
           marker.setDraggable(false);
         }
+      },
+      drawRadius: function (radius) { // this callback function needs to wait for the map to finish loading
+        MapService.calcRadiusCoords({ lon: this.lon, lat: this.lat}, radius ? radius : INITIAL_MAP_RADIUS);
+        MapService.drawRadius({ lon: this.lon, lat: this.lat});
+        MapService.fadeRadius();
       }
     },
     async created() {
@@ -104,6 +118,12 @@
         marker = MapService.addMarker({lon, lat, draggable: false, onDragEnd: this.handleMarkerDrag});
         if (this.sendInitialChange === true) {
           this.$emit('save', {lon: this.lon, lat: this.lat});
+        }
+        if(this.showRadius) {
+          marker.on("drag", () => {
+            const {lng, lat} = marker.getLngLat();
+            MapService.drawRadius({lon: lng, lat: lat});
+          });
         }
       }
     },
@@ -142,10 +162,16 @@
 
     > footer {
       flex: none;
-      padding: 50px 75px 25px;
+      padding: 25px 50px 25px;
       border-radius: 50px 50px 0 0;
       background: $bg-col-primary;
       z-index: 1;
+
+      > .radius {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto 25px auto;
+      }
 
       > input[type="button"] {
         width: 100%;
