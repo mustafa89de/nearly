@@ -98,4 +98,24 @@ router.get('/:id/homePosition', JWTService.requireJWT(), AuthService.compareId, 
   }
 });
 
+router.put('/:id/radius', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const {radius} = req.body;
+    await UserRepository.setRadius(userId, radius);
+    res.json();
+  } catch (err) {
+    res.status(500).json({message: err.message})
+  }
+});
+
+router.get('/:id/radius', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
+  try {
+    const radius = await UserRepository.getRadius(req.user.id);
+    res.json(radius);
+  } catch (err) {
+    res.status(500).json({message: err.message})
+  }
+});
+
 module.exports = router;
