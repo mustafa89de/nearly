@@ -11,6 +11,7 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
 
     await PushRepository.saveSubscription(userId, subscription);
 
+    res.status(201).json();
   } catch (err) {
     res.status(500).json({message: err.message});
   }
