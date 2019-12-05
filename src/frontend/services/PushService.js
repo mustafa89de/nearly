@@ -1,8 +1,9 @@
 import axios from 'axios';
 import {ENDPOINTS} from "../constants";
 import AuthService from "./AuthService";
+import {PUBLIC_VAPID_KEY} from '../constants'
 
-const publicVapidKey = process.env.PUBLIC_VAPID_KEY;
+const publicVapidKey = PUBLIC_VAPID_KEY;
 
 class PushService {
   async subscribeToPush(){
@@ -42,7 +43,7 @@ class PushService {
     try {
       const registration = await navigator.serviceWorker.register('../worker.js');
       const subscription = await registration.pushManager.getSubscription();
-      await subscription.unsubscribe()
+      await subscription.unsubscribe();
 
       await axios.delete(ENDPOINTS.PUSH, {
         params: {
