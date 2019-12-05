@@ -71,3 +71,5 @@ function urlBase64ToUint8Array(base64String) {
   }
   return outputArray;
 }
+
+export default new PushService();
