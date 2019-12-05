@@ -1,11 +1,11 @@
 <template>
   <modal v-if="showModal"
-    :title="modalTitle"
-    :text="modalText"
+    :title="'Du bist Offline'"
+    :text="'Du scheinst offline zu sein. Die Inhalte werden vielleicht nicht richtig angezeigt. Bitte prüfe Deine Internetverbindung.'"
     :confirmText="'reconnect'"
     :abortText="'i don\'t care'"
-    @abort="switchShowHide"
-    @confirm="reloadPage"
+    @abort="handleOffline"
+    @confirm="handleOnline"
   />
 </template>
 
@@ -18,23 +18,20 @@
     },
     data() {
       return {
-        showModal: false,
-        modalText: 'Du scheinst offline zu sein. Die Inhalte werden vielleicht nicht richtig angezeigt. Bitte prüfe Deine Internetverbindung.',
-        modalTitle: 'Du bist Offline'
+        showModal: !navigator.onLine
       }
     },
     methods: {
-      switchShowHide: function (e) {
+      handleOffline: function (e) {
         this.showModal = !this.showModal;
       },
-      reloadPage: function(){
-        if(navigator.onLine) document.location.reload();
-        else alert('Du bist noch nicht Online, bitte habe noch etwas Geduld.');
+      handleOnline: function(e){
+        document.location.reload();
       }
     },
     created() {
-      window.addEventListener('online', this.reloadPage);
-      window.addEventListener('offline', this.switchShowHide);
+      window.addEventListener('online', this.handleOnline);
+      window.addEventListener('offline', this.handleOffline);
     }
   }
 </script>
