@@ -54,6 +54,25 @@ class UserRepository {
     }
   }
 
+  async setRadius(userId, radius) {
+    try {
+      await User.findByIdAndUpdate(userId, {radius})
+    } catch (err) {
+      console.error('DB Error:', err.message);
+      throw err;
+    }
+  }
+
+  async getRadius(userId) {
+    try {
+      const user = await User.findById(userId);
+      return user.radius;
+    } catch (err) {
+      console.error('DB Error:', err.message);
+      throw err;
+    }
+  }
+
   async removeUser(email) {
     try {
       await User.deleteOne({email: email});
