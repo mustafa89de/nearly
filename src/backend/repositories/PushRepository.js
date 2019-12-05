@@ -3,7 +3,11 @@ const Push = require('../models/Push');
 class PushRepository {
   async saveSubscription(userId, subscription) {
     try {
-      const push = Push({userId, subscription});
+      const subscriptionJSON = JSON.parse(subscription);
+      const push = Push({
+        userId: userId,
+        subscription: subscriptionJSON
+      });
       await push.save();
     } catch (err) {
       console.error('DB Error:', err.message);
