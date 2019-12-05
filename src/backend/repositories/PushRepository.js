@@ -14,7 +14,7 @@ class PushRepository {
   async deleteSubscription(userId){
     try {
       const removal = PushSubscriptions.deleteOne({
-        _id: userId
+        id: userId
       });
 
       return removal.n > 0;
