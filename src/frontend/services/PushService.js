@@ -16,6 +16,7 @@ class PushService {
       if (permission && permission !== 'granted'){
         console.log('Notification Permission not granted');
         //TODO: handle permission not granted
+        return;
       }
 
       const subscription = await registration.pushManager.subscribe({
