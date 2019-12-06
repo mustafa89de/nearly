@@ -1,7 +1,6 @@
 import axios from 'axios';
 import {ENDPOINTS} from "../constants";
 import AuthService from "./AuthService";
-import {PUBLIC_VAPID_KEY} from '../constants'
 
 const publicVapidKey = PUBLIC_VAPID_KEY;
 

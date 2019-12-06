@@ -33,5 +33,3 @@ export const INITIAL_EVENT = {
   lon: null,
   time: initialTime.toString()
 };
-
-export const PUBLIC_VAPID_KEY = 'BCgqrE9BfIRx36eoAHb6PZ-LLoMHDI2DwOVOLMZ12R0l1RYNI722o8BzhZiKeIFkh8Hwsl5F2_hNDzGFPS5PIyE';
