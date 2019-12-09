@@ -9,6 +9,7 @@ export const ENDPOINTS = {
 
 export const MAP_ID = 'map';
 export const INITIAL_MAP_RADIUS = 300;
+export const ONE_DAY = 4 * 60 * 60 * 1000;
 
 export const FALLBACK_HOME_POSITION = {
   lon: 13.41569879,

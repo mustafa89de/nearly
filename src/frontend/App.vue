@@ -3,18 +3,21 @@
     <offline-modal/>
     <router-view/>
     <nav-bar :state="state" v-if="loggedIn"/>
+    <pwa-notification/>
   </main>
 </template>
 
 <script>
   import NavBar from "./components/NavBar";
   import OfflineModal from "./components/OfflineModal";
+  import PWANotification from "./components/PWANotification";
   import AuthService from "./services/AuthService";
 
   export default {
     components: {
       'nav-bar': NavBar,
-      'offline-modal': OfflineModal
+      'offline-modal': OfflineModal,
+      'pwa-notification': PWANotification
     },
     data: function () {
       return {
