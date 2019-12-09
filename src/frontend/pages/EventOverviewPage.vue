@@ -18,6 +18,7 @@
   import HorizontalEventList from "../components/HorizontalEventList";
   import LocationService from "../services/LocationService";
   import MapService from "../services/MapService";
+  import UserService from "../services/UserService";
 
   let intialMoveDone = false;
 
@@ -60,7 +61,8 @@
     methods: {
       loadInitialBounds: async function () {
         const homePosition = await LocationService.getHomePosition(); // will never catch
-        const bounds = LocationService.toBounds(homePosition);
+        const radius = await UserService.getRadius();
+        const bounds = LocationService.toBounds(homePosition, radius);
         MapService.setBounds(bounds);
         return bounds;
       },
