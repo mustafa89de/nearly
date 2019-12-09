@@ -5,6 +5,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const {InjectManifest} = require('workbox-webpack-plugin');
 
 module.exports = {
   entry: './src/frontend/index.js',
@@ -42,6 +43,10 @@ module.exports = {
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       'MAPBOX_TOKEN': process.env.MAPBOX_TOKEN
+    }),
+    new InjectManifest({
+      swSrc:'./src/sw.js',
+
     })
   ],
   devServer: {
