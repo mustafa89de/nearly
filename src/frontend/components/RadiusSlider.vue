@@ -1,19 +1,19 @@
 <template>
   <div>
     <text-field :value="formattedRadius" iconType="radius" iconColor="primary"/>
-    <input type="range" v-model="currentRadius" min="100" max="5000" step="100"/>
+    <input v-model="currentRadius" type="range" min="100" max="5000" step="100"/>
   </div>
 </template>
 
 <script>
   import TextField from "./TextField";
   import { INITIAL_MAP_RADIUS } from "../constants";
-  import UserService from "../services/UserService";
 
   export default {
-    prop: ["radius"],
+    props: {
+      radius: Number
+    },
     data: function() {
-      console.log(this.radius);
       return {
         currentRadius: this.radius
       }

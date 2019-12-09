@@ -10,7 +10,7 @@
         @radiusCallback="drawRadius"
     />
     <footer v-if="!minimized">
-      <radius-slider class="radius" v-if="showRadius" @onChange="drawRadius" :radius="100"/>
+      <radius-slider class="radius" v-if="showRadius" @onChange="drawRadius" :radius="parseInt(radius)"/>
       <custom-button type="button" text="Fertig" @click="handleSave"/>
     </footer>
   </section>
@@ -103,9 +103,10 @@
           marker.setDraggable(false);
         }
       },
-      drawRadius: function (radius) { // this callback function needs to wait for the map to finish loading
+      drawRadius: async function (radius) { // this callback function needs to wait for the map to finish loading
         if(radius) this.radius = radius;
-        MapService.calcRadiusCoords({ lon: this.lon, lat: this.lat}, radius ? radius : INITIAL_MAP_RADIUS);
+        else this.radius = await UserService.getRadius();
+        MapService.calcRadiusCoords({ lon: this.lon, lat: this.lat}, this.radius);
         MapService.drawRadius({ lon: this.lon, lat: this.lat});
         MapService.fadeRadius();
       }
@@ -115,20 +116,19 @@
         const {lon, lat} = await LocationService.getHomePosition();
         this.lat = lat;
         this.lon = lon;
-        const bounds = LocationService.toBounds({lon, lat});
-        MapService.setBounds(bounds);
         marker = MapService.addMarker({lon, lat, draggable: false, onDragEnd: this.handleMarkerDrag});
         if (this.sendInitialChange === true) {
           this.$emit('save', {lon: this.lon, lat: this.lat});
         }
         if(this.showRadius) {
-          const userRadius = await UserService.getRadius();
-          this.radius = userRadius;
+          this.radius = await UserService.getRadius();
           marker.on("drag", () => {
             const {lng, lat} = marker.getLngLat();
             MapService.drawRadius({lon: lng, lat: lat});
           });
         }
+        const bounds = LocationService.toBounds({lon, lat}, this.radius ? this.radius : null);
+        MapService.setBounds(bounds);
       }
     },
     watch: {

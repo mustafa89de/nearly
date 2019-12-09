@@ -61,8 +61,8 @@ class LocationService {
     return earthRadiusKm * c;
   }
 
-  toBounds({lon, lat}) {
-    return new mapboxgl.LngLat(lon, lat).toBounds(INITIAL_MAP_RADIUS);
+  toBounds({lon, lat}, radius) {
+    return new mapboxgl.LngLat(lon, lat).toBounds(radius ? radius : INITIAL_MAP_RADIUS);
   }
 }
 
