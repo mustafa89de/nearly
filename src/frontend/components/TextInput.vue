@@ -9,6 +9,7 @@
         v-bind:value="value"
         v-on:input="$emit('input', $event.target.value)"
         :step="step"
+        ref="input"
     />
     <span v-if="type === 'password'" class="password-toggle" @click="togglePasswordVisibility">
       <icon :iconType="passwordVisibility === 'text' ? 'eye-closed' : 'eye'" :iconColor="getIconColor"/>
@@ -41,7 +42,9 @@
     },
     methods: {
       togglePasswordVisibility: function () {
+        console.log("toggle");
         this.passwordVisibility = this.passwordVisibility === "text" ? "password" : "text";
+        this.$refs["input"].focus();
       }
     },
     computed: {

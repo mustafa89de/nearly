@@ -5,14 +5,14 @@
       <a v-if="canShare" href="#" @click="shareEvent"><icon class="share" iconType="share" iconColor="primary"/></a>
       <a v-else href="#" @click="openShareModal"><icon class="share" iconType="share" iconColor="primary"/></a>
     </header>
-    <p class="description">{{ event.description }}</p>
+    <p class="description"><pre>{{ event.description }}</pre></p>
     <div class="fieldContainer">
       <text-field class="detailField" iconType="calendar" iconColor="primary" :value="eventDate"/>
       <text-field class="detailField" iconType="clock" iconColor="primary" :value="eventTime"/>
     </div>
-    <a class="hostLink" :href="'/user/'+ event.hostId">
+    <router-link class="hostLink" :to="'/user/'+ event.hostId">
       <text-field iconType="person" iconColor="primary" :value="event.hostName || '-'"/>
-    </a>
+    </router-link>
     <button-send v-if="isCreator" @click="editEvent" class="joinButton" type="button" text="bearbeiten"/>
     <button-send v-if="isParticipant" @click="signOutForEvent" class="joinButton" type="button" text="absagen"/>
     <button-send v-else @click="signInForEvent" class="joinButton" type="button" text="mitmachen"/>
@@ -153,6 +153,15 @@
 
   p.description {
     @include textBody;
+    padding: 10px;
+    height: 150px;
+    background-color: $text-field-col;
+    color: $font-col-primary;
+    overflow: auto;
+
+    pre {
+      margin: 0;
+    }
   }
 
   p.error{
@@ -176,7 +185,7 @@
 
   .hostLink{
     text-decoration: none;
-    color: $font-col-primary;
+    color: $font-col-active;
     :hover{
       color: $font-col-active;
     }
