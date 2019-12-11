@@ -42,7 +42,6 @@
     },
     methods: {
       togglePasswordVisibility: function () {
-        console.log("toggle");
         this.passwordVisibility = this.passwordVisibility === "text" ? "password" : "text";
         this.$refs["input"].focus();
       }
