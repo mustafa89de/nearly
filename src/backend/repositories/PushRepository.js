@@ -39,7 +39,7 @@ class PushRepository {
           const userLocation = subscription._doc.userId._doc.homePosition.coordinates;
           const lng = userLocation[0];
           const lat = userLocation[1];
-          const radius = 1;
+          const radius = 1; // 1km, replace with subscription._doc.userId._doc.homePosition.radius / 1000
           const pushEvent = await Event.find({
             _id: eventId,
             loc: {
