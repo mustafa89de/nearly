@@ -24,7 +24,6 @@
   import Icon from "../components/Icon";
   import SlideMenu from "../components/SlideMenu";
   import LocationPicker from "../components/LocationPicker";
-  import PushService from "../services/PushService";
 
   export default {
     name: "MyProfilePage",
@@ -62,8 +61,6 @@
             lon: longitude,
             ...e
           }));
-
-          await PushService.subscribeToPush();
         } catch (err) {
           console.error(err);
         }

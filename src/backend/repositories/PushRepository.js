@@ -28,16 +28,6 @@ class PushRepository {
       throw err;
     }
   }
-
-  async getAllSubs(){
-    try {
-      const pushes = await Push.find();
-      return pushes
-    }catch (err) {
-      console.error(err.message);
-      throw err;
-    }
-  }
 }
 
 module.exports = new PushRepository();
