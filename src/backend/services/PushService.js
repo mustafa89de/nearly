@@ -7,7 +7,7 @@ const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
 class PushService {
   init(){
     webPush.setVapidDetails(
-      'mailto:test@test.com',
+      'mailto:nearlyapplication@gmail.com',
       publicVapidKey,
       privateVapidKey
     )

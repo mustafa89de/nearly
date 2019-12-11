@@ -1,4 +1,4 @@
-const Push = require('../models/Push');
+const PushSubscriptions = require('../models/Push');
 
 class PushRepository {
   async saveSubscription(userId, subscription) {

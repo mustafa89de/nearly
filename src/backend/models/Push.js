@@ -20,4 +20,4 @@ const pushSchema = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Push', pushSchema);
+module.exports = mongoose.model('PushSubscriptions', pushSchema);
