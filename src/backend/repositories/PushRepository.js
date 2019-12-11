@@ -3,7 +3,11 @@ const PushSubscriptions = require('../models/Push');
 class PushRepository {
   async saveSubscription(userId, subscription) {
     try {
-      const push = PushSubscriptions({userId, subscription});
+      const subscriptionJSON = JSON.parse(subscription);
+      const push = Push({
+        userId: userId,
+        subscription: subscriptionJSON
+      });
       await push.save();
     } catch (err) {
       console.error('DB Error:', err.message);
@@ -13,8 +17,8 @@ class PushRepository {
 
   async deleteSubscription(userId){
     try {
-      const removal = PushSubscriptions.deleteOne({
-        id: userId
+      const removal = await Push.deleteOne({
+        userId
       });
 
       return removal.n > 0;

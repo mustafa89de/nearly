@@ -4,6 +4,7 @@ const webpack = require("webpack");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/frontend/index.js',
@@ -37,8 +38,12 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
-      'MAPBOX_TOKEN': process.env.MAPBOX_TOKEN
-    })
+      'MAPBOX_TOKEN': process.env.MAPBOX_TOKEN,
+      'PUBLIC_VAPID_KEY': process.env.PUBLIC_VAPID_KEY
+    }),
+    new CopyPlugin([
+      {from: 'src/worker'}
+    ]),
   ],
   devServer: {
     port: 3000,

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const pushSchema = mongoose.Schema({
-  userId: {type: String, required: true},
+  userId: {type: String, required: true, index: {unique: true}},
   subscription: {
     endpoint: {
       type: String,
