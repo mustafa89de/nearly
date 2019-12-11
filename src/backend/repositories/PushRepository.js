@@ -4,7 +4,7 @@ class PushRepository {
   async saveSubscription(userId, subscription) {
     try {
       const subscriptionJSON = JSON.parse(subscription);
-      const push = Push({
+      const push = PushSubscriptions({
         userId: userId,
         subscription: subscriptionJSON
       });
@@ -17,7 +17,7 @@ class PushRepository {
 
   async deleteSubscription(userId){
     try {
-      const removal = await Push.deleteOne({
+      const removal = await PushSubscriptions.deleteOne({
         userId
       });
 
