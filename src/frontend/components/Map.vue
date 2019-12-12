@@ -60,7 +60,7 @@
       MapService.onZoomEnd(this.handlePositionChange);
       MapService.onClick(this.handleMapClick);
       this.updateMarkers();
-      if(this.showRadius) setTimeout(() => { this.$emit("radiusCallback"); }, 500);
+      if(this.showRadius) this.$emit("afterInit");
     }
   }
 </script>

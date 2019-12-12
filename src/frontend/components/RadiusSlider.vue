@@ -1,7 +1,7 @@
 <template>
   <div>
     <text-field :value="formattedRadius" iconType="radius" iconColor="primary"/>
-    <input type="range" v-model="currentRadius" min="100" max="5000" step="100"/>
+    <input v-model="currentRadius" type="range" min="100" max="5000" step="100"/>
   </div>
 </template>
 
@@ -10,12 +10,12 @@
   import { INITIAL_MAP_RADIUS } from "../constants";
 
   export default {
-    prop: {
-      userRadius: Number
+    props: {
+      radius: Number
     },
     data: function() {
       return {
-        currentRadius: this.userRadius ? this.userRadius : INITIAL_MAP_RADIUS
+        currentRadius: this.radius
       }
     },
     components: {
@@ -28,7 +28,7 @@
       }
     },
     watch: {
-      currentRadius: function() {
+      currentRadius: function(){
         this.$emit("onChange", this.currentRadius);
       }
     }
