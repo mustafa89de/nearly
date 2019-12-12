@@ -4,7 +4,7 @@ const DB_URL = process.env.DB_URL;
 const User = require('../models/User');
 const Event = require('../models/Event');
 const Participation = require('../models/Participation');
-const PushSubscriptions = require('../models/Push');
+const PushSubscriptions = require('../models/PushSubscription');
 
 class DBService {
   async init() {

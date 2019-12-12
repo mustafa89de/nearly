@@ -1,4 +1,4 @@
-const PushSubscriptions = require('../models/Push');
+const PushSubscriptions = require('../models/PushSubscription');
 const Event = require('../models/Event');
 
 class PushRepository {
