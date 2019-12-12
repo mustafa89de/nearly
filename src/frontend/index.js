@@ -14,11 +14,12 @@ import LoginPage from "./pages/LoginPage";
 import {checkAuthentication, redirectIfLoggedIn, checkAuthenticationAndRedirectToMyProfile} from "./services/NavigationGuards";
 import EventOverviewPage from "./pages/EventOverviewPage";
 import smoothscroll from 'smoothscroll-polyfill';
+import SWService from "./services/SWService";
 
 Vue.use(VueRouter);
 
 smoothscroll.polyfill();
-
+SWService.init();
 
 export const router = new VueRouter({
   mode: 'history',
