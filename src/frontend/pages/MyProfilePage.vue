@@ -9,7 +9,7 @@
     <event-list :events="this.participationEvents" hideNumbers
                 @click="handleEventClick"/>
     <h3>Meine Home Position</h3>
-    <location-picker @save="handleHomePositionChange" show-home-position show-radius/>
+    <location-picker @save="handleHomePositionChange" show-home-position show-radius :propRadius="user ? user.radius : null"/>
     <p v-if="errorMsg" id="error">{{errorMsg}}</p>
     <slide-menu :username="user ? user.username : null" :sliderVisible="sliderVisible"/>
   </article>
@@ -77,10 +77,10 @@
           this.sliderVisible = !this.sliderVisible;
         }
       },
-      async handleHomePositionChange(newPosition) {
+      async handleHomePositionChange(newData) {
         try {
-          await UserService.setHomePosition(newPosition);
-          await UserService.setRadius(newPosition.radius);
+          await UserService.setHomePosition({ lon: newData.lon, lat: newData.lat });
+          await UserService.setRadius(newData.radius);
           this.$router.go();
           this.errorMsg = null;
           throw new Error();
