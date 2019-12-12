@@ -35,9 +35,6 @@
     },
     watch: {
       $route(to, from) {
-        if(to.path === "/user/" + AuthService.getUser().userId){
-          this.$router.push("/me");
-        }
         this.syncNavBarState(to.path);
       }
     },

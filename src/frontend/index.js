@@ -11,7 +11,7 @@ import MyProfilePage from './pages/MyProfilePage';
 import HelpPage from './pages/HelpPage';
 import NotFoundPage from './pages/NotFoundPage';
 import LoginPage from "./pages/LoginPage";
-import {checkAuthentication, redirectIfLoggedIn} from "./services/NavigationGuards";
+import {checkAuthentication, redirectIfLoggedIn, checkAuthenticationAndRedirectToMyProfile} from "./services/NavigationGuards";
 import EventOverviewPage from "./pages/EventOverviewPage";
 import smoothscroll from 'smoothscroll-polyfill';
 
@@ -51,7 +51,7 @@ export const router = new VueRouter({
     {
       path: '/user/:uid',
       component: UserDetailPage,
-      beforeEnter: checkAuthentication
+      beforeEnter: checkAuthenticationAndRedirectToMyProfile
     },
     {
       path: '/event/:eid/edit',
