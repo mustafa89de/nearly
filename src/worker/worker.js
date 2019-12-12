@@ -7,3 +7,5 @@ workbox.precaching.cleanupOutdatedCaches();
 workbox.routing.registerNavigationRoute(
   workbox.precaching.getCacheKeyForURL('/index.html')
 );
+
+// TODO: @Jonas push service worker logic to be added here

@@ -45,8 +45,8 @@ module.exports = {
       'MAPBOX_TOKEN': process.env.MAPBOX_TOKEN
     }),
     new InjectManifest({
-      swSrc:'./src/sw.js',
-
+      swSrc:'./src/worker/worker.js',
+      include: [ /bundle\.\w*\.js$/, 'index.html']
     })
   ],
   devServer: {
