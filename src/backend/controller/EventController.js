@@ -20,13 +20,7 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
 
     const createdEvent = await EventRepository.createEvent(name, time, hostId, description, loc);
 
-    const payload = JSON.stringify({title: 'New Nearly Event', body: name, data: createdEvent.id});
-
-    const subscriptions = await PushRepository.getEventSubscriptions(createdEvent.id);
-
-    subscriptions.forEach(async subscription => {
-      await PushService.sendPush(subscription, payload);
-    });
+    await PushService.notifyUsers(name, createdEvent.id);
 
     res.status(201).json(createdEvent);
   } catch (err) {
