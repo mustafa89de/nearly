@@ -15,3 +15,15 @@ export function redirectIfLoggedIn(to, from, next) {
     next();
   }
 }
+
+export function checkAuthenticationAndRedirectToMyProfile(to, from, next) {
+  if (AuthService.isAuthenticated()) {
+    if(to.path === "/user/" + AuthService.getUser().userId){
+      next("/me");
+    } else {
+      next();
+    }
+  } else {
+    next("/login");
+  }
+}

@@ -2,7 +2,7 @@
   <li class="eventListItem" @click="handleClick">
     <p v-if="!this.hideNumber" class="number">{{number}}</p>
     <h4 class="title">{{title}}</h4>
-    <p class="description">{{description}}</p>
+    <p class="description">{{getDescription}}</p>
     <p class="meta">
       <span>{{formattedDate}}</span>
       <span>{{distance}}</span>
@@ -55,6 +55,14 @@
         timeString = `${hours}:${minutes} Uhr`;
 
         return dayString + ', ' + timeString;
+      },
+      getDescription: function () {
+        if (this.description) {
+          return this.description.length < 100 ? this.description : this.description.substr(0, 100) + "...";
+        }
+        else {
+          return "";
+        }
       }
     },
     methods: {
