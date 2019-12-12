@@ -1,5 +1,6 @@
 const PushSubscriptions = require('../models/PushSubscription');
 const Event = require('../models/Event');
+const EARTH_RADIUS = 6378.1;
 
 class PushRepository {
   async saveSubscription(userId, subscription) {
@@ -44,7 +45,7 @@ class PushRepository {
             _id: eventId,
             loc: {
               $geoWithin: {
-                $centerSphere: [[lng, lat], radius / 6378.1]
+                $centerSphere: [[lng, lat], radius / EARTH_RADIUS]
               }
             }
           });
