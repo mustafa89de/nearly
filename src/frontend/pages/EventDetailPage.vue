@@ -1,10 +1,8 @@
 <template>
   <article>
-    <div v-if="isLoading"> Loading...</div>
     <div v-if="error">{{error}}</div>
-    <event-details class="eventDetails" v-if="event" :event="event"/>
-    <map-comp v-if="event" :initialBounds="bounds" :markers="markers" hideNumbers="true"
-              controlPosition="bottom-right"/>
+    <event-details class="eventDetails" :event="event"/>
+    <map-comp hideNumbers="true" controlPosition="bottom-right"/>
   </article>
 </template>
 
@@ -12,6 +10,7 @@
   import EventService from "../services/EventService";
   import EventDetails from "../components/EventDetails";
   import Map from "../components/Map.vue";
+  import MapService from "../services/MapService";
   import LocationService from "../services/LocationService";
 
   export default {
@@ -22,32 +21,19 @@
 
     data() {
       return {
-        isLoading: false,
         error: null,
         event: null
-      }
-    },
-
-    computed: {
-      bounds: function () {
-        const {lon, lat} = this.event;
-        return LocationService.toBounds({lon, lat});
-      },
-      markers: function () {
-        if (!this.event) return [];
-        const {lon, lat} = this.event;
-        return [{lon, lat}];
       }
     },
 
     methods: {
       async init() {
         try {
-          this.isLoading = true;
           this.event = await EventService.getEventById(this.$route.params.eid);
-          this.isLoading = false;
+          const {lon, lat} = this.event;
+          MapService.setBounds(LocationService.toBounds({lon, lat}));
+          MapService.addMarker({lat, lon});
         } catch (err) {
-          this.isLoading = false;
           if (err.status === 404) {
             this.error = "Das gesuchte Event existiert leider nicht.";
           } else this.error = "Ein unbekannter Fehler ist aufgetreten.";
@@ -72,25 +58,26 @@
 
     display: flex;
     flex-direction: column;
-  }
 
-  .eventDetails {
-    z-index: 1;
-    flex: 0;
-  }
+    .eventDetails {
+      z-index: 1;
+      flex: 0;
+    }
 
-  #map {
-    margin-top: -50px; // rounded borders
-    position: relative;
-    flex: 1;
+    #map {
+      margin-top: -50px; // rounded borders
+      position: relative;
+      flex: 1;
+      min-height: 250px;
 
-
-    @media screen and (min-width: 500px) {
-      margin-top: 0;
-      height: auto;
-      bottom: 56px; // nav bar height
-      position: fixed;
-      flex: initial;
+      @media screen and (min-width: 500px) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 56px; // nav bar height
+        flex: initial;
+      }
     }
   }
 </style>

@@ -1,5 +1,6 @@
 <template>
   <main :class="{'loggedIn' : loggedIn}">
+    <offline-modal/>
     <router-view/>
     <nav-bar :state="state" v-if="loggedIn"/>
   </main>
@@ -7,11 +8,13 @@
 
 <script>
   import NavBar from "./components/NavBar";
+  import OfflineModal from "./components/OfflineModal";
   import AuthService from "./services/AuthService";
 
   export default {
     components: {
-      'nav-bar': NavBar
+      'nav-bar': NavBar,
+      'offline-modal': OfflineModal
     },
     data: function () {
       return {
@@ -89,5 +92,10 @@
 
   textarea {
     border-radius: 0;
+  }
+
+  article {
+    position: relative;
+    flex: 1;
   }
 </style>

@@ -1,9 +1,13 @@
 <template>
-  <article class="detail">
+  <section class="detail">
     <header>
-      <h1>{{event.name}}</h1>
-      <a v-if="canShare" href="#" @click="shareEvent"><icon class="share" iconType="share" iconColor="primary"/></a>
-      <a v-else href="#" @click="openShareModal"><icon class="share" iconType="share" iconColor="primary"/></a>
+      <h1>{{event? event.name : '...'}}</h1>
+      <a v-if="canShare" href="#" @click="shareEvent">
+        <icon class="share" iconType="share" iconColor="primary"/>
+      </a>
+      <a v-else href="#" @click="openShareModal">
+        <icon class="share" iconType="share" iconColor="primary"/>
+      </a>
     </header>
     <p class="description"><pre>{{ event ? event.description : '...' }}</pre></p>
     <div class="fieldContainer">
@@ -14,11 +18,11 @@
       <text-field iconType="person" iconColor="primary" :value="event.hostName || '-'"/>
     </router-link>
     <button-send v-if="isCreator" @click="editEvent" type="button" text="bearbeiten"/>
-    <button-send v-if="isParticipant" @click="signOutForEvent" type="button" text="absagen"/>
+    <button-send v-if="event && event.isParticipant" bordered @click="signOutForEvent" type="button" text="absagen"/>
     <button-send v-else @click="signInForEvent" type="button" text="mitmachen"/>
     <p class="error" v-if="error">{{error}}</p>
     <share-modal v-if="showShareModal" :eventURL="getURL" @close="closeShare"/>
-  </article>
+  </section>
 </template>
 
 <script>
@@ -31,7 +35,7 @@
 
   export default {
     name: "EventDetails",
-    components:{
+    components: {
       'text-field': TextField,
       'button-send': Button,
       'icon': Icon,
@@ -40,32 +44,33 @@
     props: {
       event: Object,
     },
-    data(){
+    data() {
       return {
         error: null,
-        isParticipant: this.event.isParticipant,
         showShareModal: false
       };
     },
     computed: {
-      isCreator: function(){
-        if(this.event){
+      isCreator: function () {
+        if (this.event) {
           const thisUserId = AuthService.getUser().userId;
           return thisUserId === this.event.hostId;
-        }else{
+        } else {
           return false;
         }
       },
-      eventDate: function(){
+      eventDate: function () {
+        if (!this.event) return '...';
         return new Date(this.event.time).toLocaleDateString();
       },
-      eventTime: function(){
+      eventTime: function () {
+        if (!this.event) return '...';
         return new Date(this.event.time).toLocaleTimeString('de-De', {hour: '2-digit', minute: '2-digit'})
       },
-      canShare: function(){
+      canShare: function () {
         return navigator.share;
       },
-      getURL: function(){
+      getURL: function () {
         return window.location.href;
       }
     },
@@ -80,38 +85,39 @@
       async signInForEvent(e) {
         try {
           await EventService.signInForEvent(this.event.id);
-          this.isParticipant = true;
-        }catch (err) {
+          this.event.isParticipant = true;
+        } catch (err) {
           console.error(err);
           this.error = "Bei der Anmeldung ist leider etwas schief gelaufen.";
         }
       },
-      async signOutForEvent(){
-        try{
+
+      async signOutForEvent() {
+        try {
           await EventService.signOutForEvent(this.event.id);
-          this.isParticipant = false;
-        }catch(err){
+          this.event.isParticipant = false;
+        } catch (err) {
           console.error(err);
           this.error = "Bei der Abmeldung ist leider etwas schief gelaufen.";
         }
       },
-      async shareEvent(){
-        if(navigator.share){
-          try{
+      async shareEvent() {
+        if (navigator.share) {
+          try {
             await navigator.share({
               title: "nearly",
               text: this.event.name,
               url: window.location.href
             });
-          } catch(e){
+          } catch (e) {
             console.log("event couldn't be shared ", e);
           }
         }
       },
-      openShareModal(){
+      openShareModal() {
         this.showShareModal = true;
       },
-      closeShare(){
+      closeShare() {
         this.showShareModal = false;
       }
     }
@@ -143,7 +149,7 @@
         margin: 0;
         padding: 0;
       }
-
+      
       .share {
         height: 32px;
         width: 32px;
