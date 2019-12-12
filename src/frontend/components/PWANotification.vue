@@ -36,11 +36,12 @@
     max-width: calc(500px - 40px);
     padding: 15px 30px 15px 20px;
     line-height: 1.4;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: $shadow-default;
     z-index: 2;
     transform: translateX(-50%);
     font-family: "Arimo", Arial, Helvetica, sans-serif;
+    font-size: 18px;
 
     > span {
       font-family: "SF Pro Text";
