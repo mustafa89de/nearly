@@ -25,7 +25,7 @@ class PushService {
   async notifyUsers(name, eventId){
     try {
       const payload = JSON.stringify({title: 'New Nearly Event', body: name, data: eventId});
-      const subscriptions = await PushRepository.getEventSubscriptions(eventId);
+      const subscriptions = await PushRepository.getSubscriptionsOfInterestedUsers(eventId);
 
       subscriptions.forEach(async subscription => {
         await webPush.sendNotification(subscription, payload);

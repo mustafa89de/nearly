@@ -31,17 +31,23 @@ class PushRepository {
     }
   }
 
-  async getEventSubscriptions(eventId) {
+  async getSubscriptionsOfInterestedUsers(eventId) {
     try {
+
+      //get all subscriptions, populate with user objects
       const allSubscriptions = await PushSubscriptions.find().populate('userId');
 
       let relevantSubscriptions = (await Promise.all(
         allSubscriptions.map(async (subscription) => {
+          //get user lat/lng from every subscription
           const userLocation = subscription._doc.userId._doc.homePosition.coordinates;
           const lng = userLocation[0];
           const lat = userLocation[1];
           const radius = 1; // 1km, replace with subscription._doc.userId._doc.homePosition.radius / 1000
-          const pushEvent = await Event.find({
+          //check if event is within radius of user
+          //returns list with length == 0 if not in radius, e.g. no event with eventId in this radius
+          //list length > 0 if in radius
+          const eventInUserRadius = await Event.find({
             _id: eventId,
             loc: {
               $geoWithin: {
@@ -49,11 +55,13 @@ class PushRepository {
               }
             }
           });
-          if (pushEvent.length > 0) {
+          //if in radius, add subscription to list (else undefined is added to list)
+          if (eventInUserRadius.length > 0) {
             return subscription._doc.subscription;
           }
         })
-      )).filter(item => item !== undefined);
+        //remove undefined list elements
+      )).filter(subscription => subscription !== undefined);
 
       return relevantSubscriptions;
     } catch (err) {
