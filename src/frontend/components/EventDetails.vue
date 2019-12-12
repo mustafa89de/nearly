@@ -5,17 +5,17 @@
       <a v-if="canShare" href="#" @click="shareEvent"><icon class="share" iconType="share" iconColor="primary"/></a>
       <a v-else href="#" @click="openShareModal"><icon class="share" iconType="share" iconColor="primary"/></a>
     </header>
-    <p class="description"><pre>{{ event.description }}</pre></p>
+    <p class="description"><pre>{{ event ? event.description : '...' }}</pre></p>
     <div class="fieldContainer">
       <text-field class="detailField" iconType="calendar" iconColor="primary" :value="eventDate"/>
       <text-field class="detailField" iconType="clock" iconColor="primary" :value="eventTime"/>
     </div>
-    <router-link class="hostLink" :to="'/user/'+ event.hostId">
+    <router-link class="hostLink" :to="event && event.hostName ? '/user/'+ event.hostId : null">
       <text-field iconType="person" iconColor="primary" :value="event.hostName || '-'"/>
     </router-link>
-    <button-send v-if="isCreator" @click="editEvent" class="joinButton" type="button" text="bearbeiten"/>
-    <button-send v-if="isParticipant" @click="signOutForEvent" class="joinButton" type="button" text="absagen"/>
-    <button-send v-else @click="signInForEvent" class="joinButton" type="button" text="mitmachen"/>
+    <button-send v-if="isCreator" @click="editEvent" type="button" text="bearbeiten"/>
+    <button-send v-if="isParticipant" @click="signOutForEvent" type="button" text="absagen"/>
+    <button-send v-else @click="signInForEvent" type="button" text="mitmachen"/>
     <p class="error" v-if="error">{{error}}</p>
     <share-modal v-if="showShareModal" :eventURL="getURL" @close="closeShare"/>
   </article>
@@ -131,63 +131,64 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 0px 0px 50px 50px;
     padding: 5%;
-  }
 
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
-    h1 {
-      @include textTitle;
+      h1 {
+        @include textTitle;
+        color: $font-col-primary;
+        margin: 0;
+        padding: 0;
+      }
+
+      .share {
+        height: 32px;
+        width: 32px;
+      }
+    }
+
+    p.description {
+      @include textBody;
+      padding: 10px;
+      height: 150px;
+      background-color: $text-field-col;
       color: $font-col-primary;
-      margin: 0;
-      padding: 0;
+      overflow: auto;
+
+      pre {
+        margin: 0;
+      }
     }
 
-    .share {
-      height: 32px;
-      width: 32px;
+    p.error{
+      color: $font-col-error;
     }
-  }
 
-  p.description {
-    @include textBody;
-    padding: 10px;
-    height: 150px;
-    background-color: $text-field-col;
-    color: $font-col-primary;
-    overflow: auto;
-
-    pre {
-      margin: 0;
+    .fieldContainer {
+      flex: 1;
+      display: flex;
+      flex-flow: row wrap;
     }
-  }
 
-  p.error{
-    color: $font-col-error;
-  }
+    .detailField{
+      min-width: 50%;
+    }
 
-  .fieldContainer {
-    flex: 1;
-    display: flex;
-    flex-flow: row wrap;
-  }
+    > input[type="button"] {
+      margin-top: 5%;
+      align-self: center;
+    }
 
-  .detailField{
-    min-width: 50%;
-  }
-
-  .joinButton {
-    margin-top: 5%;
-    align-self: center;
-  }
-
-  .hostLink{
-    text-decoration: none;
-    color: $font-col-active;
-    :hover{
+    .hostLink{
+      text-decoration: none;
       color: $font-col-active;
+
+      :hover{
+        color: $font-col-active;
+      }
     }
   }
 
