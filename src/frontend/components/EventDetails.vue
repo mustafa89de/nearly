@@ -14,8 +14,8 @@
       <text-field class="detailField" iconType="calendar" iconColor="primary" :value="eventDate"/>
       <text-field class="detailField" iconType="clock" iconColor="primary" :value="eventTime"/>
     </div>
-    <router-link class="hostLink" :to="event && event.hostName ? '/user/'+ event.hostId : null">
-      <text-field iconType="person" iconColor="primary" :value="event.hostName || '-'"/>
+    <router-link class="hostLink" :to="event && event.hostName ? '/user/'+ event.hostId : ''">
+      <text-field iconType="person" iconColor="primary" :value="event && event.hostName ? event.hostName : '-'"/>
     </router-link>
     <button-send v-if="isCreator" @click="editEvent" type="button" text="bearbeiten"/>
     <button-send v-if="event && event.isParticipant" bordered @click="signOutForEvent" type="button" text="absagen"/>
@@ -162,10 +162,12 @@
       height: 150px;
       background-color: $text-field-col;
       color: $font-col-primary;
-      overflow: auto;
+      overflow-y: auto;
 
       pre {
         margin: 0;
+        white-space: pre-line;
+        word-break: break-all;
       }
     }
 

@@ -64,9 +64,12 @@
       padding: 10px;
       height: 150px;
       background-color: $text-field-col;
-      overflow: auto;
+      overflow-y: auto;
+
       pre {
         margin: 0;
+        white-space: pre-line;
+        word-break: break-all;
       }
     }
 
