@@ -69,7 +69,7 @@
       pre {
         margin: 0;
         white-space: pre-line;
-        word-break: break-all;
+        hyphens: auto;
       }
     }
 
