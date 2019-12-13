@@ -105,8 +105,6 @@
         if (navigator.share) {
           try {
             await navigator.share({
-              title: "nearly",
-              text: this.event.name,
               url: window.location.href
             });
           } catch (e) {
