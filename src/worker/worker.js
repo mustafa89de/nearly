@@ -11,11 +11,20 @@ self.addEventListener('push', event => {
 });
 
 self.addEventListener('notificationclick', event => {
-  console.log('notification clicked');
 
   event.notification.close();
-  clients.openWindow('localhost:3000/event/' + event.notification.data);
 
-  console.log('opened window')
+  event.waitUntil(async function () {
+      const allWindowClients = await clients.matchAll({
+        includeUncontrolled: true,
+        type: "window"
+      });
+
+      await clients.claim();
+
+      allWindowClients[0].navigate('http://localhost:3000/event/' + event.notification.data);
+      //allWindowClients[0].navigate('https://nearlyapp.herokuapp.com/event/' + event.notification.data);
+    }()
+  );
 });
 
