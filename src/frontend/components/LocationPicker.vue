@@ -146,6 +146,7 @@
       border-radius: 50px 50px 0 0;
       background: $bg-col-primary;
       z-index: 2;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 
       > input[type="button"] {
         width: 100%;
