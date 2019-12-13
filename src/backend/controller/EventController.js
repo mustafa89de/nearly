@@ -4,6 +4,8 @@ const UserRepository = require("../repositories/UserRepository");
 const ParticipationRepository = require("../repositories/ParticipationRepository");
 const MapService = require("../services/MapService");
 const AuthService = require("../services/AuthService");
+const PushRepository = require('../repositories/PushRepository');
+const PushService = require('../services/PushService');
 
 const express = require('express');
 const router = express.Router();
@@ -17,6 +19,8 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
     };
 
     const createdEvent = await EventRepository.createEvent(name, time, hostId, description, loc);
+
+    await PushService.notifyUsers(name, createdEvent.id);
 
     res.status(201).json(createdEvent);
   } catch (err) {

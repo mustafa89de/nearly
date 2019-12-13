@@ -19,6 +19,8 @@ class PushService {
         return;
       }
 
+      await navigator.serviceWorker.ready;
+
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: publicVapidKey
@@ -42,8 +44,12 @@ class PushService {
   async unsubscribePush(){
     try {
       const registration = await navigator.serviceWorker.register('../worker.js');
+
+      await navigator.serviceWorker.ready;
+
       const subscription = await registration.pushManager.getSubscription();
       await subscription.unsubscribe();
+      console.log('unsubscribed');
 
       await axios.delete(ENDPOINTS.PUSH, {
         params: {
