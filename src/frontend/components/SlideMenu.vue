@@ -18,12 +18,10 @@
 <script>
   import AuthService from "../services/AuthService";
   import Icon from "../components/Icon"
-  import Button from "../components/Button";
   import PushService from "../services/PushService";
 
   export default {
     components: {
-      button: Button,
       icon: Icon
     },
     props: {
