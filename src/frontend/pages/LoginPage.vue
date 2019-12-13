@@ -73,12 +73,6 @@
       password: function(){
         this.wrongLoginData = false;
       }
-    },
-    mounted() {
-      document.body.classList.add('colored');
-    },
-    destroyed() {
-      document.body.classList.remove('colored');
     }
   };
 </script>

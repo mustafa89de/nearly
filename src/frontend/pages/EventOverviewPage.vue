@@ -42,12 +42,7 @@
         })
       }
     },
-    destroyed: function () {
-      document.body.classList.add("colored");
-    },
     created: async function () {
-      document.body.classList.remove("colored");
-
       const initialBounds = await this.loadInitialBounds();
 
       MapService.on('moveend', () => {

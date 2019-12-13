@@ -68,9 +68,7 @@
     flex-direction: column;
     align-items: center;
 
-    &.colored {
-      background-color: $bg-col-secondary;
-    }
+    background-color: $bg-col-secondary;
   }
 
   main {
