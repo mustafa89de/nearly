@@ -31,7 +31,7 @@ class PushRepository {
     }
   }
 
-  async getSubscriptionsOfInterestedUsers(eventId) {
+  async getSubscriptionsOfInterestedUsers(eventId, hostId) {
     try {
 
       //get all subscriptions, populate with user objects
@@ -41,6 +41,7 @@ class PushRepository {
         allSubscriptions.map(async (subscription) => {
           //get user lat/lng from every subscription
           const userLocation = subscription._doc.userId._doc.homePosition.coordinates;
+          const userId = subscription._doc.userId._id.toString();
           const lng = userLocation[0];
           const lat = userLocation[1];
           const radius = 1; // 1km, replace with subscription._doc.userId._doc.homePosition.radius / 1000
@@ -55,8 +56,8 @@ class PushRepository {
               }
             }
           });
-          //if in radius, add subscription to list (else undefined is added to list)
-          if (eventInUserRadius.length > 0) {
+          //if in radius and user not host, add subscription to list (else undefined is added to list)
+          if (eventInUserRadius.length > 0 && userId !== hostId) {
             return subscription._doc.subscription;
           }
         })
