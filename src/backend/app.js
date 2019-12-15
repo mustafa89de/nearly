@@ -11,8 +11,8 @@ const Passport = require('./passport');
 app.use(express.json());
 
 app.use('*', (req, res, next) => {
-  if (req.host !== 'localhost' && !req.secure && req.get('x-forwarded-proto') !== 'https') {
-    res.redirect("https://" + req.headers.host + req.url);
+  if (req.hostname !== 'localhost' && !req.secure && req.get('x-forwarded-proto') !== 'https') {
+    res.redirect("https://" + req.get('host') + req.url);
   } else {
     next();
   }
