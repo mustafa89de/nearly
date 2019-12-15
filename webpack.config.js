@@ -42,7 +42,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
-      'MAPBOX_TOKEN': process.env.MAPBOX_TOKEN
+      'MAPBOX_TOKEN': JSON.stringify(process.env.MAPBOX_TOKEN)
     }),
     new InjectManifest({
       swSrc:'./src/worker/worker.js',
