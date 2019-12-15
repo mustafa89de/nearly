@@ -39,7 +39,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       'MAPBOX_TOKEN': process.env.MAPBOX_TOKEN,
-      'PUBLIC_VAPID_KEY': process.env.PUBLIC_VAPID_KEY
+      'PUBLIC_VAPID_KEY': JSON.stringify(process.env.PUBLIC_VAPID_KEY)
     }),
     new CopyPlugin([
       {from: 'src/worker'}
