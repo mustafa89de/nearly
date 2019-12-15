@@ -1,11 +1,13 @@
 <template>
-  <modal v-if="showModal"
-    :title="'Du bist Offline'"
-    :text="'Du scheinst offline zu sein. Die Inhalte werden vielleicht nicht richtig angezeigt. Bitte prüfe Deine Internetverbindung.'"
-    :confirmText="'reconnect'"
-    :abortText="'i don\'t care'"
-    @abort="handleOffline"
-    @confirm="handleOnline"
+  <modal
+      v-if="showModal"
+      id="offlineModal"
+      :title="'Du bist Offline'"
+      :text="'Du scheinst offline zu sein. Die Inhalte werden vielleicht nicht richtig angezeigt. Bitte prüfe Deine Internetverbindung.'"
+      :confirmText="'reconnect'"
+      :abortText="'i don\'t care'"
+      @abort="handleOffline"
+      @confirm="handleOnline"
   />
 </template>
 
@@ -25,7 +27,7 @@
       handleOffline: function (e) {
         this.showModal = !this.showModal;
       },
-      handleOnline: function(e){
+      handleOnline: function (e) {
         document.location.reload();
       }
     },
@@ -37,5 +39,13 @@
 </script>
 
 <style scoped>
-
+  #offlineModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    z-index: 3;
+  }
 </style>

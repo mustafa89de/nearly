@@ -9,14 +9,14 @@
         <icon class="share" iconType="share" iconColor="primary"/>
       </a>
     </header>
-    <p class="description">{{ event ? event.description : '...' }}</p>
+    <p class="description"><pre>{{ event ? event.description : '...' }}</pre></p>
     <div class="fieldContainer">
       <text-field class="detailField" iconType="calendar" iconColor="primary" :value="eventDate"/>
       <text-field class="detailField" iconType="clock" iconColor="primary" :value="eventTime"/>
     </div>
-    <a class="hostLink" :href="event && event.hostName ? '/user/'+ event.hostId : null">
-      <text-field iconType="person" iconColor="primary" :value="event ? (event.hostName || '-') : '...'"/>
-    </a>
+    <router-link class="hostLink" :to="event && event.hostName ? '/user/'+ event.hostId : ''">
+      <text-field iconType="person" iconColor="primary" :value="event && event.hostName ? event.hostName : '-'"/>
+    </router-link>
     <button-send v-if="isCreator" @click="editEvent" type="button" text="bearbeiten"/>
     <button-send v-if="event && event.isParticipant" bordered @click="signOutForEvent" type="button" text="absagen"/>
     <button-send v-else @click="signInForEvent" type="button" text="mitmachen"/>
@@ -105,8 +105,6 @@
         if (navigator.share) {
           try {
             await navigator.share({
-              title: "nearly",
-              text: this.event.name,
               url: window.location.href
             });
           } catch (e) {
@@ -149,7 +147,7 @@
         margin: 0;
         padding: 0;
       }
-
+      
       .share {
         height: 32px;
         width: 32px;
@@ -158,9 +156,20 @@
 
     p.description {
       @include textBody;
+      padding: 10px;
+      height: 150px;
+      background-color: $text-field-col;
+      color: $font-col-primary;
+      overflow-y: auto;
+
+      pre {
+        margin: 0;
+        white-space: pre-line;
+        hyphens: auto;
+      }
     }
 
-    p.error {
+    p.error{
       color: $font-col-error;
     }
 
@@ -170,7 +179,7 @@
       flex-flow: row wrap;
     }
 
-    .detailField {
+    .detailField{
       min-width: 50%;
     }
 
@@ -179,11 +188,11 @@
       align-self: center;
     }
 
-    .hostLink {
+    .hostLink{
       text-decoration: none;
-      color: $font-col-primary;
+      color: $font-col-active;
 
-      :hover {
+      :hover{
         color: $font-col-active;
       }
     }

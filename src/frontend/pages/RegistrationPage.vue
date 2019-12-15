@@ -91,12 +91,6 @@
       password: function(){
         this.passwordValid = this.password.length >= 8;
       }
-    },
-    mounted() {
-      document.body.classList.add('colored');
-    },
-    destroyed() {
-      document.body.classList.remove('colored');
     }
   };
 </script>

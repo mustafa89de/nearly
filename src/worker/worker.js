@@ -7,6 +7,7 @@ workbox.precaching.cleanupOutdatedCaches();
 workbox.core.skipWaiting();
 workbox.core.clientsClaim();
 
+
 // adds navigation routs for SPA
 workbox.routing.registerNavigationRoute(
   workbox.precaching.getCacheKeyForURL('/index.html')
