@@ -46,7 +46,7 @@ module.exports = {
     }),
     new InjectManifest({
       swSrc:'./src/worker/worker.js',
-      include: [ /bundle\.\w*\.js$/, 'index.html']
+      exclude: [ /static\/pwa\/.*/]
     })
   ],
   devServer: {
