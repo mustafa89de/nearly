@@ -9,6 +9,7 @@
     "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
     "frontend": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "backend": "nodemon src/backend/app.js",
+    "vapid-keys": "./node_modules/.bin/web-push generate-vapid-keys",
     "test": "MODE=TEST jest"
   },
   "repository": {
