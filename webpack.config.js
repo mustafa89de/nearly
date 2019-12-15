@@ -34,7 +34,7 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new CopyWebpackPlugin([
-      {from: 'public', to: 'static'}
+      {from: 'src/frontend/public', to: 'static'}
     ]),
     new HtmlWebpackPlugin({
       filename: 'index.html',
