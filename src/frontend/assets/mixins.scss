@@ -1,45 +1,49 @@
+@import "../assets/variables";
+
 // Text Styles
 @mixin textTitle {
-    font-family: "Poppins", Arial, Helvetica, sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 0.10em;
-    font-weight: 800;
-    text-transform: uppercase;
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.10em;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 @mixin textBody {
-    font-family: "Arimo", Arial, Helvetica, sans-serif;
-    font-size: 18px;
-    font-weight: 400;
-    letter-spacing: 0.02em;
+  font-family: "Arimo", Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
 }
 
 @mixin textBodyTitle {
-    font-family: "Poppins", Arial, Helvetica, sans-serif;
-    font-size: 2rem;
-    letter-spacing: 0.10em;
-    font-weight: 800;
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.10em;
+  font-weight: 800;
 }
 
 @mixin textHint {
-    font-family: "Arimo", Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 0.02em;
+  font-family: "Arimo", Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
 }
 
 @mixin textButton {
-    font-family: "Poppins", Arial, Helvetica, sans-serif;
-    font-size: 0.8rem;
-    letter-spacing: 0.10em;
-    font-weight: 800;
-    text-transform: uppercase;
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.10em;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 @mixin pageCard {
   background: $bg-col-primary;
-  margin-top: 25px;
-  padding: 25px 0 0 0;
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
+  padding-top: 25px;
+  @media screen and (min-width: 500px) {
+    margin-top: 25px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+  }
 }

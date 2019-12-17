@@ -42,12 +42,7 @@
         })
       }
     },
-    destroyed: function(){
-      document.body.classList.add("colored");
-    },
     created: async function () {
-      document.body.classList.remove("colored");
-
       const initialBounds = await this.loadInitialBounds();
 
       MapService.on('moveend', () => {
@@ -108,46 +103,45 @@
     min-width: 100%;
     display: flex;
     flex: 1;
-  }
+    flex-direction: column;
 
-  #events {
-    z-index: 1;
-    position: absolute;
-    background: $bg-col-primary;
-    width: 100%;
-    max-width: 500px;
-    bottom: 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 50px 50px 0 0;
-    padding: 50px 0 25px;
+    #map {
+      flex: 1;
+      position: relative;
+      margin-bottom: -50px; // border-radius
+      min-height: 250px;
 
-    > h2 {
-      @include textTitle;
-      margin: 0 25px 25px;
+      @media screen and (min-width: 500px) {
+        position: fixed;
+        top: 0;
+        bottom: 56px;
+        left: 0;
+        right: 0;
+        margin-bottom: 0;
+      }
     }
 
-    > ul {
-      padding-left: 25px;
-    }
-  }
-</style>
+    #events {
+      flex: none;
+      margin-top: auto;
 
-<style lang="scss">
-  article {
-    position: relative;
-    flex: 1;
-  }
+      z-index: 2;
+      background: $bg-col-primary;
+      width: 100%;
+      max-width: 500px;
+      bottom: 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 50px 50px 0 0;
+      padding: 50px 0 25px;
 
-  #map {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
+      > h2 {
+        @include textTitle;
+        margin: 0 25px 25px;
+      }
 
-    @media screen and (max-width: 500px) {
-      bottom: 277px - 50px; // events section height minus border-radius
-      height: initial;
+      > ul {
+        padding-left: 25px;
+      }
     }
   }
 </style>

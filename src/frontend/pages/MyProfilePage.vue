@@ -81,7 +81,6 @@
           await UserService.setHomePosition(newPosition);
           this.$router.go();
           this.errorMsg = null;
-          throw new Error();
         } catch (e) {
           this.errorMsg = "Es ist ein Fehler beim setzen der Home Position aufgetreten."
         }

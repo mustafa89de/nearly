@@ -4,7 +4,8 @@ const webpack = require("webpack");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const {InjectManifest} = require('workbox-webpack-plugin');
 
 module.exports = {
   entry: './src/frontend/index.js',
@@ -32,18 +33,22 @@ module.exports = {
   },
   plugins: [
     new VueLoaderPlugin(),
+    new CopyWebpackPlugin([
+      {from: 'src/frontend/public', to: 'static'}
+    ]),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/frontend/index.html',
     }),
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
-      'MAPBOX_TOKEN': process.env.MAPBOX_TOKEN,
+      'MAPBOX_TOKEN': JSON.stringify(process.env.MAPBOX_TOKEN),
       'PUBLIC_VAPID_KEY': JSON.stringify(process.env.PUBLIC_VAPID_KEY)
     }),
-    new CopyPlugin([
-      {from: 'src/worker'}
-    ]),
+    new InjectManifest({
+      swSrc:'./src/worker/worker.js',
+      include: [ /bundle\.\w*\.js$/, 'index.html']
+    })
   ],
   devServer: {
     port: 3000,

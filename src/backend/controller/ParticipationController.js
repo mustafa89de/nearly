@@ -10,9 +10,8 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
     const {userId, eventId} = req.query;
     const participation = await ParticipationRepository.attendEvent(userId, eventId);
 
-    if(participation === null){
-      res.status(404).json({message: `Event with id "${eventId}" 
-      or User with with id "${userId}" does not exist or User is already participant.`});
+    if (participation === null) {
+      res.status(404).json({message: `Event with id "${eventId}" or User with with id "${userId}" does not exist or User is already participant.`});
     }
 
     res.status(201).json();
@@ -26,7 +25,7 @@ router.delete('/', JWTService.requireJWT(), async (req, res) => {
   try {
     const {userId, eventId} = req.query;
     const removal = await ParticipationRepository.cancelAttendance(userId, eventId);
-    if (!removal){
+    if (!removal) {
       res.status(404).json({message: `Deletion of participation with userId: ${userId} and eventId: ${eventId} unsuccessful`})
     }
     res.json();

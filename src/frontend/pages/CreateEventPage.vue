@@ -59,6 +59,7 @@
     display: flex;
     flex-direction: column;
     background: $bg-col-primary;
+    @include pageCard;
 
     > input {
       align-self: center;
@@ -69,6 +70,10 @@
       color: $font-col-error;
       margin: 0 auto 25px;
       font-weight: bold;
+    }
+
+    > section {
+      padding: 0 25px 25px;
     }
   }
 </style>
