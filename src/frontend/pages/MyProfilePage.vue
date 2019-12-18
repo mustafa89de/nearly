@@ -8,6 +8,10 @@
     <h3>Teilnehmende Veranstaltungen</h3>
     <event-list :events="this.participationEvents" hideNumbers
                 @click="handleEventClick"/>
+    <section class="notification">
+      <h3>Benachrichtigung</h3>
+      <toggle @onToggle="notificationToggle" checked/>
+    </section>
     <h3>Meine Home Position</h3>
     <location-picker @save="handleHomePositionChange" show-home-position/>
     <p v-if="errorMsg" id="error">{{errorMsg}}</p>
@@ -24,16 +28,18 @@
   import Icon from "../components/Icon";
   import SlideMenu from "../components/SlideMenu";
   import LocationPicker from "../components/LocationPicker";
+  import Toggle from "../components/Toggle";
 
   export default {
     name: "MyProfilePage",
 
     components: {
-      'user-details': UserDetails,
-      'event-list': EventList,
+      "user-details": UserDetails,
+      "event-list": EventList,
       "icon": Icon,
       "slide-menu": SlideMenu,
-      'location-picker': LocationPicker
+      "location-picker": LocationPicker,
+      "toggle": Toggle
     },
 
     data() {
@@ -84,6 +90,9 @@
         } catch (e) {
           this.errorMsg = "Es ist ein Fehler beim setzen der Home Position aufgetreten."
         }
+      },
+      notificationToggle(e){
+
       }
     },
     created() {
@@ -121,6 +130,19 @@
     .menu {
       height: 32px;
       width: 32px;
+    }
+  }
+
+  .notification {
+    margin-top: 50px;
+    padding: 0 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      @include textTitle;
+      margin: 0;
     }
   }
 
