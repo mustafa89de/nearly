@@ -16,7 +16,8 @@ self.addEventListener('push', event => {
       body: data.body,
       data: data.data,
       requireInteraction: true,
-      vibrate: [300, 100, 300]
+      vibrate: [300, 100, 300],
+      icon: 'static/icons/120.png'
     })
   );
 });
