@@ -46,8 +46,7 @@ module.exports = {
       'PUBLIC_VAPID_KEY': JSON.stringify(process.env.PUBLIC_VAPID_KEY)
     }),
     new InjectManifest({
-      swSrc:'./src/worker/worker.js',
-      exclude: [ /static\/pwa\/.*/]
+      swSrc:'./src/worker/worker.js'
     })
   ],
   devServer: {
