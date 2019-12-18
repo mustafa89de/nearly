@@ -34,8 +34,8 @@ self.addEventListener('notificationclick', event => {
 
       await clients.claim();
 
-      allWindowClients[0].navigate('http://localhost:3000/event/' + event.notification.data);
-      //allWindowClients[0].navigate('https://nearlyapp.herokuapp.com/event/' + event.notification.data);
+      //allWindowClients[0].navigate('http://localhost:3000/event/' + event.notification.data);
+      allWindowClients[0].navigate('https://nearlyapp.herokuapp.com/event/' + event.notification.data);
     }()
   );
 });
