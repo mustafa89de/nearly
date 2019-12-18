@@ -4,7 +4,8 @@ export const ENDPOINTS = {
   USER: '/api/user',
   EVENT: '/api/event',
   LOGIN: '/api/login',
-  EVENTPARTICIPATION: '/api/participation/'
+  EVENTPARTICIPATION: '/api/participation/',
+  PUSH: '/api/push'
 };
 
 export const MAP_ID = 'map';
