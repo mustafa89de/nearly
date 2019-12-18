@@ -3,6 +3,11 @@
 workbox.precaching.precacheAndRoute(self.__precacheManifest || []);
 workbox.precaching.cleanupOutdatedCaches();
 
+// lets the service worker immediately take control over pages after install
+workbox.core.skipWaiting();
+workbox.core.clientsClaim();
+
+
 // adds navigation routs for SPA
 workbox.routing.registerNavigationRoute(
   workbox.precaching.getCacheKeyForURL('/index.html')
