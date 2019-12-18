@@ -9,18 +9,19 @@
     "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
     "frontend": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "backend": "nodemon src/backend/app.js",
+    "vapid-keys": "./node_modules/.bin/web-push generate-vapid-keys",
     "test": "MODE=TEST jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mustafa89de/mi-projekt-repo.git"
+    "url": "git+https://github.com/mustafa89de/nearly.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mustafa89de/mi-projekt-repo/issues"
+    "url": "https://github.com/mustafa89de/nearly/issues"
   },
-  "homepage": "https://github.com/mustafa89de/mi-projekt-repo#readme",
+  "homepage": "https://github.com/mustafa89de/nearly#readme",
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/plugin-transform-runtime": "^7.6.2",
@@ -63,7 +64,8 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "smoothscroll-polyfill": "^0.4.4",
-    "vue-router": "^3.1.3"
+    "vue-router": "^3.1.3",
+    "web-push": "^3.4.2"
   },
   "jest": {
     "moduleFileExtensions": [

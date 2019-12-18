@@ -26,6 +26,9 @@
   import link from "../assets/icons/link.svg";
   import facebook from "../assets/icons/facebook.svg";
   import twitter from "../assets/icons/twitter.svg";
+  import iosAdd from "../assets/icons/ios-add.svg";
+  import iosClose from "../assets/icons/ios-close.svg";
+  import iosShare from "../assets/icons/ios-share.svg";
 
   export default {
     props: {
@@ -79,6 +82,12 @@
             return facebook;
           case "twitter":
             return twitter;
+          case "ios-share":
+            return iosShare;
+          case "ios-add":
+            return iosAdd;
+          case "ios-close":
+            return iosClose;
           default:
             return bug;
         }
