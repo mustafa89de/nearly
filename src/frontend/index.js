@@ -11,6 +11,7 @@ import MyProfilePage from './pages/MyProfilePage';
 import HelpPage from './pages/HelpPage';
 import NotFoundPage from './pages/NotFoundPage';
 import LoginPage from "./pages/LoginPage";
+import OfflinePage from "./pages/OfflinePage";
 import {checkAuthentication, redirectIfLoggedIn, checkAuthenticationAndRedirectToMyProfile} from "./services/NavigationGuards";
 import EventOverviewPage from "./pages/EventOverviewPage";
 import smoothscroll from 'smoothscroll-polyfill';
@@ -67,6 +68,10 @@ export const router = new VueRouter({
     {
       path: '/help',
       component: HelpPage
+    },
+    {
+      path: '/offline',
+      component: OfflinePage
     },
     {
       path: '*',
