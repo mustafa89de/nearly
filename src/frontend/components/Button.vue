@@ -61,8 +61,7 @@
       background-color: $bg-col-primary;
 
       &:hover {
-        background-color: $button-col-primary;
-        color: $font-col-secondary;
+        background-color: $bg-col-primary;
       }
     }
   }

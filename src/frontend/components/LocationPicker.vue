@@ -171,7 +171,7 @@
     flex-direction: column;
 
     #map {
-      position: static;
+      position: relative;
       flex: 1;
     }
 
@@ -180,7 +180,8 @@
       padding: 25px 50px 25px;
       border-radius: 50px 50px 0 0;
       background: $bg-col-primary;
-      z-index: 1;
+      z-index: 2;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 
       > .radius {
         width: 100%;
