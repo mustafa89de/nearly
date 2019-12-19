@@ -22,6 +22,7 @@
   import edit from "../assets/icons/edit.svg";
   import help from "../assets/icons/help.svg";
   import logout from "../assets/icons/logout.svg";
+  import radius from "../assets/icons/radius.svg";
   import share from "../assets/icons/share.svg";
   import link from "../assets/icons/link.svg";
   import facebook from "../assets/icons/facebook.svg";
@@ -74,6 +75,8 @@
             return help;
           case "logout":
             return logout;
+          case "radius":
+            return radius;
           case "share":
             return share;
           case "link":
