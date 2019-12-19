@@ -1,5 +1,5 @@
 <template>
-  <component :is="selectIcon" :class="iconColor"/>
+  <component @click="$listeners && $listeners.click ? $emit('click') : null" :is="selectIcon" :class="iconColor"/>
 </template>
 
 <script>
