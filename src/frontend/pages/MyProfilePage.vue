@@ -69,6 +69,9 @@
             lon: longitude,
             ...e
           }));
+
+          this.notificationSubscribed = await PushService.hasSubscribed();
+
         } catch (err) {
           console.error(err);
         }
@@ -101,7 +104,7 @@
           }
           else{
             await PushService.unsubscribePush();
-            this.notificationSubscribed = true;
+            this.notificationSubscribed = false;
           }
         } catch(e) {
           console.error("couldn't subscribe to notifications");
@@ -109,9 +112,8 @@
       }
     },
 
-    async created() {
-      await this.init();
-      this.notificationSubscribed = await PushService.hasSubscribed();
+    created() {
+      this.init();
     }
 
   }
