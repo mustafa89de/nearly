@@ -6,6 +6,7 @@ class EventRepository {
     try {
       let event = Event({name, description, time, hostId, loc});
       await event.save();
+      return event;
     } catch (err) {
       console.error('DB Error:', err.message);
       throw err;

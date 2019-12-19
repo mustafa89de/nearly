@@ -42,11 +42,11 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
-      'MAPBOX_TOKEN': JSON.stringify(process.env.MAPBOX_TOKEN)
+      'MAPBOX_TOKEN': JSON.stringify(process.env.MAPBOX_TOKEN),
+      'PUBLIC_VAPID_KEY': JSON.stringify(process.env.PUBLIC_VAPID_KEY)
     }),
     new InjectManifest({
-      swSrc:'./src/worker/worker.js',
-      include: [ /bundle\.\w*\.js$/, 'index.html']
+      swSrc:'./src/worker/worker.js'
     })
   ],
   devServer: {
