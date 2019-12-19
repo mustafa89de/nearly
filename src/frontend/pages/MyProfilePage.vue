@@ -10,7 +10,7 @@
                 @click="handleEventClick"/>
     <section class="notification">
       <h3>Benachrichtigung</h3>
-      <toggle @onToggle="notificationToggle" checked/>
+      <toggle @onToggle="notificationToggle" :checked="notificationSubscribed"/>
     </section>
     <h3>Meine Home Position</h3>
     <location-picker @save="handleHomePositionChange" show-home-position/>
@@ -25,6 +25,7 @@
   import AuthService from "../services/AuthService";
   import UserService from "../services/UserService";
   import EventService from "../services/EventService";
+  import PushService from "../services/PushService";
   import Icon from "../components/Icon";
   import SlideMenu from "../components/SlideMenu";
   import LocationPicker from "../components/LocationPicker";
@@ -47,7 +48,8 @@
         user: null,
         participationEvents: null,
         sliderVisible: false,
-        errorMsg: null
+        errorMsg: null,
+        notificationSubscribed: false
       }
     },
 
@@ -91,12 +93,25 @@
           this.errorMsg = "Es ist ein Fehler beim setzen der Home Position aufgetreten."
         }
       },
-      notificationToggle(e){
-
+      async notificationToggle(e){
+        try {
+          if(e){
+            await PushService.subscribeToPush();
+            this.notificationSubscribed = true;
+          }
+          else{
+            await PushService.unsubscribePush();
+            this.notificationSubscribed = true;
+          }
+        } catch(e) {
+          console.error("couldn't subscribe to notifications");
+        }
       }
     },
-    created() {
-      this.init();
+
+    async created() {
+      await this.init();
+      this.notificationSubscribed = await PushService.hasSubscribed();
     }
 
   }

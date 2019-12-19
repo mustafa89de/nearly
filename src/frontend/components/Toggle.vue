@@ -1,6 +1,6 @@
 <template>
   <label class="switch">
-    <input type="checkbox" v-model="isChecked">
+    <input type="checkbox" v-model="isChecked" @change="toggle">
     <span class="slider round"></span>
   </label>
 </template>
@@ -15,9 +15,14 @@
         isChecked: this.checked
       }
     },
-    watch: {
-      isChecked: function() {
+    methods: {
+      toggle: function() {
         this.$emit("onToggle", this.isChecked);
+      },
+    },
+    watch: {
+      checked: function() {
+        this.isChecked = this.checked;
       }
     }
   }
