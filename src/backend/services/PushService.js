@@ -28,7 +28,11 @@ class PushService {
       const subscriptions = await PushRepository.getSubscriptionsOfInterestedUsers(eventId, hostId);
 
       subscriptions.forEach(async subscription => {
-        await webPush.sendNotification(subscription, payload);
+        try {
+          await webPush.sendNotification(subscription, payload);
+        } catch (err) {
+          console.error(err);
+        }
       });
     }catch (err) {
       console.error('Failed to send push notificaiton: ' + err.message)
