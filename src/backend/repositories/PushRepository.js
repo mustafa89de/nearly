@@ -44,7 +44,12 @@ class PushRepository {
           const userId = subscription._doc.userId._id.toString();
           const lng = userLocation[0];
           const lat = userLocation[1];
-          const radius = 1; // 1km, replace with subscription._doc.userId._doc.homePosition.radius / 1000
+          let userRadius = subscription._doc.userId._doc.radius;
+          if (userRadius !== null){
+            userRadius = userRadius / 1000;
+          } else {
+            userRadius = 1; //default 1km
+          }
           //check if event is within radius of user
           //returns list with length == 0 if not in radius, e.g. no event with eventId in this radius
           //list length > 0 if in radius
@@ -52,7 +57,7 @@ class PushRepository {
             _id: eventId,
             loc: {
               $geoWithin: {
-                $centerSphere: [[lng, lat], radius / EARTH_RADIUS]
+                $centerSphere: [[lng, lat], userRadius / EARTH_RADIUS]
               }
             }
           });

@@ -1,4 +1,4 @@
-import {FALLBACK_HOME_POSITION, INITIAL_MAP_RADIUS} from "../constants";
+import {FALLBACK_HOME_POSITION} from "../constants";
 import UserService from "./UserService";
 
 const mapboxgl = require("mapbox-gl");
@@ -61,8 +61,8 @@ class LocationService {
     return earthRadiusKm * c;
   }
 
-  toBounds({lon, lat}) {
-    return new mapboxgl.LngLat(lon, lat).toBounds(INITIAL_MAP_RADIUS);
+  toBounds({lon, lat}, radius) {
+    return new mapboxgl.LngLat(lon, lat).toBounds(radius);
   }
 }
 

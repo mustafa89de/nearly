@@ -5,6 +5,7 @@ const EventRepository = require("../repositories/EventRepository");
 const express = require('express');
 const JWTService = require("../services/JWTService");
 const router = express.Router();
+const CONSTANTS = require('../constants');
 
 router.post('/', async (req, res) => {
   try {
@@ -31,6 +32,7 @@ router.post('/', async (req, res) => {
 *     name: String,
 *     description: String,
 *     time: DateTimeString,
+*     radius: Float,
 *     longitude: Float,
 *     latitude: Float
 *   )
@@ -46,7 +48,7 @@ router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
       res.status(404).json({message: `User with id "${id}" does not exist.`});
     }
 
-    const {username, description} = user;
+    const {username, description, radius} = user;
 
     const hostedEvents = await EventRepository.getEventsByHost(id);
 
@@ -64,6 +66,7 @@ router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
     const userDetails = {
       username,
       description,
+      radius: radius || CONSTANTS.DEFAULT_MAP_RADIUS,
       hostedEvents: hostedEventsDto
     };
 
@@ -93,6 +96,26 @@ router.get('/:id/homePosition', JWTService.requireJWT(), AuthService.compareId, 
   try {
     const homePosition = await UserRepository.getHomePosition(req.user.id);
     res.json(homePosition);
+  } catch (err) {
+    res.status(500).json({message: err.message})
+  }
+});
+
+router.put('/:id/radius', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const {radius} = req.body;
+    await UserRepository.setRadius(userId, radius);
+    res.json();
+  } catch (err) {
+    res.status(500).json({message: err.message})
+  }
+});
+
+router.get('/:id/radius', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
+  try {
+    const radius = await UserRepository.getRadius(req.user.id);
+    res.json(radius || CONSTANTS.DEFAULT_MAP_RADIUS);
   } catch (err) {
     res.status(500).json({message: err.message})
   }

@@ -13,7 +13,7 @@
       <toggle @onToggle="notificationToggle" :checked="notificationSubscribed"/>
     </section>
     <h3>Meine Home Position</h3>
-    <location-picker @save="handleHomePositionChange" show-home-position/>
+    <location-picker @save="handleHomePositionChange" show-home-position show-radius :propRadius="user ? user.radius : null"/>
     <p v-if="errorMsg" id="error">{{errorMsg}}</p>
     <slide-menu :username="user ? user.username : null" :sliderVisible="sliderVisible"/>
   </article>
@@ -30,6 +30,7 @@
   import SlideMenu from "../components/SlideMenu";
   import LocationPicker from "../components/LocationPicker";
   import Toggle from "../components/Toggle";
+  import { INITIAL_MAP_RADIUS } from "../constants";
 
   export default {
     name: "MyProfilePage",
@@ -87,9 +88,10 @@
           this.sliderVisible = !this.sliderVisible;
         }
       },
-      async handleHomePositionChange(newPosition) {
+      async handleHomePositionChange(newData) {
         try {
-          await UserService.setHomePosition(newPosition);
+          await UserService.setHomePosition({ lon: newData.lon, lat: newData.lat });
+          await UserService.setRadius(newData.radius);
           this.$router.go();
           this.errorMsg = null;
         } catch (e) {
