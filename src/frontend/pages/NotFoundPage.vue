@@ -1,7 +1,6 @@
 <template>
   <article>
-    <not-found />
-    <div></div>
+    <not-found/>
   </article>
 </template>
 
@@ -9,20 +8,17 @@
   import NotFound from "../components/NotFound";
 
   export default {
-      components: {
-        "not-found": NotFound
-      }
+    components: {
+      "not-found": NotFound
+    }
   }
 </script>
 
 <style scoped lang="scss">
-  div{
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: -1;
-    background-color: white;
+  @import "../assets/mixins";
+
+  article {
+    @include pageCard;
+    padding: 25px;
   }
 </style>
