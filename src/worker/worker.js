@@ -15,7 +15,9 @@ workbox.routing.registerNavigationRoute(
 
 // TODO: @Jonas push service worker logic to be added here
 self.addEventListener('push', event => {
+  console.log('Push received');
   const data = event.data.json();
+  console.log('Push data: ', data);
   event.waitUntil(
     self.registration.showNotification(data.title, {
       body: data.body,
@@ -28,6 +30,7 @@ self.addEventListener('push', event => {
 });
 
 self.addEventListener('notificationclick', event => {
+  console.log('Notification clicked');
   const url = self.registration.scope + 'event/' + event.notification.data;
 
   event.notification.close();
