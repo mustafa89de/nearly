@@ -5,6 +5,7 @@ const EventRepository = require("../repositories/EventRepository");
 const express = require('express');
 const JWTService = require("../services/JWTService");
 const router = express.Router();
+const CONSTANTS = require('../constants');
 
 router.post('/', async (req, res) => {
   try {
@@ -65,7 +66,7 @@ router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
     const userDetails = {
       username,
       description,
-      radius,
+      radius: radius || CONSTANTS.DEFAULT_MAP_RADIUS,
       hostedEvents: hostedEventsDto
     };
 
@@ -114,7 +115,7 @@ router.put('/:id/radius', JWTService.requireJWT(), AuthService.compareId, async 
 router.get('/:id/radius', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
   try {
     const radius = await UserRepository.getRadius(req.user.id);
-    res.json(radius);
+    res.json(radius || CONSTANTS.DEFAULT_MAP_RADIUS);
   } catch (err) {
     res.status(500).json({message: err.message})
   }

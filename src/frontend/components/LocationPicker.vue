@@ -20,10 +20,9 @@
   import Map from "./Map";
   import MapService from "../services/MapService";
   import LocationService from "../services/LocationService";
-  import UserService from "../services/UserService";
   import Button from "./Button";
   import RadiusSlider from "./RadiusSlider";
-  import { INITIAL_MAP_RADIUS } from "../constants";
+  import {PICKER_FALLBACK_RADIUS} from "../constants";
 
   let marker;
   let lastMinimized = null;
@@ -79,7 +78,7 @@
       handleMarkerDrag: function ({lat, lon}) {
         this.lat = lat;
         this.lon = lon;
-        if(this.showRadius) MapService.drawRadius({lon, lat});
+        if (this.showRadius) MapService.drawRadius({lon, lat});
         MapService.setCenter({lon, lat})
       },
       handleSave: function (e) {
@@ -105,10 +104,10 @@
         }
       },
       drawRadius: async function (radius) { // this callback function needs to wait for the map to finish loading
-        if(!radius) this.radius = this.propRadius;
+        if (!radius) this.radius = this.propRadius;
         else this.radius = radius;
-        MapService.calcRadiusCoords({ lon: this.lon, lat: this.lat}, this.radius);
-        MapService.drawRadius({ lon: this.lon, lat: this.lat});
+        MapService.calcRadiusCoords({lon: this.lon, lat: this.lat}, this.radius);
+        MapService.drawRadius({lon: this.lon, lat: this.lat});
         MapService.fadeRadius();
       }
     },
@@ -121,13 +120,14 @@
         if (this.sendInitialChange === true) {
           this.$emit('save', {lon: this.lon, lat: this.lat});
         }
-        if(this.showRadius) {
+        if (this.showRadius) {
           marker.on("drag", () => {
             const {lng, lat} = marker.getLngLat();
             MapService.drawRadius({lon: lng, lat: lat});
           });
         }
-        const bounds = LocationService.toBounds({lon, lat}, this.propRadius);
+        const pickerRadius = this.propRadius || PICKER_FALLBACK_RADIUS;
+        const bounds = LocationService.toBounds({lon, lat}, pickerRadius);
         MapService.setBounds(bounds);
       }
     },
@@ -140,12 +140,12 @@
           }
 
           const {lon, lat} = newValue;
-          const bounds = LocationService.toBounds({lon, lat});
+          const bounds = LocationService.toBounds({lon, lat}, PICKER_FALLBACK_RADIUS);
           MapService.setBounds(bounds);
           marker = MapService.addMarker({lon, lat, draggable: false, onDragEnd: this.handleMarkerDrag})
         }
       },
-      propRadius: function(newValue, oldValue) {
+      propRadius: function (newValue, oldValue) {
         // propRadius sometimes starts as null but gets set later on, which is why we need to
         // watch for changes and set the new bounds accordingly
         const bounds = LocationService.toBounds({lon: this.lon, lat: this.lat}, newValue);
@@ -153,8 +153,8 @@
       }
     },
     computed: {
-      getRadius: function() {
-        return parseInt(this.radius) ||parseInt(this.propRadius);
+      getRadius: function () {
+        return parseInt(this.radius) || parseInt(this.propRadius);
       }
     }
   };
