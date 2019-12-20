@@ -12,6 +12,8 @@ class PushService {
       });
       console.log('SW registered');
 
+      await registration.update();
+
       const permission = await Notification.requestPermission();
       if (permission && permission !== 'granted'){
         console.log('Notification Permission not granted');
