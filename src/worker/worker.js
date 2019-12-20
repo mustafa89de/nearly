@@ -28,21 +28,25 @@ self.addEventListener('push', event => {
 });
 
 self.addEventListener('notificationclick', event => {
-
   const url = self.registration.scope + 'event/' + event.notification.data;
 
   event.notification.close();
 
-  event.waitUntil(async function () {
-      const allWindowClients = await clients.matchAll({
-        includeUncontrolled: true,
-        type: "window"
-      });
-
-      await clients.claim();
-
-      allWindowClients[0].navigate(url);
-    }()
+  event.waitUntil(
+    self.clients.matchAll({type: 'window'}).then( windowClients => {
+      for (let i = 0; i < windowClients.length; i++) {
+        let client = windowClients[i];
+        if (client.url === url && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (self.clients.openWindow) {
+        return self.clients.openWindow(url);
+      }
+    })
   );
 });
+
+
+
 
