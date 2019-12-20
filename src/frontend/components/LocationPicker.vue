@@ -6,8 +6,11 @@
     <map-box
         :disabled="minimized"
         @mapClick="handleMapClick"
+        :showRadius="showRadius"
+        @afterInit="drawRadius"
     />
     <footer v-if="!minimized">
+      <radius-slider class="radius" v-if="showRadius" @onChange="drawRadius" :radius="getRadius"/>
       <custom-button type="button" text="Fertig" @click="handleSave"/>
     </footer>
   </section>
@@ -18,6 +21,8 @@
   import MapService from "../services/MapService";
   import LocationService from "../services/LocationService";
   import Button from "./Button";
+  import RadiusSlider from "./RadiusSlider";
+  import {PICKER_FALLBACK_RADIUS} from "../constants";
 
   let marker;
   let lastMinimized = null;
@@ -26,18 +31,22 @@
     props: {
       sendInitialChange: Boolean,
       showHomePosition: Boolean,
-      location: Object
+      location: Object,
+      showRadius: Boolean,
+      propRadius: Number
     },
     components: {
-      'map-box': Map,
-      "custom-button": Button
+      "map-box": Map,
+      "custom-button": Button,
+      "radius-slider": RadiusSlider
     },
     data: function () {
       return {
         minimized: true,
         initialBounds: null,
         lat: null,
-        lon: null
+        lon: null,
+        radius: this.propRadius
       }
     },
     updated: function () {
@@ -69,12 +78,13 @@
       handleMarkerDrag: function ({lat, lon}) {
         this.lat = lat;
         this.lon = lon;
+        if (this.showRadius) MapService.drawRadius({lon, lat});
         MapService.setCenter({lon, lat})
       },
       handleSave: function (e) {
         e.preventDefault();
         e.stopPropagation();
-        this.$emit('save', {lon: this.lon, lat: this.lat});
+        this.$emit('save', {lon: this.lon, lat: this.lat, radius: this.radius});
         this.minimize();
       },
       maximize: function () {
@@ -92,6 +102,13 @@
         if (marker) {
           marker.setDraggable(false);
         }
+      },
+      drawRadius: async function (radius) { // this callback function needs to wait for the map to finish loading
+        if (!radius) this.radius = this.propRadius;
+        else this.radius = radius;
+        MapService.calcRadiusCoords({lon: this.lon, lat: this.lat}, this.radius);
+        MapService.drawRadius({lon: this.lon, lat: this.lat});
+        MapService.fadeRadius();
       }
     },
     async created() {
@@ -99,12 +116,19 @@
         const {lon, lat} = await LocationService.getHomePosition();
         this.lat = lat;
         this.lon = lon;
-        const bounds = LocationService.toBounds({lon, lat});
-        MapService.setBounds(bounds);
         marker = MapService.addMarker({lon, lat, draggable: false, onDragEnd: this.handleMarkerDrag});
         if (this.sendInitialChange === true) {
           this.$emit('save', {lon: this.lon, lat: this.lat});
         }
+        if (this.showRadius) {
+          marker.on("drag", () => {
+            const {lng, lat} = marker.getLngLat();
+            MapService.drawRadius({lon: lng, lat: lat});
+          });
+        }
+        const pickerRadius = this.propRadius || PICKER_FALLBACK_RADIUS;
+        const bounds = LocationService.toBounds({lon, lat}, pickerRadius);
+        MapService.setBounds(bounds);
       }
     },
     watch: {
@@ -116,10 +140,21 @@
           }
 
           const {lon, lat} = newValue;
-          const bounds = LocationService.toBounds({lon, lat});
+          const bounds = LocationService.toBounds({lon, lat}, PICKER_FALLBACK_RADIUS);
           MapService.setBounds(bounds);
           marker = MapService.addMarker({lon, lat, draggable: false, onDragEnd: this.handleMarkerDrag})
         }
+      },
+      propRadius: function (newValue, oldValue) {
+        // propRadius sometimes starts as null but gets set later on, which is why we need to
+        // watch for changes and set the new bounds accordingly
+        const bounds = LocationService.toBounds({lon: this.lon, lat: this.lat}, newValue);
+        MapService.setBounds(bounds);
+      }
+    },
+    computed: {
+      getRadius: function () {
+        return parseInt(this.radius) || parseInt(this.propRadius);
       }
     }
   };
@@ -142,11 +177,17 @@
 
     > footer {
       flex: none;
-      padding: 50px 75px 25px;
+      padding: 25px 50px 25px;
       border-radius: 50px 50px 0 0;
       background: $bg-col-primary;
       z-index: 2;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+      > .radius {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto 25px auto;
+      }
 
       > input[type="button"] {
         width: 100%;

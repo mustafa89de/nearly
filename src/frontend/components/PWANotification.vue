@@ -52,11 +52,6 @@
     font-family: "Arimo", Arial, Helvetica, sans-serif;
     font-size: 18px;
 
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: baseline;
-
     > svg {
       width: 16px;
 
@@ -66,7 +61,7 @@
       }
 
       &:not(#close) {
-        margin: 0 2px 0 5px;
+        margin: 0 2px;
       }
 
       &#close {

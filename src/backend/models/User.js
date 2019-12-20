@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const userSchema = mongoose.Schema({
   email: {type: String, required: true, index: {unique: true}},
   username: {type: String, required: true},
-  password: {type: String, required: true}, // TODO: maybe hide it in JSON
+  password: {type: String, required: true},
   description: {type: String, required: false, default: null},
   homePosition: {
     type: {
@@ -16,7 +16,8 @@ const userSchema = mongoose.Schema({
       type: [Number],
       required: false
     }
-  }
+  },
+  radius: {type: Number, required: false, default: null}
 });
 
 module.exports = mongoose.model('User', userSchema);
