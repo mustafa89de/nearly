@@ -1,9 +1,9 @@
 <template>
-  <article>
+  <section>
     <h1>404</h1>
     <h2>Hoppla!</h2>
     <p>Deine angefrage Seite konnte leider nicht gefunden werden.</p>
-  </article>
+  </section>
 </template>
 
 <script>
@@ -13,7 +13,7 @@
   @import "../assets/variables";
   @import "../assets/mixins";
 
-  article {
+  section {
     h1 {
       @include textTitle;
       font-size: 5rem;

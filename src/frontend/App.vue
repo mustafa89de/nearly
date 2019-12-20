@@ -1,6 +1,5 @@
 <template>
   <main :class="{'loggedIn' : loggedIn}">
-    <offline-modal/>
     <router-view/>
     <nav-bar :state="state" v-if="loggedIn"/>
     <pwa-notification/>
@@ -9,14 +8,12 @@
 
 <script>
   import NavBar from "./components/NavBar";
-  import OfflineModal from "./components/OfflineModal";
   import PWANotification from "./components/PWANotification";
   import AuthService from "./services/AuthService";
 
   export default {
     components: {
       'nav-bar': NavBar,
-      'offline-modal': OfflineModal,
       'pwa-notification': PWANotification
     },
     data: function () {
@@ -46,6 +43,7 @@
     },
     created() {
       this.syncNavBarState(this.$route.path);
+      window.addEventListener('offline', (e) => this.$router.push('/offline'))
     }
   }
 </script>

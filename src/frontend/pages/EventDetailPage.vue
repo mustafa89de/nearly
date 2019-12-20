@@ -1,6 +1,6 @@
 <template>
   <article>
-    <div v-if="error">{{error}}</div>
+    <p class="error" v-if="error">{{error}}</p>
     <event-details class="eventDetails" :event="event"/>
     <map-comp hideNumbers="true" controlPosition="bottom-right"/>
   </article>
@@ -62,6 +62,14 @@
     .eventDetails {
       z-index: 1;
       flex: 0;
+    }
+
+    .error {
+      z-index: 2;
+      background: #fff;
+      padding: 25px 25px 0;
+      color: $font-col-error;
+      margin: 0;
     }
 
     #map {
