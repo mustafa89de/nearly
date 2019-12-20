@@ -12,7 +12,11 @@ import HelpPage from './pages/HelpPage';
 import NotFoundPage from './pages/NotFoundPage';
 import LoginPage from "./pages/LoginPage";
 import OfflinePage from "./pages/OfflinePage";
-import {checkAuthentication, redirectIfLoggedIn, checkAuthenticationAndRedirectToMyProfile} from "./services/NavigationGuards";
+import {
+  checkAuthentication,
+  checkAuthenticationAndRedirectToMyProfile,
+  redirectIfLoggedIn
+} from "./services/NavigationGuards";
 import EventOverviewPage from "./pages/EventOverviewPage";
 import smoothscroll from 'smoothscroll-polyfill';
 import SWService from "./services/SWService";
@@ -78,6 +82,14 @@ export const router = new VueRouter({
       component: NotFoundPage
     }
   ]
+});
+
+router.beforeEach((to, from, next) => {
+  if (navigator && !navigator.onLine && to.path !== '/offline') {
+    next('/offline');
+  } else {
+    next();
+  }
 });
 
 new Vue({

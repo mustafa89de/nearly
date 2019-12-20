@@ -8,7 +8,6 @@
 
 <script>
   import NavBar from "./components/NavBar";
-  import OfflineModal from "./components/OfflineModal";
   import PWANotification from "./components/PWANotification";
   import AuthService from "./services/AuthService";
 
