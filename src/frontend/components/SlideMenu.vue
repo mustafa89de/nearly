@@ -6,8 +6,6 @@
       <router-link to="#" :class="['link', {'link-visible': sliderVisible}]"><icon iconType="edit" iconColor="black" /><span>Profil bearbeiten</span></router-link>
       <router-link to="#" :class="['link',{'link-visible': sliderVisible}]"><icon iconType="clock" iconColor="black" /><span>Event-Verlauf</span></router-link>
       <router-link to="#" :class="['link',{'link-visible': sliderVisible}]"><icon iconType="help" iconColor="black" /><span>Hilfe</span></router-link>
-      <button @click="subscribe">Subscribe</button>
-      <button @click="unsubscribe">Unsubscribe</button>
       <div class="divider" />
       <a href="#" @click="handleLogout" :class="['logout', 'link', {'link-visible': sliderVisible}]"><icon iconType="logout" iconColor="error" /><span>Abmelden</span></a>
     </section>
@@ -18,7 +16,6 @@
 <script>
   import AuthService from "../services/AuthService";
   import Icon from "../components/Icon"
-  import PushService from "../services/PushService";
 
   export default {
     components: {
@@ -34,12 +31,6 @@
       },
       handleLogout: function () {
         AuthService.logout();
-      },
-      subscribe: async function () {
-        await PushService.subscribeToPush();
-      },
-      unsubscribe: async function () {
-        await PushService.unsubscribePush();
       }
     },
   }
