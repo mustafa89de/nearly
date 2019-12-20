@@ -5,7 +5,7 @@ import AuthService from "./AuthService";
 const publicVapidKey = PUBLIC_VAPID_KEY;
 
 class PushService {
-  async subscribeToPush(){
+  async subscribeToPush() {
     try {
       const registration = await navigator.serviceWorker.register('/worker.js', {
         scope: '/'
@@ -35,7 +35,7 @@ class PushService {
       });
       console.log('subscription sent to BE');
 
-    }catch (err) {
+    } catch (err) {
       console.error(err.message);
       throw err;
     }
@@ -55,9 +55,28 @@ class PushService {
         params: {
           id: AuthService.getUser().userId
         }
-      })
+      });
 
-    }catch (err) {
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+  }
+
+  async hasSubscribed(){
+    try {
+      const registration = await navigator.serviceWorker.register('../worker.js');
+
+      await navigator.serviceWorker.ready;
+
+      const subscription = await registration.pushManager.getSubscription();
+      if(subscription) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    } catch(err) {
       console.error(err.message);
       throw err;
     }

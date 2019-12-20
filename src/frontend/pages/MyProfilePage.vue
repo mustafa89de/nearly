@@ -8,6 +8,10 @@
     <h3>Teilnehmende Veranstaltungen</h3>
     <event-list :events="this.participationEvents" hideNumbers
                 @click="handleEventClick"/>
+    <section class="notification">
+      <h3>Benachrichtigung</h3>
+      <toggle @onToggle="notificationToggle" :checked="notificationSubscribed"/>
+    </section>
     <h3>Meine Home Position</h3>
     <location-picker @save="handleHomePositionChange" show-home-position show-radius :propRadius="user ? user.radius : null"/>
     <p v-if="errorMsg" id="error">{{errorMsg}}</p>
@@ -21,20 +25,23 @@
   import AuthService from "../services/AuthService";
   import UserService from "../services/UserService";
   import EventService from "../services/EventService";
+  import PushService from "../services/PushService";
   import Icon from "../components/Icon";
   import SlideMenu from "../components/SlideMenu";
   import LocationPicker from "../components/LocationPicker";
+  import Toggle from "../components/Toggle";
   import { INITIAL_MAP_RADIUS } from "../constants";
 
   export default {
     name: "MyProfilePage",
 
     components: {
-      'user-details': UserDetails,
-      'event-list': EventList,
+      "user-details": UserDetails,
+      "event-list": EventList,
       "icon": Icon,
       "slide-menu": SlideMenu,
-      'location-picker': LocationPicker
+      "location-picker": LocationPicker,
+      "toggle": Toggle
     },
 
     data() {
@@ -42,7 +49,8 @@
         user: null,
         participationEvents: null,
         sliderVisible: false,
-        errorMsg: null
+        errorMsg: null,
+        notificationSubscribed: false
       }
     },
 
@@ -62,6 +70,9 @@
             lon: longitude,
             ...e
           }));
+
+          this.notificationSubscribed = await PushService.hasSubscribed();
+
         } catch (err) {
           console.error(err);
         }
@@ -86,8 +97,23 @@
         } catch (e) {
           this.errorMsg = "Es ist ein Fehler beim setzen der Home Position aufgetreten."
         }
+      },
+      async notificationToggle(e){
+        try {
+          if(e){
+            await PushService.subscribeToPush();
+            this.notificationSubscribed = true;
+          }
+          else{
+            await PushService.unsubscribePush();
+            this.notificationSubscribed = false;
+          }
+        } catch(e) {
+          console.error("couldn't subscribe to notifications");
+        }
       }
     },
+
     created() {
       this.init();
     }
@@ -123,6 +149,19 @@
     .menu {
       height: 32px;
       width: 32px;
+    }
+  }
+
+  .notification {
+    margin-top: 50px;
+    padding: 0 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      @include textTitle;
+      margin: 0;
     }
   }
 
