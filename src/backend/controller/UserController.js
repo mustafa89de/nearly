@@ -77,6 +77,17 @@ router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
   }
 });
 
+router.put('/:id', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const {username, email, description} = req.body;
+    await UserRepository.editUser(userId, username, email, description);
+    res.json();
+  } catch (err) {
+    res.status(500).json({message: err.message})
+  }
+});
+
 router.put('/:id/homePosition', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
   try {
     const userId = req.user.id;
