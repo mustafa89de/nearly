@@ -6,6 +6,8 @@ const Event = require('../models/Event');
 const Participation = require('../models/Participation');
 const PushSubscriptions = require('../models/PushSubscription');
 
+mongoose.set('autoIndex', true);
+
 class DBService {
   async init() {
     try {
