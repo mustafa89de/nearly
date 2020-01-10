@@ -73,6 +73,20 @@ class UserRepository {
     }
   }
 
+  async editUser(userId, username, email, description){
+    try{
+      const user = await User.findById(userId);
+      await User.findByIdAndUpdate(userId,{
+        username: username || user.username,
+        email: email || user.email,
+        description: description|| user.description
+      });
+    }catch(err){
+      console.error('DB Error:', err.message);
+      throw err;
+    }
+  }
+
   async removeUser(email) {
     try {
       await User.deleteOne({email: email});
