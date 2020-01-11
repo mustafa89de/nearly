@@ -6,9 +6,9 @@ const router = express.Router();
 
 router.post('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const {userId, subscription} = req.body;
+    const {userId, subscription, fingerprint} = req.body;
 
-    await PushRepository.saveSubscription(userId, subscription);
+    await PushRepository.saveSubscription(userId, subscription, fingerprint);
 
     res.status(201).json();
   } catch (err) {
