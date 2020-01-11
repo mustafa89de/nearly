@@ -77,6 +77,22 @@ class PushRepository {
       throw err;
     }
   }
+
+  async isSubscribed(userId, fingerprint){
+    try {
+      let subscription = await PushSubscriptions.findOne({
+        userId: userId,
+        fingerprint: fingerprint
+      });
+
+      if (!subscription) return false;
+      return true;
+
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+  }
 }
 
 module.exports = new PushRepository();
