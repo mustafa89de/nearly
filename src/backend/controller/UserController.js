@@ -21,24 +21,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-
-/*
-* ### RESPONSE ###
-* Object: {
-*   username: String,
-*   description: String,
-*   hostedEvents: ArrayOf(
-*     id: String,
-*     name: String,
-*     description: String,
-*     time: DateTimeString,
-*     radius: Float,
-*     longitude: Float,
-*     latitude: Float
-*   )
-* }
-*/
-
 router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
   try {
     const {id} = req.params;
@@ -74,6 +56,16 @@ router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
   } catch
     (err) {
     res.status(500).json({message: err.message});
+  }
+});
+
+router.delete('/:id', JWTService.requireJWT(), AuthService.compareId, async (req, res) => {
+  try {
+    const {id} = req.params;
+    await UserRepository.removeUser(id);
+    res.json();
+  } catch (err) {
+    res.status(500).json({message: err.message})
   }
 });
 
