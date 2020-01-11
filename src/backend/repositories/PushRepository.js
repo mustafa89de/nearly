@@ -3,12 +3,13 @@ const Event = require('../models/Event');
 const EARTH_RADIUS = 6378.1;
 
 class PushRepository {
-  async saveSubscription(userId, subscription) {
+  async saveSubscription(userId, subscription, fingerprint) {
     try {
       const subscriptionJSON = JSON.parse(subscription);
       const push = PushSubscriptions({
         userId: userId,
-        subscription: subscriptionJSON
+        subscription: subscriptionJSON,
+        fingerprint: fingerprint
       });
       await push.save();
     } catch (err) {
