@@ -108,9 +108,15 @@ class PushService {
   }
 
   async getFingerprint() {
-    let components = await Fingerprint2.getPromise();
-    let values = components.map(component => component.value);
-    return Fingerprint2.x64hash128(values.join(''), 31);
+    try {
+      let components = await Fingerprint2.getPromise();
+      let values = components.map(component => component.value);
+      return Fingerprint2.x64hash128(values.join(''), 31);
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+
   }
 }
 
