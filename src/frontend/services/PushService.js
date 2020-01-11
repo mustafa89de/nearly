@@ -59,9 +59,12 @@ class PushService {
       await subscription.unsubscribe();
       console.log('unsubscribed');
 
+      const fingerprint = await this.getFingerprint();
+
       await axios.delete(ENDPOINTS.PUSH, {
         params: {
-          id: AuthService.getUser().userId
+          id: AuthService.getUser().userId,
+          fingerprint: fingerprint
         }
       });
 
