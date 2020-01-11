@@ -18,10 +18,11 @@ class PushRepository {
     }
   }
 
-  async deleteSubscription(userId) {
+  async deleteSubscription(userId, fingerprint) {
     try {
       const removal = await PushSubscriptions.deleteOne({
-        userId
+        userId,
+        fingerprint
       });
 
       return removal.n > 0;
