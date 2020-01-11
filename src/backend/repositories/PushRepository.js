@@ -47,7 +47,7 @@ class PushRepository {
           const lng = userLocation[0];
           const lat = userLocation[1];
           let userRadius = subscription._doc.userId._doc.radius;
-          if (userRadius !== null){
+          if (userRadius !== null) {
             userRadius = userRadius / 1000;
           } else {
             userRadius = 1; //default 1km
