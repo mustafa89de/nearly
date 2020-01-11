@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {ENDPOINTS} from "../constants";
 import AuthService from "./AuthService";
+import Fingerprint2 from "fingerprintjs2";
 
 const publicVapidKey = PUBLIC_VAPID_KEY;
 
@@ -15,7 +16,7 @@ class PushService {
       await registration.update();
 
       const permission = await Notification.requestPermission();
-      if (permission && permission !== 'granted'){
+      if (permission && permission !== 'granted') {
         console.log('Notification Permission not granted');
         //TODO: handle permission not granted
         return;
@@ -33,9 +34,12 @@ class PushService {
 
       const stringifiedSubscription = JSON.stringify(subscription);
 
+      const fingerprint = await this.getFingerprint();
+
       await axios.post(ENDPOINTS.PUSH, {
         userId: AuthService.getUser().userId,
-        subscription: stringifiedSubscription
+        subscription: stringifiedSubscription,
+        fingerprint: fingerprint
       });
       console.log('subscription sent to BE');
 
@@ -45,7 +49,7 @@ class PushService {
     }
   }
 
-  async unsubscribePush(){
+  async unsubscribePush() {
     try {
       const registration = await navigator.serviceWorker.register('../worker.js');
 
@@ -67,20 +71,19 @@ class PushService {
     }
   }
 
-  async hasSubscribed(){
+  async hasSubscribed() {
     try {
       const registration = await navigator.serviceWorker.register('../worker.js');
 
       await navigator.serviceWorker.ready;
 
       const subscription = await registration.pushManager.getSubscription();
-      if(subscription) {
+      if (subscription) {
         return true;
-      }
-      else {
+      } else {
         return false;
       }
-    } catch(err) {
+    } catch (err) {
       console.error(err.message);
       throw err;
     }
@@ -99,6 +102,12 @@ class PushService {
       outputArray[i] = rawData.charCodeAt(i);
     }
     return outputArray;
+  }
+
+  async getFingerprint() {
+    let components = await Fingerprint2.getPromise();
+    let values = components.map(component => component.value);
+    return Fingerprint2.x64hash128(values.join(''), 31);
   }
 }
 
