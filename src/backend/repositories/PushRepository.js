@@ -85,9 +85,7 @@ class PushRepository {
         fingerprint: fingerprint
       });
 
-      if (!subscription) return false;
-      return true;
-
+      return subscription;
     } catch (err) {
       console.error(err.message);
       throw err;
