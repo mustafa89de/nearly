@@ -29,8 +29,8 @@
       toggleSlider: function(e){
         this.sliderVisible = !this.sliderVisible;
       },
-      handleLogout: function () {
-        AuthService.logout();
+      handleLogout: async function () {
+       await AuthService.logout();
       }
     },
   }
