@@ -19,7 +19,9 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
 router.delete('/', JWTService.requireJWT(), async (req, res) => {
   try {
     const userId = req.query.id;
-    const removal = await PushRepository.deleteSubscription(userId);
+    const fingerprint = req.query.fingerprint;
+
+    const removal = await PushRepository.deleteSubscription(userId, fingerprint);
     if (!removal) {
       res.status(404).json({message: `Deletion of subscription of user ${userId} unsuccessful`});
     }
