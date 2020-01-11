@@ -2,6 +2,7 @@ import axios from 'axios';
 import {ENDPOINTS} from "../constants";
 import JWTService from "./JWTService";
 import {router} from "../index";
+import PushService from "./PushService";
 
 class AuthService {
   constructor() {
@@ -31,6 +32,7 @@ class AuthService {
         password
       });
       JWTService.storeJWT(res.data.token);
+      await PushService.subscribeToPush();
     } catch (err) {
       err.status = err.response.status;
       console.error(err.message);
@@ -50,7 +52,11 @@ class AuthService {
     };
   }
 
-  logout() {
+  async logout() {
+    let subscribed = await PushService.hasSubscribed();
+    if (subscribed){
+      await PushService.unsubscribePush();
+    }
     JWTService.removeJWT();
     if (router) {
       router.go();
