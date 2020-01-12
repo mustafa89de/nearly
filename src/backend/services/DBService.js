@@ -6,8 +6,6 @@ const Event = require('../models/Event');
 const Participation = require('../models/Participation');
 const PushSubscriptions = require('../models/PushSubscription');
 
-mongoose.set('autoIndex', true);
-
 class DBService {
   async init() {
     try {
@@ -17,7 +15,8 @@ class DBService {
         useCreateIndex: true,
         useFindAndModify: false
       });
-
+      
+      mongoose.set('autoIndex', true);
       User.init();
       Event.init();
       Participation.init();
