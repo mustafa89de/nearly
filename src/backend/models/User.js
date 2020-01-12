@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Event = require('./Event');
 const PushSubscription = require('./PushSubscription');
+const Participation = require('./Participation');
 
 const userSchema = mongoose.Schema({
   email: {type: String, required: true, index: {unique: true}},
@@ -26,6 +27,7 @@ userSchema.post('deleteOne', function () {
   const userId = this.getQuery()._id;
   PushSubscription.deleteMany({userId: userId}).exec();
   Event.deleteMany({hostId: userId}).exec();
+  Participation.deleteMany({userId: userId}).exec();
 });
 
 module.exports = mongoose.model('User', userSchema);
