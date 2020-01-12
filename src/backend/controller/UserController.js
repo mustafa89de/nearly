@@ -84,7 +84,18 @@ router.put('/:id', JWTService.requireJWT(), AuthService.compareId, async (req, r
     await UserRepository.editUser(userId, username, email, description);
     res.json();
   } catch (err) {
-    res.status(500).json({message: err.message})
+    let resBody = {message: err.message};
+    if (err.message.includes('duplicate key')) {
+      if (err.message.includes('username_1')){
+        resBody.dupKey= "username";
+        res.status(409).json(resBody);
+      }else if(err.message.includes('email_1')){
+        resBody.dupKey= "email";
+        res.status(409).json(resBody);
+      }
+    } else {
+      res.status(500).json(resBody);
+    }
   }
 });
 
