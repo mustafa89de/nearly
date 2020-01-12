@@ -16,6 +16,7 @@ class DBService {
         useFindAndModify: false
       });
 
+      mongoose.set('autoIndex', true);
       User.init();
       Event.init();
       Participation.init();

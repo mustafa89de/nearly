@@ -45,10 +45,9 @@ class AuthService {
   }
 
   getUser() {
-    const {sub, username} = JWTService.getPayload();
+    const {sub} = JWTService.getPayload();
     return {
-      userId: sub,
-      username
+      userId: sub
     };
   }
 
