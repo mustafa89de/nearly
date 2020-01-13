@@ -16,7 +16,6 @@
 <script>
   import AuthService from "../services/AuthService";
   import Icon from "../components/Icon"
-  import PushService from "../services/PushService";
 
   export default {
     components: {
@@ -31,11 +30,7 @@
         this.sliderVisible = !this.sliderVisible;
       },
       handleLogout: async function () {
-        let subscribed = await PushService.hasSubscribed();
-        if (subscribed){
-          await PushService.unsubscribePush();
-        }
-        AuthService.logout();
+       await AuthService.logout();
       }
     },
   }

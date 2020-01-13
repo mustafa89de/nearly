@@ -30,7 +30,6 @@
   import Icon from "../components/Icon.vue";
   import Logo from "../assets/logo/nearly.svg";
   import AuthService from "../services/AuthService";
-  import PushService from "../services/PushService";
 
   export default {
     data: function () {
@@ -53,7 +52,6 @@
 
         try {
           await AuthService.login(this.email, this.password);
-          await PushService.subscribeToPush();
 
           this.$router.push('/');
         } catch (err) {
