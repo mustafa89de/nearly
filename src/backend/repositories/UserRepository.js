@@ -73,9 +73,9 @@ class UserRepository {
     }
   }
 
-  async removeUser(email) {
+  async removeUser(id) {
     try {
-      await User.deleteOne({email: email});
+      return await User.deleteOne({_id: id});
     } catch (err) {
       console.error('DB Error:', err.message);
       throw err;

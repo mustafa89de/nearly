@@ -34,12 +34,12 @@ class PushService {
 
       const stringifiedSubscription = JSON.stringify(subscription);
 
-      const fingerprint = await this.getFingerprint();
+      const deviceFingerprint = await this.getDeviceFingerprint();
 
       await axios.post(ENDPOINTS.PUSH, {
         userId: AuthService.getUser().userId,
         subscription: stringifiedSubscription,
-        fingerprint: fingerprint
+        deviceFingerprint: deviceFingerprint
       });
       console.log('subscription sent to BE');
 
@@ -59,12 +59,12 @@ class PushService {
       await subscription.unsubscribe();
       console.log('unsubscribed');
 
-      const fingerprint = await this.getFingerprint();
+      const deviceFingerprint = await this.getDeviceFingerprint();
 
       await axios.delete(ENDPOINTS.PUSH, {
         params: {
           id: AuthService.getUser().userId,
-          fingerprint: fingerprint
+          deviceFingerprint: deviceFingerprint
         }
       });
 
@@ -107,7 +107,7 @@ class PushService {
     return outputArray;
   }
 
-  async getFingerprint() {
+  async getDeviceFingerprint() {
     try {
       let components = await Fingerprint2.getPromise();
       let values = components.map(component => component.value);
