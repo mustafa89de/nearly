@@ -6,9 +6,9 @@ const router = express.Router();
 
 router.post('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const {userId, subscription, fingerprint} = req.body;
+    const {userId, subscription, deviceFingerprint} = req.body;
 
-    await PushRepository.saveSubscription(userId, subscription, fingerprint);
+    await PushRepository.saveSubscription(userId, subscription, deviceFingerprint);
 
     res.status(201).json();
   } catch (err) {
@@ -19,9 +19,9 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
 router.delete('/', JWTService.requireJWT(), async (req, res) => {
   try {
     const userId = req.query.id;
-    const fingerprint = req.query.fingerprint;
+    const deviceFingerprint = req.query.deviceFingerprint;
 
-    const removal = await PushRepository.deleteSubscription(userId, fingerprint);
+    const removal = await PushRepository.deleteSubscription(userId, deviceFingerprint);
     if (!removal) {
       res.status(404).json({message: `Deletion of subscription of user ${userId} unsuccessful`});
     }

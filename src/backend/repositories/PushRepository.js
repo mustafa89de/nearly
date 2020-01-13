@@ -3,13 +3,13 @@ const Event = require('../models/Event');
 const EARTH_RADIUS = 6378.1;
 
 class PushRepository {
-  async saveSubscription(userId, subscription, fingerprint) {
+  async saveSubscription(userId, subscription, deviceFingerprint) {
     try {
       const subscriptionJSON = JSON.parse(subscription);
       const push = PushSubscriptions({
         userId: userId,
         subscription: subscriptionJSON,
-        fingerprint: fingerprint
+        deviceFingerprint: deviceFingerprint
       });
       await push.save();
     } catch (err) {
@@ -18,11 +18,11 @@ class PushRepository {
     }
   }
 
-  async deleteSubscription(userId, fingerprint) {
+  async deleteSubscription(userId, deviceFingerprint) {
     try {
       const removal = await PushSubscriptions.deleteOne({
         userId,
-        fingerprint
+        deviceFingerprint
       });
 
       return removal.n > 0;

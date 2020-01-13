@@ -19,7 +19,7 @@ const pushSchema = mongoose.Schema({
       }
     }
   },
-  fingerprint: {type: String, index: {unique: true}}
+  deviceFingerprint: {type: String, index: {unique: true}}
 });
 
 module.exports = mongoose.model('PushSubscriptions', pushSchema);
