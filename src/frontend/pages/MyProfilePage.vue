@@ -101,8 +101,12 @@
       async notificationToggle(e){
         try {
           if(e){
-            await PushService.subscribeToPush();
-            this.notificationSubscribed = true;
+            const flag = await PushService.subscribeToPush();
+            if (flag) {
+              this.notificationSubscribed = true;
+            } else {
+              this.notificationSubscribed = false;
+            }
           }
           else{
             await PushService.unsubscribePush();
