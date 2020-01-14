@@ -42,4 +42,16 @@ router.get('/', JWTService.requireJWT(), async (req, res) => {
   }
 });
 
+router.put('/', JWTService.requireJWT(), async (req, res) => {
+  try {
+    const {userId, subscription, deviceFingerprint} = req.body;
+    await PushRepository.updateSubscription(userId, subscription, deviceFingerprint);
+
+    res.json();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({message: err.message});
+  }
+});
+
 module.exports = router;
