@@ -33,8 +33,8 @@ router.delete('/', JWTService.requireJWT(), async (req, res) => {
 
 router.get('/', JWTService.requireJWT(), async (req, res) => {
   try {
-    const {userId, fingerprint} = req.query;
-    const subscription = await PushRepository.isSubscribed(userId, fingerprint);
+    const {userId, deviceFingerprint} = req.query;
+    const subscription = await PushRepository.isSubscribed(userId, deviceFingerprint);
 
     res.json({subscription});
   } catch (err) {

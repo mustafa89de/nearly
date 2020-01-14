@@ -78,11 +78,11 @@ class PushRepository {
     }
   }
 
-  async isSubscribed(userId, fingerprint){
+  async isSubscribed(userId, deviceFingerprint){
     try {
       let subscription = await PushSubscriptions.findOne({
         userId: userId,
-        fingerprint: fingerprint
+        deviceFingerprint: deviceFingerprint
       });
 
       return subscription;
