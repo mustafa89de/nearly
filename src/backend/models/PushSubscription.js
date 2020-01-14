@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const pushSchema = mongoose.Schema({
-  userId: {type: Schema.Types.ObjectId, ref: 'User', index: {unique: true}},
+  userId: {type: Schema.Types.ObjectId, ref: 'User'},
   subscription: {
     endpoint: {
       type: String,
@@ -18,7 +18,8 @@ const pushSchema = mongoose.Schema({
         required: true
       }
     }
-  }
+  },
+  deviceFingerprint: {type: String, index: {unique: true}}
 });
 
 module.exports = mongoose.model('PushSubscriptions', pushSchema);

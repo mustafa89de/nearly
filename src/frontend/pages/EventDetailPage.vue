@@ -31,7 +31,7 @@
         try {
           this.event = await EventService.getEventById(this.$route.params.eid);
           const {lon, lat} = this.event;
-          MapService.setBounds(LocationService.toBounds({lon, lat}));
+          MapService.setBounds(LocationService.toBounds({lon, lat}, 200));
           MapService.addMarker({lat, lon});
         } catch (err) {
           if (err.status === 404) {
