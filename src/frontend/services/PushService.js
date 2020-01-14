@@ -8,39 +8,21 @@ const publicVapidKey = PUBLIC_VAPID_KEY;
 class PushService {
   async subscribeToPush() {
     try {
-      const registration = await navigator.serviceWorker.register('/worker.js', {
-        scope: '/'
-      });
-      console.log('SW registered');
-
-      await registration.update();
-
-      const permission = await Notification.requestPermission();
-      if (permission && permission !== 'granted') {
-        console.log('Notification Permission not granted');
-        //TODO: handle permission not granted
-        return;
-      }
-
-      await navigator.serviceWorker.ready;
-
-      const appServerKey = this.urlB64ToUint8Array(publicVapidKey);
-
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: appServerKey
-      });
-      console.log('Subscribed to push');
-
-      const stringifiedSubscription = JSON.stringify(subscription);
+      const stringifiedSubscription = await this.getNewSubscriptionSW();
 
       const deviceFingerprint = await this.getDeviceFingerprint();
 
-      await axios.post(ENDPOINTS.PUSH, {
-        userId: AuthService.getUser().userId,
-        subscription: stringifiedSubscription,
-        deviceFingerprint: deviceFingerprint
-      });
+      const subscriptionDB = await this.getSubscriptionDB();
+
+      if (subscriptionDB) {
+        await this.updateSubscriptionDB(stringifiedSubscription)
+      } else {
+        await axios.post(ENDPOINTS.PUSH, {
+          userId: AuthService.getUser().userId,
+          subscription: stringifiedSubscription,
+          deviceFingerprint: deviceFingerprint
+        });
+      }
       console.log('subscription sent to BE');
 
     } catch (err) {
@@ -80,8 +62,22 @@ class PushService {
 
       await navigator.serviceWorker.ready;
 
-      const subscription = await registration.pushManager.getSubscription();
-      if (subscription) {
+      const subscriptionSW = await registration.pushManager.getSubscription();
+
+      const subscriptionDB = await this.getSubscriptionDB();
+
+      const deviceFingerprint = await this.getDeviceFingerprint();
+
+      if (subscriptionSW && subscriptionDB) {
+        if (subscriptionSW.endpoint !== subscriptionDB.endpoint) {
+          await this.updateSubscriptionDB(subscriptionSW);
+          return true;
+        } else {
+          return true;
+        }
+      } else if (!subscriptionSW && subscriptionDB) {
+        const subscriptionSW = await this.getNewSubscriptionSW();
+        await this.updateSubscriptionDB(subscriptionSW);
         return true;
       } else {
         return false;
@@ -116,7 +112,66 @@ class PushService {
       console.error(err.message);
       throw err;
     }
+  }
 
+  async getSubscriptionDB() {
+    try {
+      return await axios.get(ENDPOINTS.PUSH, {
+        params: {
+          userId: AuthService.getUser().userId,
+          deviceFingerprint: this.getDeviceFingerprint()
+        }
+      });
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+  }
+
+  async updateSubscriptionDB(subscription) {
+    try {
+      return await axios.put(ENDPOINTS.PUSH, {
+        userId: AuthService.getUser().userId,
+        subscription,
+        deviceFingerprint: this.getDeviceFingerprint()
+      });
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+  }
+
+  async getNewSubscriptionSW() {
+    try {
+      const registration = await navigator.serviceWorker.register('/worker.js', {
+        scope: '/'
+      });
+      console.log('SW registered');
+
+      await registration.update();
+
+      const permission = await Notification.requestPermission();
+      if (permission && permission !== 'granted') {
+        console.log('Notification Permission not granted');
+        //TODO: handle permission not granted
+        return;
+      }
+
+      await navigator.serviceWorker.ready;
+
+      const appServerKey = this.urlB64ToUint8Array(publicVapidKey);
+
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: appServerKey
+      });
+      console.log('Subscribed to push');
+
+      return JSON.stringify(subscription);
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
   }
 }
 
