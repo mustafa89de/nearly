@@ -8,22 +8,25 @@ const publicVapidKey = PUBLIC_VAPID_KEY;
 class PushService {
   async subscribeToPush() {
     try {
-      const stringifiedSubscription = await this.getNewSubscriptionSW();
+      const subscription = await this.getNewSubscriptionSW();
+
+      if (!subscription) return false;
 
       const deviceFingerprint = await this.getDeviceFingerprint();
 
       const subscriptionDB = await this.getSubscriptionDB();
 
-      if (subscriptionDB) {
-        await this.updateSubscriptionDB(stringifiedSubscription)
+      if (subscriptionDB !== null) {
+        await this.updateSubscriptionDB(subscription)
       } else {
         await axios.post(ENDPOINTS.PUSH, {
           userId: AuthService.getUser().userId,
-          subscription: stringifiedSubscription,
+          subscription: JSON.stringify(subscription),
           deviceFingerprint: deviceFingerprint
         });
       }
       console.log('subscription sent to BE');
+      return true;
 
     } catch (err) {
       console.error(err.message);
@@ -33,6 +36,8 @@ class PushService {
 
   async unsubscribePush() {
     try {
+      if (Notification.permission !== "granted") return;
+
       const registration = await navigator.serviceWorker.register('../worker.js');
 
       await navigator.serviceWorker.ready;
@@ -58,6 +63,10 @@ class PushService {
 
   async hasSubscribed() {
     try {
+      if (Notification.permission !== 'granted') {
+        return;
+      }
+
       const registration = await navigator.serviceWorker.register('../worker.js');
 
       await navigator.serviceWorker.ready;
@@ -116,12 +125,14 @@ class PushService {
 
   async getSubscriptionDB() {
     try {
-      return await axios.get(ENDPOINTS.PUSH, {
+      const response = await axios.get(ENDPOINTS.PUSH, {
         params: {
           userId: AuthService.getUser().userId,
-          deviceFingerprint: this.getDeviceFingerprint()
+          deviceFingerprint: await this.getDeviceFingerprint()
         }
       });
+
+      return response.data.subscription;
     } catch (err) {
       console.error(err.message);
       throw err;
@@ -130,10 +141,11 @@ class PushService {
 
   async updateSubscriptionDB(subscription) {
     try {
+      const stringifiedSubscription = JSON.stringify(subscription);
       return await axios.put(ENDPOINTS.PUSH, {
         userId: AuthService.getUser().userId,
-        subscription,
-        deviceFingerprint: this.getDeviceFingerprint()
+        subscription: stringifiedSubscription,
+        deviceFingerprint: await this.getDeviceFingerprint()
       });
     } catch (err) {
       console.error(err.message);
@@ -143,19 +155,20 @@ class PushService {
 
   async getNewSubscriptionSW() {
     try {
-      const registration = await navigator.serviceWorker.register('/worker.js', {
-        scope: '/'
-      });
-      console.log('SW registered');
-
-      await registration.update();
-
       const permission = await Notification.requestPermission();
       if (permission && permission !== 'granted') {
         console.log('Notification Permission not granted');
         //TODO: handle permission not granted
         return;
       }
+
+      const registration = await navigator.serviceWorker.register('/worker.js', {
+        scope: '/'
+      });
+
+      console.log('SW registered');
+
+      await registration.update();
 
       await navigator.serviceWorker.ready;
 
@@ -167,7 +180,7 @@ class PushService {
       });
       console.log('Subscribed to push');
 
-      return JSON.stringify(subscription);
+      return subscription;
     } catch (err) {
       console.error(err.message);
       throw err;
