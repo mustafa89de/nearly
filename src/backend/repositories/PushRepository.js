@@ -91,6 +91,20 @@ class PushRepository {
       throw err;
     }
   }
+
+  async updateSubscription(userId, subscription, deviceFingerprint) {
+    try {
+      await PushSubscriptions.findOneAndUpdate({
+        userId: userId,
+        deviceFingerprint: deviceFingerprint
+      }, {
+        subscription: subscription
+      });
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+  }
 }
 
 module.exports = new PushRepository();
