@@ -94,11 +94,12 @@ class PushRepository {
 
   async updateSubscription(userId, subscription, deviceFingerprint) {
     try {
+      const subscriptionJSON = JSON.parse(subscription);
       await PushSubscriptions.findOneAndUpdate({
         userId: userId,
         deviceFingerprint: deviceFingerprint
       }, {
-        subscription: subscription
+        subscription: subscriptionJSON
       });
     } catch (err) {
       console.error(err.message);
