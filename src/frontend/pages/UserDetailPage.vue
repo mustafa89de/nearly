@@ -29,7 +29,7 @@
     methods: {
       async init() {
         try {
-          this.user = await UserService.getUserById(this.$route.params.uid);
+          this.user = await UserService.getUserByID(this.$route.params.uid);
         } catch (err) {
           if (err.status === 404) this.notFound = true;
           console.error(err);

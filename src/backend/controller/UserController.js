@@ -30,7 +30,7 @@ router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
       res.status(404).json({message: `User with id "${id}" does not exist.`});
     }
 
-    const {username, description, radius} = user;
+    const {username, email, description, radius} = user;
 
     const hostedEvents = await EventRepository.getEventsByHost(id);
 
@@ -47,6 +47,7 @@ router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
 
     const userDetails = {
       username,
+      email,
       description,
       radius: radius || CONSTANTS.DEFAULT_MAP_RADIUS,
       hostedEvents: hostedEventsDto

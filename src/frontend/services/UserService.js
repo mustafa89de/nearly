@@ -28,12 +28,14 @@ class UserService {
     }
   }
 
-  async getUserById(uid) {
+  async updateUser(data) {
+    const myUserId = AuthService.getUser().userId;
     try {
-      const res = await axios.get(ENDPOINTS.USER + "/" + uid);
+      const res = await axios.put(ENDPOINTS.USER + '/' + myUserId, data);
       return res.data;
     } catch (err) {
       err.status = err.response.status;
+      err.dupKey = err.response.data.dupKey;
       console.error(err.message);
       throw err;
     }

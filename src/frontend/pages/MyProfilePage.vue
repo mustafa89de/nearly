@@ -14,6 +14,12 @@
     <location-picker @save="handleHomePositionChange" show-home-position show-radius :propRadius="user ? user.radius : null"/>
     <custom-button
       class="button"
+      type="link"
+      to="/me/edit"
+      text="Bearbeiten"
+    />
+    <custom-button
+      class="button"
       type="button"
       text="Abmelden"
       @click="handleLogout"
@@ -152,16 +158,13 @@
       margin: 50px 25px 25px;
     }
 
-    .button:first-of-type {
-      margin-top: 50px;
-    }
-
-    .button:last-of-type {
-      margin-bottom: 50px;
-    }
-
     .button {
       align-self: center;
+      margin-top: 25px;
+    }
+
+    .button:last-child {
+      margin-bottom: 50px;
     }
 
     .horizontalEventList {

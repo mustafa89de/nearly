@@ -8,6 +8,7 @@ import EventDetailPage from './pages/EventDetailPage';
 import UserDetailPage from './pages/UserDetailPage';
 import EditEventPage from './pages/EditEventPage';
 import MyProfilePage from './pages/MyProfilePage';
+import EditProfilePage from './pages/EditProfilePage';
 import HelpPage from './pages/HelpPage';
 import NotFoundPage from './pages/NotFoundPage';
 import LoginPage from "./pages/LoginPage";
@@ -67,6 +68,11 @@ export const router = new VueRouter({
     {
       path: '/me',
       component: MyProfilePage,
+      beforeEnter: checkAuthentication
+    },
+    {
+      path: '/me/edit',
+      component: EditProfilePage,
       beforeEnter: checkAuthentication
     },
     {
