@@ -1,21 +1,25 @@
 <template>
-  <article @click="this.hideSlider">
+  <article>
     <header>
       <h1>Mein Profil</h1>
-      <a href="#" @click="toggleSlider"><icon class="menu" iconType="menu" iconColor="primary"/></a>
     </header>
     <user-details :user="user" own/>
     <h3>Teilnehmende Veranstaltungen</h3>
-    <event-list :events="this.participationEvents" hideNumbers
-                @click="handleEventClick"/>
+    <event-list :events="this.participationEvents" hideNumbers @click="handleEventClick"/>
     <section class="notification">
       <h3>Benachrichtigung</h3>
       <toggle @onToggle="notificationToggle" :checked="notificationSubscribed"/>
     </section>
     <h3>Meine Home Position</h3>
     <location-picker @save="handleHomePositionChange" show-home-position show-radius :propRadius="user ? user.radius : null"/>
+    <custom-button
+      class="button"
+      type="button"
+      text="Abmelden"
+      @click="handleLogout"
+      bordered
+    />
     <p v-if="errorMsg" id="error">{{errorMsg}}</p>
-    <slide-menu :username="user ? user.username : null" :sliderVisible="sliderVisible"/>
   </article>
 </template>
 
@@ -26,43 +30,33 @@
   import UserService from "../services/UserService";
   import EventService from "../services/EventService";
   import PushService from "../services/PushService";
-  import Icon from "../components/Icon";
-  import SlideMenu from "../components/SlideMenu";
   import LocationPicker from "../components/LocationPicker";
   import Toggle from "../components/Toggle";
+  import Button from "../components/Button";
   import { INITIAL_MAP_RADIUS } from "../constants";
 
   export default {
     name: "MyProfilePage",
-
     components: {
       "user-details": UserDetails,
       "event-list": EventList,
-      "icon": Icon,
-      "slide-menu": SlideMenu,
       "location-picker": LocationPicker,
-      "toggle": Toggle
+      "toggle": Toggle,
+      "custom-button": Button
     },
-
     data() {
       return {
         user: null,
         participationEvents: null,
-        sliderVisible: false,
         errorMsg: null,
         notificationSubscribed: false
       }
     },
-
     methods: {
       async init() {
-
         const jwtUser = AuthService.getUser(); // does not contain hostedEvents
-
         try {
-
           this.user = await UserService.getUserByID(jwtUser.userId);
-
           const participationEvents = await EventService.getEventsByUserId(jwtUser.userId);
           this.participationEvents = participationEvents.map(({name, latitude, longitude, ...e}) => ({
             title: name,
@@ -70,23 +64,13 @@
             lon: longitude,
             ...e
           }));
-
           this.notificationSubscribed = await PushService.hasSubscribed();
-
         } catch (err) {
           console.error(err);
         }
       },
       handleEventClick: function (index) {
         this.$router.push('/event/' + this.participationEvents[index].id);
-      },
-      toggleSlider: function(e){
-        this.sliderVisible = !this.sliderVisible;
-      },
-      hideSlider: function(e){
-        if(e.target.classList.contains("background")){
-          this.sliderVisible = !this.sliderVisible;
-        }
       },
       async handleHomePositionChange(newData) {
         try {
@@ -111,9 +95,11 @@
         } catch(e) {
           console.error("couldn't subscribe to notifications");
         }
+      },
+      handleLogout: async function () {
+       await AuthService.logout();
       }
     },
-
     created() {
       this.init();
     }
@@ -126,59 +112,67 @@
   @import "../assets/mixins";
 
   article {
+    display: flex;
+    flex-direction: column;
     @include pageCard;
 
     .picker {
-      margin: 25px 25px 35px;
-    }
-  }
-
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 25px 0 25px;
-
-    h1 {
-      @include textTitle;
-      color: $font-col-primary;
-      margin: 0;
-      padding: 0;
+      margin: 0 25px;
     }
 
-    .menu {
-      height: 32px;
-      width: 32px;
-    }
-  }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 25px 0 25px;
 
-  .notification {
-    margin-top: 50px;
-    padding: 0 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+      h1 {
+        @include textTitle;
+        color: $font-col-primary;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    .notification {
+      margin-top: 50px;
+      padding: 0 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h3 {
+        @include textTitle;
+        margin: 0;
+      }
+    }
 
     h3 {
       @include textTitle;
-      margin: 0;
+      margin: 50px 25px 25px;
     }
-  }
 
-  h3 {
-    @include textTitle;
-    margin: 50px 25px 25px;
-  }
+    .button:first-of-type {
+      margin-top: 50px;
+    }
 
+    .button:last-of-type {
+      margin-bottom: 50px;
+    }
 
-  .horizontalEventList {
-    padding: 0 0 0 25px;
-  }
+    .button {
+      align-self: center;
+    }
 
-  #error {
-    color: $font-col-error;
-    font-weight: bold;
-    margin: -20px 25px 35px;
-    letter-spacing: 0.2px;
+    .horizontalEventList {
+      padding: 0 0 0 25px;
+    }
+
+    #error {
+      color: $font-col-error;
+      font-weight: bold;
+      margin: -20px 25px 35px;
+      letter-spacing: 0.2px;
+    }
   }
 </style>
