@@ -41,6 +41,17 @@ class UserService {
     }
   }
 
+  async deleteUser(userId) {
+    try {
+      const res = await axios.delete(ENDPOINTS.USER + '/' + userId);
+      return res.data;
+    } catch (err) {
+      err.status = err.response.status;
+      console.error(err.message);
+      throw err;
+    }
+  }
+
   async setHomePosition({lon, lat}) {
     const myUserId = AuthService.getUser().userId;
     const position = {

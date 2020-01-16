@@ -39,7 +39,6 @@
   import LocationPicker from "../components/LocationPicker";
   import Toggle from "../components/Toggle";
   import Button from "../components/Button";
-  import { INITIAL_MAP_RADIUS } from "../constants";
 
   export default {
     name: "MyProfilePage",
@@ -123,7 +122,7 @@
     @include pageCard;
 
     .picker {
-      margin: 0 25px;
+      margin: 0 25px 50px;
     }
 
     header {
@@ -160,11 +159,7 @@
 
     .button {
       align-self: center;
-      margin-top: 25px;
-    }
-
-    .button:last-child {
-      margin-bottom: 50px;
+      margin-bottom: 25px;
     }
 
     .horizontalEventList {

@@ -39,7 +39,7 @@
 
   export default {
     components: {
-      ConfirmationModal,
+      'confirmation-modal': ConfirmationModal,
       'event-editor': EventEditor,
       'custom-button': Button
     },
@@ -116,7 +116,7 @@
     }
 
     > section {
-      padding: 0 25px 25px;
+      padding: 0 25px;
     }
   }
 
