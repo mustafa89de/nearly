@@ -51,10 +51,12 @@ class AuthService {
     };
   }
 
-  async logout() {
-    let subscribed = await PushService.hasSubscribed();
-    if (subscribed){
-      await PushService.unsubscribePush();
+  async logout(skipUnsubscribe = false) {
+    if (!skipUnsubscribe) {
+      let subscribed = await PushService.hasSubscribed();
+      if (subscribed) {
+        await PushService.unsubscribePush();
+      }
     }
     JWTService.removeJWT();
     if (router) {

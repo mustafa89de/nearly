@@ -32,7 +32,7 @@
       syncNavBarState(path) {
         if (path === "/") this.state = "overview";
         else if (path === "/event/create") this.state = "create";
-        else if (path === "/me") this.state = "me";
+        else if (path === "/me" || path === "/me/edit") this.state = "me";
         else this.state = "overview";
       }
     },

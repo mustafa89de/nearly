@@ -14,6 +14,12 @@
     <location-picker @save="handleHomePositionChange" show-home-position show-radius :propRadius="user ? user.radius : null"/>
     <custom-button
       class="button"
+      type="link"
+      to="/me/edit"
+      text="Bearbeiten"
+    />
+    <custom-button
+      class="button"
       type="button"
       text="Abmelden"
       @click="handleLogout"
@@ -33,7 +39,6 @@
   import LocationPicker from "../components/LocationPicker";
   import Toggle from "../components/Toggle";
   import Button from "../components/Button";
-  import { INITIAL_MAP_RADIUS } from "../constants";
 
   export default {
     name: "MyProfilePage",
@@ -117,7 +122,7 @@
     @include pageCard;
 
     .picker {
-      margin: 0 25px;
+      margin: 0 25px 50px;
     }
 
     header {
@@ -152,16 +157,9 @@
       margin: 50px 25px 25px;
     }
 
-    .button:first-of-type {
-      margin-top: 50px;
-    }
-
-    .button:last-of-type {
-      margin-bottom: 50px;
-    }
-
     .button {
       align-self: center;
+      margin-bottom: 25px;
     }
 
     .horizontalEventList {
