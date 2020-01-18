@@ -55,7 +55,7 @@ class AuthService {
     if (!skipUnsubscribe) {
       let subscribed = await PushService.hasSubscribed();
       if (subscribed) {
-        await PushService.unsubscribePush();
+        await PushService.unsubscribePush(true);
       }
     }
     JWTService.removeJWT();
