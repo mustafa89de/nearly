@@ -19,6 +19,7 @@
   import LocationService from "../services/LocationService";
   import MapService from "../services/MapService";
   import UserService from "../services/UserService";
+  import PushService from "../services/PushService";
 
   let intialMoveDone = false;
 
@@ -52,6 +53,8 @@
           this.fetchEvents(initialBounds);
         }
       });
+
+      await PushService.hasSubscribed();
     },
     methods: {
       loadInitialBounds: async function () {
