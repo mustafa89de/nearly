@@ -32,7 +32,7 @@ class AuthService {
         password
       });
       JWTService.storeJWT(res.data.token);
-      await PushService.subscribeToPush();
+      //await PushService.subscribeToPush();
     } catch (err) {
       err.status = err.response.status;
       console.error(err.message);
