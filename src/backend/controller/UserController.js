@@ -47,11 +47,14 @@ router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
 
     const userDetails = {
       username,
-      email,
       description,
       radius: radius || CONSTANTS.DEFAULT_MAP_RADIUS,
       hostedEvents: hostedEventsDto
     };
+
+    if (id === req.user.id) {
+      userDetails.email = email
+    }
 
     res.json(userDetails);
   } catch

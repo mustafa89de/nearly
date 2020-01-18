@@ -16,8 +16,8 @@
       :showHint="emailAlreadyExists || (email !== '' && !emailValid)"
       v-model="email"/>
     <textarea
-        placeholder="Beschreibung"
-        v-model="description"
+      placeholder="Beschreibung"
+      v-model="description"
     />
     <p v-if="errorMsg" id="error">{{errorMsg}}</p>
     <custom-button
@@ -96,26 +96,26 @@
           && this.email === this.user.email
           && this.description === this.user.description) {
           await this.$router.push('/me');
-        }
-
-        try {
-          this.usernameAlreadyExists = false;
-          this.emailAlreadyExists = false;
-          this.errorMsg = null;
-          await UserService.updateUser({
-            username: this.username,
-            email: this.email,
-            description: this.description
-          });
-          await this.$router.push('/me');
-        } catch (err) {
-          if (err.status === 409) {
-            if (err.dupKey === "username") this.usernameAlreadyExists = true;
-            if (err.dupKey === "email") this.emailAlreadyExists = true;
-          } else {
-            this.errorMsg = err;
+        } else {
+          try {
+            this.usernameAlreadyExists = false;
+            this.emailAlreadyExists = false;
+            this.errorMsg = null;
+            await UserService.updateUser({
+              username: this.username,
+              email: this.email,
+              description: this.description
+            });
+            await this.$router.push('/me');
+          } catch (err) {
+            if (err.status === 409) {
+              if (err.dupKey === "username") this.usernameAlreadyExists = true;
+              if (err.dupKey === "email") this.emailAlreadyExists = true;
+            } else {
+              this.errorMsg = err;
+            }
+            console.error(err);
           }
-          console.log(err);
         }
       },
       async handleCancel() {
