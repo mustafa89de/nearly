@@ -31,4 +31,27 @@ router.delete('/', JWTService.requireJWT(), async (req, res) => {
   }
 });
 
+router.get('/', JWTService.requireJWT(), async (req, res) => {
+  try {
+    const {userId, deviceFingerprint} = req.query;
+    const subscription = await PushRepository.isSubscribed(userId, deviceFingerprint);
+
+    res.json({subscription});
+  } catch (err) {
+    res.status(500).json({message: err.message});
+  }
+});
+
+router.put('/', JWTService.requireJWT(), async (req, res) => {
+  try {
+    const {userId, subscription, deviceFingerprint} = req.body;
+    await PushRepository.updateSubscription(userId, subscription, deviceFingerprint);
+
+    res.json();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({message: err.message});
+  }
+});
+
 module.exports = router;

@@ -77,6 +77,35 @@ class PushRepository {
       throw err;
     }
   }
+
+  async isSubscribed(userId, deviceFingerprint){
+    try {
+      let subscription = await PushSubscriptions.findOne({
+        userId: userId,
+        deviceFingerprint: deviceFingerprint
+      });
+
+      return subscription;
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+  }
+
+  async updateSubscription(userId, subscription, deviceFingerprint) {
+    try {
+      const subscriptionJSON = JSON.parse(subscription);
+      await PushSubscriptions.findOneAndUpdate({
+        userId: userId,
+        deviceFingerprint: deviceFingerprint
+      }, {
+        subscription: subscriptionJSON
+      });
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
+  }
 }
 
 module.exports = new PushRepository();
