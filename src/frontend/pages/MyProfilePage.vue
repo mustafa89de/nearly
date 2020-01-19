@@ -103,6 +103,7 @@
           }
         } catch(e) {
           console.error("couldn't subscribe to notifications");
+          this.notificationSubscribed = false;
         }
       },
       handleLogout: async function () {
