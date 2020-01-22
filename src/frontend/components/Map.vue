@@ -85,7 +85,7 @@
     @include textTitle;
     letter-spacing: 0;
     position: absolute;
-    z-index: 1;
+    z-index: 0;
   }
 </style>
 
