@@ -96,7 +96,7 @@
       @include textHint;
       flex: none;
       position: absolute;
-      bottom: -50%;
+      top: 120%;
       opacity: 0;
       transition: opacity 200ms;
       width: 100%;
