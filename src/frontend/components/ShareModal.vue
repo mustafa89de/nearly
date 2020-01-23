@@ -44,7 +44,7 @@
           try{
             navigator.clipboard.writeText(this.eventURL);
           } catch(e){
-            console.log("couldn't write to clipboard", e);
+            console.error("couldn't write to clipboard", e);
           }
         }
       }

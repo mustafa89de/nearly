@@ -89,7 +89,7 @@ router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
 
     res.status(200).json(resData);
   } catch (err) {
-    console.log(err.status, err);
+    console.error(err.status, err);
     res.status(500).json({message: err.message});
   }
 });
@@ -114,7 +114,7 @@ router.delete('/:id', JWTService.requireJWT(), AuthService.compareHostId, async 
     }
     res.json();
   } catch (err) {
-    console.log(err.status);
+    console.error(err.status);
     res.status(500).json({message: err.message});
   }
 });

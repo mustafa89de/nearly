@@ -108,7 +108,7 @@
               url: window.location.href
             });
           } catch (e) {
-            console.log("event couldn't be shared ", e);
+            console.error("event couldn't be shared ", e);
           }
         }
       },
