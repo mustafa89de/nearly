@@ -54,7 +54,7 @@
         }
       });
     },
-    mounted: async function() {
+    mounted: async function () {
       await PushService.subscribeToPush();
     },
     methods: {

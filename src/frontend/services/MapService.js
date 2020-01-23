@@ -43,7 +43,7 @@ class MapService {
         this.addControls();
       }
       this.map.on('load', () => {
-        if(showRadius) {
+        if (showRadius) {
           this.initRadius();
         }
         resolve();
@@ -142,6 +142,7 @@ class MapService {
 
     return marker;
   }
+
   initRadius() {
     this.map.addSource("radius", {
       "type": "geojson",
@@ -157,10 +158,11 @@ class MapService {
       "paint": {
         "fill-color": "#166C72",
         "fill-opacity": 0,
-        "fill-opacity-transition": { duration: 1000 }
+        "fill-opacity-transition": {duration: 1000}
       }
     });
   }
+
   calcRadiusCoords(lonlat, rad) {
     this.radiusCoords = [];
     // 1 longitudinal degree is around 111.320 km, depending on the latitude
@@ -173,7 +175,7 @@ class MapService {
     const points = 64;
     let theta, x, y;
 
-    for(let i = 0; i < points; i += 1){
+    for (let i = 0; i < points; i += 1) {
       theta = (i / points) * (2 * Math.PI);
       x = distanceLon * Math.cos(theta);
       y = distanceLat * Math.sin(theta);
@@ -182,7 +184,8 @@ class MapService {
     }
     this.radiusCoords.push(this.radiusCoords[0]);
   }
-  drawRadius(lonlat){
+
+  drawRadius(lonlat) {
     let coords = this.radiusCoords.map(coord => {
       return [lonlat.lon + coord[0], lonlat.lat + coord[1]];
     });
@@ -194,7 +197,8 @@ class MapService {
       }
     });
   }
-  fadeRadius(){
+
+  fadeRadius() {
     this.map.setPaintProperty("radiuslayer", "fill-opacity", 0.1);
   }
 }

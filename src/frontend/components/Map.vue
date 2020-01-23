@@ -59,7 +59,7 @@
       MapService.onZoomEnd(this.handlePositionChange);
       MapService.onClick(this.handleMapClick);
       this.updateMarkers();
-      if(this.showRadius) this.$emit("afterInit");
+      if (this.showRadius) this.$emit("afterInit");
     }
   }
 </script>

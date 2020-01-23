@@ -16,12 +16,12 @@
       }
     },
     methods: {
-      toggle: function() {
+      toggle: function () {
         this.$emit("onToggle", this.isChecked);
       },
     },
     watch: {
-      checked: function() {
+      checked: function () {
         this.isChecked = this.checked;
       }
     }
@@ -32,13 +32,13 @@
   @import "../assets/variables";
   @import "../assets/mixins";
 
-  .switch{
+  .switch {
     position: relative;
     display: inline-block;
     width: 34px;
     height: 14px;
 
-    input{
+    input {
       opacity: 0;
       width: 0;
       height: 0;
@@ -68,7 +68,7 @@
       transition: 400ms;
       border-radius: 100px;
 
-      &::before{
+      &::before {
         position: absolute;
         content: "";
         height: 20px;

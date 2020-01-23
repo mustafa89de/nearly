@@ -1,7 +1,9 @@
 <template>
   <section>
     <h2>{{ user ? user.username : '...'}}</h2>
-    <p><pre>{{ user ? user.description: '...' }}</pre></p>
+    <p>
+    <pre>{{ user ? user.description: '...' }}</pre>
+    </p>
     <h3 v-if="own">Meine Veranstaltungen</h3>
     <h3 v-else-if="!user">Events von ...</h3>
     <h3 v-else>Events von {{this.user.username}}</h3>

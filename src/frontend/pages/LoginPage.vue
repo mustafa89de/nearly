@@ -6,14 +6,16 @@
     <section class="card">
       <h2>Login</h2>
       <transition name="fade" mode="out-in">
-      <form v-if="!loginFailed" id="login-form" @submit="handleLogin">
-        <input-text class="input-text-wrapper" iconType="mail" type="email" placeholder="E-Mail" v-model="email"/>
-        <input-text class="input-text-wrapper" iconType="key" type="password" hint="Deine Anmeldedaten stimmen nicht, bitte überprüfe noch mal deine Eingabe!" :showHint="wrongLoginData" placeholder="Password" v-model="password"/>
-        <button-submit class="login-button" type="submit" text="Login" to="" :disabled="!password || !email"/>
-        <p class="registration-text">Du hast noch keinen Account?</p>
-        <router-link class="registration-link" to="/register">Registrieren</router-link>
-      </form>
-      <div id="result-wrapper" v-else>
+        <form v-if="!loginFailed" id="login-form" @submit="handleLogin">
+          <input-text class="input-text-wrapper" iconType="mail" type="email" placeholder="E-Mail" v-model="email"/>
+          <input-text class="input-text-wrapper" iconType="key" type="password"
+                      hint="Deine Anmeldedaten stimmen nicht, bitte überprüfe noch mal deine Eingabe!"
+                      :showHint="wrongLoginData" placeholder="Password" v-model="password"/>
+          <button-submit class="login-button" type="submit" text="Login" to="" :disabled="!password || !email"/>
+          <p class="registration-text">Du hast noch keinen Account?</p>
+          <router-link class="registration-link" to="/register">Registrieren</router-link>
+        </form>
+        <div id="result-wrapper" v-else>
           <h3>Ach herrje!</h3>
           <p>Leider ist bei der Anmeldung etwas schief gelaufen. Versuche es zu einem später Zeitpunkt noch einmal.</p>
           <icon class="result-icon" iconType="error-circle" iconColor="colorPrimary"/>
@@ -62,15 +64,15 @@
           }
         }
       },
-      backToForm: function() {
+      backToForm: function () {
         this.loginFailed = false;
       },
     },
     watch: {
-      email: function(){
+      email: function () {
         this.wrongLoginData = false;
       },
-      password: function(){
+      password: function () {
         this.wrongLoginData = false;
       }
     }
@@ -95,7 +97,7 @@
       display: flex;
       align-items: center;
 
-      #logo{
+      #logo {
         width: 50%;
       }
     }

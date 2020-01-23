@@ -11,19 +11,20 @@
       <toggle @onToggle="notificationToggle" :checked="notificationSubscribed"/>
     </section>
     <h3>Meine Home Position</h3>
-    <location-picker @save="handleHomePositionChange" show-home-position show-radius :propRadius="user ? user.radius : null"/>
+    <location-picker @save="handleHomePositionChange" show-home-position show-radius
+                     :propRadius="user ? user.radius : null"/>
     <custom-button
-      class="button"
-      type="link"
-      to="/me/edit"
-      text="Bearbeiten"
+        class="button"
+        type="link"
+        to="/me/edit"
+        text="Bearbeiten"
     />
     <custom-button
-      class="button"
-      type="button"
-      text="Abmelden"
-      @click="handleLogout"
-      bordered
+        class="button"
+        type="button"
+        text="Abmelden"
+        @click="handleLogout"
+        bordered
     />
     <p v-if="errorMsg" id="error">{{errorMsg}}</p>
   </article>
@@ -79,7 +80,7 @@
       },
       async handleHomePositionChange(newData) {
         try {
-          await UserService.setHomePosition({ lon: newData.lon, lat: newData.lat });
+          await UserService.setHomePosition({lon: newData.lon, lat: newData.lat});
           await UserService.setRadius(newData.radius);
           this.$router.go();
           this.errorMsg = null;
@@ -87,23 +88,22 @@
           this.errorMsg = "Es ist ein Fehler beim setzen der Home Position aufgetreten."
         }
       },
-      async notificationToggle(e){
+      async notificationToggle(e) {
         try {
-          if(e){
+          if (e) {
             const subscriptionSuccess = await PushService.subscribeToPush();
             this.notificationSubscribed = subscriptionSuccess;
-          }
-          else{
+          } else {
             await PushService.unsubscribePush(false);
             this.notificationSubscribed = false;
           }
-        } catch(e) {
+        } catch (e) {
           console.error("couldn't subscribe to notifications");
           this.notificationSubscribed = false;
         }
       },
       handleLogout: async function () {
-       await AuthService.logout();
+        await AuthService.logout();
       }
     },
     created() {

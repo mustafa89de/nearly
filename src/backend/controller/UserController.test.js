@@ -14,18 +14,18 @@ describe('User Controller', () => {
       UserRepository.createUser = jest.fn().mockResolvedValue();
 
       return request(app)
-          .post('/api/user')
-          .send({
-            username: testUsername,
-            email: testEmail,
-            password: testPassword,
-            description: testDescr
-          })
-          .expect(201)
-          .then(response => {
-            expect(response.body).toBe('');
-            expect(UserRepository.createUser).toHaveBeenCalledWith(testUsername, testEmail, testPassword, testDescr)
-          })
+        .post('/api/user')
+        .send({
+          username: testUsername,
+          email: testEmail,
+          password: testPassword,
+          description: testDescr
+        })
+        .expect(201)
+        .then(response => {
+          expect(response.body).toBe('');
+          expect(UserRepository.createUser).toHaveBeenCalledWith(testUsername, testEmail, testPassword, testDescr)
+        })
     });
   });
 

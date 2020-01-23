@@ -21,7 +21,7 @@ export const GERMANY_BOUNDS = new mapboxgl.LngLat(10.526867, 51.036410).toBounds
 
 
 const initialTime = new Date();
-if(initialTime.getHours() > 18) initialTime.setDate(initialTime.getDate() + 1);
+if (initialTime.getHours() > 18) initialTime.setDate(initialTime.getDate() + 1);
 initialTime.setHours(20);
 initialTime.setMinutes(0);
 initialTime.setSeconds(0);

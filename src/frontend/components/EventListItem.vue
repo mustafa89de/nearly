@@ -59,8 +59,7 @@
       getDescription: function () {
         if (this.description) {
           return this.description.length < 100 ? this.description : this.description.substr(0, 100) + "...";
-        }
-        else {
+        } else {
           return "";
         }
       }
@@ -69,14 +68,14 @@
       isToday: function (date) {
         const today = new Date();
         return date.getDate() === today.getDate() &&
-            date.getMonth() === today.getMonth() &&
-            date.getFullYear() === today.getFullYear()
+          date.getMonth() === today.getMonth() &&
+          date.getFullYear() === today.getFullYear()
       },
       isTomorrow: function (date) {
         const today = new Date();
         return date.getDate() === today.getDate() + 1 &&
-            date.getMonth() === today.getMonth() &&
-            date.getFullYear() === today.getFullYear()
+          date.getMonth() === today.getMonth() &&
+          date.getFullYear() === today.getFullYear()
       },
       handleClick: function (index) {
         this.$emit('click', index)

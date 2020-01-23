@@ -15,14 +15,14 @@ describe('EventService', () => {
     await EventService.createEvent(testName, testDescription, testLatitude, testLongitude, testTime);
 
     expect(axios.post).toHaveBeenCalledWith(
-        ENDPOINTS.EVENT,
-        {
-          "description": testDescription,
-          "hostId": 'MOCKED_USER_ID',
-          "latitude": testLatitude,
-          "longitude": testLongitude,
-          "name": testName,
-          "time": testTime
-        });
+      ENDPOINTS.EVENT,
+      {
+        "description": testDescription,
+        "hostId": 'MOCKED_USER_ID',
+        "latitude": testLatitude,
+        "longitude": testLongitude,
+        "name": testName,
+        "time": testTime
+      });
   });
 });

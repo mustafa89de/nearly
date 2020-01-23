@@ -72,11 +72,11 @@ router.put('/:id', JWTService.requireJWT(), AuthService.compareId, async (req, r
   } catch (err) {
     let resBody = {message: err.message};
     if (err.message.includes('duplicate key')) {
-      if (err.message.includes('username_1')){
-        resBody.dupKey= "username";
+      if (err.message.includes('username_1')) {
+        resBody.dupKey = "username";
         res.status(409).json(resBody);
-      }else if(err.message.includes('email_1')){
-        resBody.dupKey= "email";
+      } else if (err.message.includes('email_1')) {
+        resBody.dupKey = "email";
         res.status(409).json(resBody);
       }
     } else {
