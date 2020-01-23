@@ -4,7 +4,7 @@ import EventService from "../services/EventService";
 
 describe('CreateEventPage', () => {
   test('should create event', async () => {
-    EventService.createEvent = jest.fn().mockResolvedValue();
+    EventService.createEvent = jest.fn().mockResolvedValue(null);
 
     const testName = 'aName';
     const testDescription = 'aDescription';

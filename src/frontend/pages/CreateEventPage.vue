@@ -42,7 +42,7 @@
         try {
           const {name, description, lat, lon, time} = this.event;
           await EventService.createEvent(name, description, lat, lon, time);
-          this.$router.push('/');
+          await this.$router.push('/');
         } catch (err) {
           this.errorMsg = "Ein unbekannter Fehler ist aufgetreten."
         }

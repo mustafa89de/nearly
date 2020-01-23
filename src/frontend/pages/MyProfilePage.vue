@@ -91,11 +91,7 @@
         try {
           if(e){
             const subscriptionSuccess = await PushService.subscribeToPush();
-            if (subscriptionSuccess) {
-              this.notificationSubscribed = true;
-            } else {
-              this.notificationSubscribed = false;
-            }
+            this.notificationSubscribed = subscriptionSuccess;
           }
           else{
             await PushService.unsubscribePush(false);

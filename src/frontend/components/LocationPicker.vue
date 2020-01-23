@@ -145,7 +145,7 @@
           marker = MapService.addMarker({lon, lat, draggable: false, onDragEnd: this.handleMarkerDrag})
         }
       },
-      propRadius: function (newValue, oldValue) {
+      propRadius: function (newValue) {
         // propRadius sometimes starts as null but gets set later on, which is why we need to
         // watch for changes and set the new bounds accordingly
         const bounds = LocationService.toBounds({lon: this.lon, lat: this.lat}, newValue);

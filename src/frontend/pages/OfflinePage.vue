@@ -26,7 +26,7 @@
     },
 
     created(){
-      window.addEventListener('online', (e) => {
+      window.addEventListener('online', () => {
         this.$router.push('/')
       })
     }

@@ -1,9 +1,5 @@
 import mapboxgl from "mapbox-gl";
-import {
-  GERMANY_BOUNDS,
-  MAP_ID
-} from "../constants";
-import { POINT_CONVERSION_COMPRESSED } from "constants";
+import {GERMANY_BOUNDS, MAP_ID} from "../constants";
 
 const STYLE = 'mapbox://styles/mapbox/light-v10';
 

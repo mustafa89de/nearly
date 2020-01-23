@@ -36,8 +36,7 @@
     span {
       @include textBody;
       flex: 1;
-      padding: 10px;
-      padding-left: 20px;
+      padding: 10px 10px 10px 20px;
       border: 0;
       font-size: 18px;
     }

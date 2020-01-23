@@ -7,9 +7,9 @@
       <h2>Registrierung</h2>
       <transition name="fade" mode="out-in">
         <form v-if="!resultMessage" id="registration-form" @submit="handleRegistration">
-          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" hint="Benutzername muss mind. 4 Zeichen haben" :showHint="username != '' && !usernameValid" v-model="username"/>
-          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" :hint="emailAlreadyExists ? 'Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse' : 'E-Mail-Adresse ist unvollständig'" :showHint="emailAlreadyExists || (email != '' && !emailValid)" v-model="email"/>
-          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Passwort" hint="Passwort muss mind. 8 Zeichen haben" :showHint="password != '' && !passwordValid" v-model="password"/>
+          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" hint="Benutzername muss mind. 4 Zeichen haben" :showHint="username !== '' && !usernameValid" v-model="username"/>
+          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" :hint="emailAlreadyExists ? 'Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse' : 'E-Mail-Adresse ist unvollständig'" :showHint="emailAlreadyExists || (email !== '' && !emailValid)" v-model="email"/>
+          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Passwort" hint="Passwort muss mind. 8 Zeichen haben" :showHint="password !== '' && !passwordValid" v-model="password"/>
           <button-submit class="register-button" type="submit" text="Registrieren" :disabled="!usernameValid || !emailValid || !passwordValid"/>
           <p class="login-text">Du hast schon einen Account?</p>
           <router-link class="login-link" to="/login">Anmelden</router-link>
@@ -60,14 +60,14 @@
         try {
           await UserService.register(this.username, this.email, this.password);
 
-          this.resultTitle = "Glückwunsch!"
+          this.resultTitle = "Glückwunsch!";
           this.resultMessage = "Du hast dich erfolgreich registriert. Gehe weiter zur Anmeldung.";
           this.resultButton = "Anmelden";
         } catch (err) {
           if (err.status === 409) {
             this.emailAlreadyExists = true;
           } else {
-            this.resultTitle = "Ach herrje!"
+            this.resultTitle = "Ach herrje!";
             this.resultMessage = "Leider ist bei der Registrierung etwas schief gelaufen. Versuche es zu einem später Zeitpunkt noch einmal.";
             this.resultButton = "Zurück";
           }
@@ -125,7 +125,7 @@
       flex-direction: column;
       background-color: $white;
       color: $black;
-      border-radius: 50px 50px 0px 0px;
+      border-radius: 50px 50px 0 0;
       padding: 50px 25px 50px 25px;
       box-shadow: $shadow-dark;
 

@@ -4,7 +4,7 @@ import {ENDPOINTS} from "../constants";
 
 describe('EventService', () => {
   test('should call events api correctly', async () => {
-    axios.post = jest.fn().mockResolvedValue();
+    axios.post = jest.fn().mockResolvedValue(null);
 
     const testName = 'aName';
     const testDescription = 'aDescription';
