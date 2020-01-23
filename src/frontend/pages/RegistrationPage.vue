@@ -7,7 +7,7 @@
       <h2>Registrierung</h2>
       <transition name="fade" mode="out-in">
         <form v-if="!resultMessage" id="registration-form" @submit="handleRegistration">
-          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" hint="Benutzername muss mind. 4 Zeichen haben" :showHint="username != '' && !usernameValid" v-model="username"/>
+          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" :hint="userAlreadyExists ? 'Es existiert bereits ein Nutzer mit diesem Namen' : 'Benutzername muss mind. 4 Zeichen haben'" :showHint="userAlreadyExists || (username != '' && !usernameValid)" v-model="username"/>
           <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" :hint="emailAlreadyExists ? 'Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse' : 'E-Mail-Adresse ist unvollständig'" :showHint="emailAlreadyExists || (email != '' && !emailValid)" v-model="email"/>
           <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Passwort" hint="Passwort muss mind. 8 Zeichen haben" :showHint="password != '' && !passwordValid" v-model="password"/>
           <button-submit class="register-button" type="submit" text="Registrieren" :disabled="!usernameValid || !emailValid || !passwordValid"/>
@@ -44,7 +44,8 @@
         usernameValid: false,
         emailValid: false,
         passwordValid: false,
-        emailAlreadyExists: false
+        emailAlreadyExists: false,
+        userAlreadyExists: false
       };
     },
     components: {
@@ -65,7 +66,7 @@
           this.resultButton = "Anmelden";
         } catch (err) {
           if (err.status === 409) {
-            this.emailAlreadyExists = true;
+            err.response.data.dupKey == 'email' ? this.emailAlreadyExists = true : this.userAlreadyExists = true;
           } else {
             this.resultTitle = "Ach herrje!"
             this.resultMessage = "Leider ist bei der Registrierung etwas schief gelaufen. Versuche es zu einem später Zeitpunkt noch einmal.";
@@ -81,6 +82,7 @@
     },
     watch: {
       username: function(){
+        this.userAlreadyExists = false;
         this.usernameValid = this.username.length >= 4;
       },
       email: function(){
