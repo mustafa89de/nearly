@@ -32,7 +32,6 @@ class AuthService {
         password
       });
       JWTService.storeJWT(res.data.token);
-      //await PushService.subscribeToPush();
     } catch (err) {
       err.status = err.response.status;
       console.error(err.message);
@@ -53,9 +52,9 @@ class AuthService {
 
   async logout(skipUnsubscribe = false) {
     if (!skipUnsubscribe) {
-      let subscribed = await PushService.hasSubscribed();
+      let subscribed = await PushService.syncSubscription();
       if (subscribed) {
-        await PushService.unsubscribePush();
+        await PushService.unsubscribePush(true);
       }
     }
     JWTService.removeJWT();
