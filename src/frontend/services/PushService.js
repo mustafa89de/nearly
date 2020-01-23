@@ -33,7 +33,7 @@ class PushService {
     }
   }
 
-  async unsubscribePush() {
+  async unsubscribePush(skipServerSync) {
     try {
       if (Notification.permission !== "granted") return;
 
@@ -44,6 +44,8 @@ class PushService {
       const subscriptionFromSW = await registration.pushManager.getSubscription();
       await subscriptionFromSW.unsubscribe();
       console.log('Unsubscribed from push');
+
+      if (skipServerSync) return;
 
       const deviceFingerprint = await this.getDeviceFingerprint();
 
@@ -60,7 +62,7 @@ class PushService {
     }
   }
 
-  async hasSubscribed() {
+  async syncSubscription() {
     try {
       if (Notification.permission !== 'granted') {
         return;
@@ -111,9 +113,16 @@ class PushService {
 
   async getDeviceFingerprint() {
     try {
-      let components = await Fingerprint2.getPromise();
-      let values = components.map(component => component.value);
-      return Fingerprint2.x64hash128(values.join(''), 31);
+      let fingerprint = localStorage.getItem("fingerprint");
+      if (!fingerprint) {
+        let components = await Fingerprint2.getPromise({
+          excludes: {webglVendorAndRenderer: true}
+        });
+        let values = components.map(component => component.value);
+        fingerprint = Fingerprint2.x64hash128(values.join(''), 31);
+        localStorage.setItem("fingerprint", fingerprint);
+      }
+      return fingerprint;
     } catch (err) {
       console.error(err.message);
       throw err;
