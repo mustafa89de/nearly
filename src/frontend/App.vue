@@ -1,6 +1,6 @@
 <template>
   <main :class="{'loggedIn' : loggedIn}">
-    <router-view/>
+    <router-view :lastBounds="lastBounds" @mapchanged="handleMapChanged"/>
     <nav-bar :state="state" v-if="loggedIn"/>
     <pwa-notification/>
   </main>
@@ -19,7 +19,8 @@
     data: function () {
       return {
         loggedIn: AuthService.isAuthenticated(),
-        state: "overview"
+        state: "overview",
+        lastBounds: null
       }
     },
     updated() {
@@ -34,6 +35,9 @@
         else if (path === "/event/create") this.state = "create";
         else if (path === "/me" || path === "/me/edit") this.state = "me";
         else this.state = "overview";
+      },
+      handleMapChanged(data) {
+        this.lastBounds = data;
       }
     },
     watch: {

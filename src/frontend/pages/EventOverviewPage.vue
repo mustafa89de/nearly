@@ -23,6 +23,9 @@
   let intialMoveDone = false;
 
   export default {
+    props: {
+      lastBounds: Object
+    },
     components: {
       HorizontalEventList,
       "mapbox": Map
@@ -58,7 +61,7 @@
         const homePosition = await LocationService.getHomePosition();
         const radius = await UserService.getRadius();
         const bounds = LocationService.toBounds(homePosition, radius);
-        MapService.setBounds(bounds);
+        MapService.setBounds(this.lastBounds || bounds);
         return bounds;
       },
       handleMarkerClick: function (index) {
@@ -73,6 +76,7 @@
         }
       },
       fetchEvents: async function (bounds) {
+        this.$emit("mapchanged", bounds);
         const boundsData = {
           ne: bounds.getNorthEast(),
           sw: bounds.getSouthWest()
