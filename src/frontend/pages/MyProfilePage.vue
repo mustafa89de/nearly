@@ -74,7 +74,7 @@
             lon: longitude,
             ...e
           }));
-          this.notificationSubscribed = await PushService.hasSubscribed();
+          this.notificationSubscribed = await PushService.syncSubscription();
         } catch (err) {
           console.error(err);
         }
@@ -95,10 +95,9 @@
       async notificationToggle(e) {
         try {
           if (e) {
-            const subscriptionSuccess = await PushService.subscribeToPush();
-            this.notificationSubscribed = subscriptionSuccess;
-          } else{
-            await PushService.unsubscribePush();
+            this.notificationSubscribed = await PushService.subscribeToPush();
+          } else {
+            await PushService.unsubscribePush(false);
             this.notificationSubscribed = false;
           }
         } catch (e) {
@@ -142,8 +141,8 @@
         padding: 0;
       }
     }
-    
-    .toggleDescription{
+
+    .toggleDescription {
       @include textHint;
       max-width: 75%;
       padding: 5px 0px;

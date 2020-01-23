@@ -16,7 +16,8 @@ import OfflinePage from "./pages/OfflinePage";
 import {
   checkAuthentication,
   checkAuthenticationAndRedirectToMyProfile,
-  redirectIfLoggedIn
+  redirectIfLoggedIn,
+  checkAuthenticationAndSubscription
 } from "./services/NavigationGuards";
 import EventOverviewPage from "./pages/EventOverviewPage";
 import smoothscroll from 'smoothscroll-polyfill';
@@ -43,7 +44,7 @@ export const router = new VueRouter({
     {
       path: '/',
       component: EventOverviewPage,
-      beforeEnter: checkAuthentication
+      beforeEnter: checkAuthenticationAndSubscription
     },
     {
       path: '/event/create',
