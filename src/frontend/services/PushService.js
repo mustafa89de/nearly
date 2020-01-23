@@ -34,7 +34,7 @@ class PushService {
     }
   }
 
-  async unsubscribePush(syncSubscription) {
+  async unsubscribePush(skipServerSync) {
     try {
       if (Notification.permission !== "granted") return;
 
@@ -46,7 +46,7 @@ class PushService {
       await subscriptionFromSW.unsubscribe();
       console.log('unsubscribed');
 
-      if (!syncSubscription) return;
+      if (!skipServerSync) return;
 
       const deviceFingerprint = await this.getDeviceFingerprint();
 
@@ -63,7 +63,7 @@ class PushService {
     }
   }
 
-  async hasSubscribed() {
+  async syncSubscription() {
     try {
       if (Notification.permission !== 'granted') {
         return;

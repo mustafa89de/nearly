@@ -31,7 +31,7 @@ export function checkAuthenticationAndRedirectToMyProfile(to, from, next) {
 
 export async function checkAuthenticationAndSubscription(to, from, next){
   if (AuthService.isAuthenticated()){
-    await PushService.hasSubscribed();
+    await PushService.syncSubscription();
     next()
   } else {
     next("/login")
