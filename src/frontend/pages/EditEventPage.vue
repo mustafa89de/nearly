@@ -58,6 +58,9 @@
         try {
           this.event = await EventService.getEventById(id);
         } catch (e) {
+          if(e.response.data.message.includes("Cast to ObjectId failed for value")) {
+            this.$router.push("/404");
+          }
           this.errorMsg = 'Ein unbekannter Fehler ist aufgetreten.'
         }
       },

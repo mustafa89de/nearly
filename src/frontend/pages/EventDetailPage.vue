@@ -36,6 +36,8 @@
         } catch (err) {
           if (err.status === 404) {
             this.error = "Das gesuchte Event existiert leider nicht.";
+          } else if(err.response.data.message.includes("Cast to ObjectId failed for value")) {
+            this.$router.push("/404");
           } else this.error = "Ein unbekannter Fehler ist aufgetreten.";
           console.error(err);
         }
