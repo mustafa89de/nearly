@@ -14,14 +14,6 @@ class PushService {
     )
   }
 
-  async sendPush(subscription, payload){
-    try {
-      await webPush.sendNotification(subscription, payload)
-    }catch (err) {
-      console.error('Failed to send push notificaiton: ' + err.message)
-    }
-  }
-
   async notifyUsers(name, eventId, hostId){
     try {
       const payload = JSON.stringify({title: 'New Nearly Event', body: name, data: eventId});

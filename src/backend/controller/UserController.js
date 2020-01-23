@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
+router.get('/:id', JWTService.requireJWT(), async (req, res) => {
   try {
     const {id} = req.params;
     const user = await UserRepository.getUserById(id);

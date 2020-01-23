@@ -1,13 +1,10 @@
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
-const JWT_SECRET  = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET;
 const User = require('./models/User');
 const UserService = require('./services/UserService');
 const ExtractJWT = require('passport-jwt').ExtractJwt;
-
-
-//jwt authentication
 
 class Passport {
   async init() {
@@ -50,7 +47,7 @@ class Passport {
         const isMatch = await UserService.compareHashed(password, user.password);
 
         //If not, handle
-        if(!isMatch){
+        if (!isMatch) {
           return done(null, false);
         }
 
