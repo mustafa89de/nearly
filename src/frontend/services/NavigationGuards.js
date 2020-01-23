@@ -1,4 +1,5 @@
 import AuthService from "./AuthService";
+import PushService from "./PushService";
 
 export function checkAuthentication(to, from, next) {
   if (AuthService.isAuthenticated()) {
@@ -25,5 +26,14 @@ export function checkAuthenticationAndRedirectToMyProfile(to, from, next) {
     }
   } else {
     next("/login");
+  }
+}
+
+export async function checkAuthenticationAndSubscription(to, from, next){
+  if (AuthService.isAuthenticated()){
+    await PushService.hasSubscribed();
+    next()
+  } else {
+    next("/login")
   }
 }
