@@ -114,7 +114,9 @@ class PushService {
 
   async getDeviceFingerprint() {
     try {
-      let components = await Fingerprint2.getPromise();
+      let components = await Fingerprint2.getPromise({
+        excludes: {webgl: true, webglVendorAndRenderer: true}
+      });
       let values = components.map(component => component.value);
       return Fingerprint2.x64hash128(values.join(''), 31);
     } catch (err) {
