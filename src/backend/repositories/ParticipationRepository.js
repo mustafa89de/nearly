@@ -3,16 +3,16 @@ const Event = require('../models/Event');
 const User = require('../models/User');
 
 class ParticipationRepository {
-  async attendEvent(userId, eventId){
+  async attendEvent(userId, eventId) {
     try {
       let event = await Event.findById(eventId);
       let user = await User.findById(userId);
 
-      if(!event || !user){
+      if (!event || !user) {
         return null;
       }
 
-      if(await this.checkIfParticipant(userId, eventId)){
+      if (await this.checkIfParticipant(userId, eventId)) {
         return null
       }
 
@@ -25,17 +25,17 @@ class ParticipationRepository {
     }
   }
 
-  async checkIfParticipant(userId, eventId){
-    try{
+  async checkIfParticipant(userId, eventId) {
+    try {
       let participation = await Participation.findOne({
         userId: userId,
         eventId: eventId
       });
 
-      if(!participation) return false;
+      if (!participation) return false;
       return true;
 
-    }catch(err){
+    } catch (err) {
       console.error('DB Error:', err.message);
       throw err;
     }
@@ -56,7 +56,7 @@ class ParticipationRepository {
     }
   }
 
-  async getUserParticipations(userId){
+  async getUserParticipations(userId) {
     try {
       const participations = await Participation.find({
         userId: userId

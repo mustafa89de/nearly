@@ -1,11 +1,5 @@
 import mapboxgl from "mapbox-gl";
-import {
-  GERMANY_BOUNDS,
-  MAP_ID
-} from "../constants";
-import { POINT_CONVERSION_COMPRESSED } from "constants";
-
-const STYLE = 'mapbox://styles/mapbox/light-v10';
+import {GERMANY_BOUNDS, MAP_BOX_STYLE, MAP_ID, ONE_LAT_DEGREE, ONE_LONG_DEGREE} from "../constants";
 
 class MapService {
   constructor() {
@@ -24,13 +18,13 @@ class MapService {
 
   initMap({bounds, controlPosition, disabled, showRadius}) {
     return new Promise(resolve => {
-      mapboxgl.accessToken = MAPBOX_TOKEN; // Wird beim compilieren durch Webpack Define Plugin ersetzt
+      mapboxgl.accessToken = MAPBOX_TOKEN; // will be replaced by Webpack Define Plugin
 
       this.controlPosition = controlPosition || 'top-right';
 
       let options = {
         container: MAP_ID,
-        style: STYLE,
+        style: MAP_BOX_STYLE,
         attributionControl: false
       };
 
@@ -47,7 +41,7 @@ class MapService {
         this.addControls();
       }
       this.map.on('load', () => {
-        if(showRadius) {
+        if (showRadius) {
           this.initRadius();
         }
         resolve();
@@ -146,6 +140,7 @@ class MapService {
 
     return marker;
   }
+
   initRadius() {
     this.map.addSource("radius", {
       "type": "geojson",
@@ -161,23 +156,22 @@ class MapService {
       "paint": {
         "fill-color": "#166C72",
         "fill-opacity": 0,
-        "fill-opacity-transition": { duration: 1000 }
+        "fill-opacity-transition": {duration: 1000}
       }
     });
   }
+
   calcRadiusCoords(lonlat, rad) {
     this.radiusCoords = [];
-    // 1 longitudinal degree is around 111.320 km, depending on the latitude
-    // 1 latitudinal degree is around 110.574 km
     // basically calculates offset distance to start position and goes around
     // in a circle by using cos and sin
     let radius = rad / 1000;
-    const distanceLon = radius / (111.320 * Math.cos((lonlat.lat * Math.PI) / 180));
-    const distanceLat = radius / 110.574;
+    const distanceLon = radius / (ONE_LONG_DEGREE * Math.cos((lonlat.lat * Math.PI) / 180));
+    const distanceLat = radius / ONE_LAT_DEGREE;
     const points = 64;
     let theta, x, y;
 
-    for(let i = 0; i < points; i += 1){
+    for (let i = 0; i < points; i += 1) {
       theta = (i / points) * (2 * Math.PI);
       x = distanceLon * Math.cos(theta);
       y = distanceLat * Math.sin(theta);
@@ -186,7 +180,8 @@ class MapService {
     }
     this.radiusCoords.push(this.radiusCoords[0]);
   }
-  drawRadius(lonlat){
+
+  drawRadius(lonlat) {
     let coords = this.radiusCoords.map(coord => {
       return [lonlat.lon + coord[0], lonlat.lat + coord[1]];
     });
@@ -198,7 +193,8 @@ class MapService {
       }
     });
   }
-  fadeRadius(){
+
+  fadeRadius() {
     this.map.setPaintProperty("radiuslayer", "fill-opacity", 0.1);
   }
 }

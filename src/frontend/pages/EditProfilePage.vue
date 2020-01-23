@@ -2,50 +2,50 @@
   <article>
     <h1>Profil bearbeiten</h1>
     <input-text
-      class="input-text"
-      iconType="person"
-      placeholder="Benutzername"
-      :hint="usernameAlreadyExists ? 'Es existiert bereits ein Nutzer mit diesem Namen' : 'E-Benutzername muss mind. 4 Zeichen haben'"
-      :showHint="usernameAlreadyExists || (username !== '' && !usernameValid)"
-      v-model="username"/>
+        class="input-text"
+        iconType="person"
+        placeholder="Benutzername"
+        :hint="usernameAlreadyExists ? 'Es existiert bereits ein Nutzer mit diesem Namen' : 'E-Benutzername muss mind. 4 Zeichen haben'"
+        :showHint="usernameAlreadyExists || (username !== '' && !usernameValid)"
+        v-model="username"/>
     <input-text
-      class="input-text"
-      iconType="mail"
-      placeholder="E-Mail"
-      :hint="emailAlreadyExists ? 'Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse' : 'E-Mail-Adresse ist unvollständig'"
-      :showHint="emailAlreadyExists || (email !== '' && !emailValid)"
-      v-model="email"/>
+        class="input-text"
+        iconType="mail"
+        placeholder="E-Mail"
+        :hint="emailAlreadyExists ? 'Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse' : 'E-Mail-Adresse ist unvollständig'"
+        :showHint="emailAlreadyExists || (email !== '' && !emailValid)"
+        v-model="email"/>
     <textarea
-      placeholder="Beschreibung"
-      v-model="description"
+        placeholder="Beschreibung"
+        v-model="description"
     />
     <p v-if="errorMsg" id="error">{{errorMsg}}</p>
     <custom-button
-      class="button"
-      type="button"
-      text="Speichern"
-      @click="handleSave"
+        class="button"
+        type="button"
+        text="Speichern"
+        @click="handleSave"
     />
     <custom-button
-      class="button"
-      type="button"
-      text="Abbrechen"
-      @click="handleCancel"
-      bordered
+        class="button"
+        type="button"
+        text="Abbrechen"
+        @click="handleCancel"
+        bordered
     />
     <custom-button
-      class="button delete"
-      type="button"
-      text="Profil löschen"
-      @click="handleDelete"
+        class="button delete"
+        type="button"
+        text="Profil löschen"
+        @click="handleDelete"
     />
     <confirmation-modal
-      v-if="showDeleteModal"
-      title="Löschen"
-      text="Bist du dir sicher, dass du dein Profil löschen möchtest?"
-      confirm-text="Löschen"
-      @confirm="confirmDelete"
-      @abort="abortDelete"
+        v-if="showDeleteModal"
+        title="Löschen"
+        text="Bist du dir sicher, dass du dein Profil löschen möchtest?"
+        confirm-text="Löschen"
+        @confirm="confirmDelete"
+        @abort="abortDelete"
     />
   </article>
 </template>
@@ -81,7 +81,7 @@
     },
     methods: {
       async init() {
-        const jwtUser = AuthService.getUser(); // does not contain hostedEvents
+        const jwtUser = AuthService.getUser();
         try {
           this.user = await UserService.getUserByID(jwtUser.userId);
           this.username = this.user.username;

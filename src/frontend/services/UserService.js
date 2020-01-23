@@ -81,7 +81,7 @@ class UserService {
   async setRadius(radius) {
     const myUserId = AuthService.getUser().userId;
     try {
-      const res = await axios.put(ENDPOINTS.USER + "/" + myUserId + '/radius', { radius });
+      const res = await axios.put(ENDPOINTS.USER + "/" + myUserId + '/radius', {radius});
       return res.data;
     } catch (err) {
       console.error(err.message);

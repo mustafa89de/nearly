@@ -15,19 +15,20 @@
       So verpasst du keine Events mehr, die innerhalb des Radius deiner Homeposition stattfinden.
     </p>
     <h3>Meine Home Position</h3>
-    <location-picker @save="handleHomePositionChange" show-home-position show-radius :propRadius="user ? user.radius : null"/>
+    <location-picker @save="handleHomePositionChange" show-home-position show-radius
+                     :propRadius="user ? user.radius : null"/>
     <custom-button
-      class="button"
-      type="link"
-      to="/me/edit"
-      text="Bearbeiten"
+        class="button"
+        type="link"
+        to="/me/edit"
+        text="Bearbeiten"
     />
     <custom-button
-      class="button"
-      type="button"
-      text="Abmelden"
-      @click="handleLogout"
-      bordered
+        class="button"
+        type="button"
+        text="Abmelden"
+        @click="handleLogout"
+        bordered
     />
     <p v-if="errorMsg" id="error">{{errorMsg}}</p>
   </article>
@@ -63,7 +64,7 @@
     },
     methods: {
       async init() {
-        const jwtUser = AuthService.getUser(); // does not contain hostedEvents
+        const jwtUser = AuthService.getUser();
         try {
           this.user = await UserService.getUserByID(jwtUser.userId);
           const participationEvents = await EventService.getEventsByUserId(jwtUser.userId);
@@ -83,7 +84,7 @@
       },
       async handleHomePositionChange(newData) {
         try {
-          await UserService.setHomePosition({ lon: newData.lon, lat: newData.lat });
+          await UserService.setHomePosition({lon: newData.lon, lat: newData.lat});
           await UserService.setRadius(newData.radius);
           this.$router.go();
           this.errorMsg = null;
@@ -91,26 +92,20 @@
           this.errorMsg = "Es ist ein Fehler beim setzen der Home Position aufgetreten."
         }
       },
-      async notificationToggle(e){
+      async notificationToggle(e) {
         try {
-          if(e){
-            const subscriptionSuccess = await PushService.subscribeToPush();
-            if (subscriptionSuccess) {
-              this.notificationSubscribed = true;
-            } else {
-              this.notificationSubscribed = false;
-            }
-          }
-          else{
+          if (e) {
+            this.notificationSubscribed = await PushService.subscribeToPush();
+          } else {
             await PushService.unsubscribePush(false);
             this.notificationSubscribed = false;
           }
-        } catch(e) {
+        } catch (e) {
           console.error("couldn't subscribe to notifications");
         }
       },
       handleLogout: async function () {
-       await AuthService.logout();
+        await AuthService.logout();
       }
     },
     created() {
@@ -146,8 +141,8 @@
         padding: 0;
       }
     }
-    
-    .toggleDescription{
+
+    .toggleDescription {
       @include textHint;
       max-width: 75%;
       padding: 5px 0px;

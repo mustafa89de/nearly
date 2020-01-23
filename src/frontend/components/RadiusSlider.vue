@@ -7,13 +7,13 @@
 
 <script>
   import TextField from "./TextField";
-  import { INITIAL_MAP_RADIUS } from "../constants";
+  import {INITIAL_MAP_RADIUS} from "../constants";
 
   export default {
     props: {
       radius: Number
     },
-    data: function() {
+    data: function () {
       return {
         currentRadius: this.radius
       }
@@ -22,13 +22,13 @@
       "text-field": TextField
     },
     computed: {
-      formattedRadius: function() {
-        if(this.currentRadius < 1000) return this.currentRadius + " m";
+      formattedRadius: function () {
+        if (this.currentRadius < 1000) return this.currentRadius + " m";
         else return this.currentRadius / 1000 + " km";
       }
     },
     watch: {
-      currentRadius: function(){
+      currentRadius: function () {
         this.$emit("onChange", this.currentRadius);
       }
     }

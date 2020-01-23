@@ -19,7 +19,7 @@
 
   export default {
     props: {
-      state: String // overview, create, me
+      state: String // one of: overview, create, me
     },
     components: {
       'icon': Icon

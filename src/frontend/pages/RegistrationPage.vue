@@ -7,18 +7,27 @@
       <h2>Registrierung</h2>
       <transition name="fade" mode="out-in">
         <form v-if="!resultMessage" id="registration-form" @submit="handleRegistration">
-          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername" :hint="userAlreadyExists ? 'Es existiert bereits ein Nutzer mit diesem Namen' : 'Benutzername muss mind. 4 Zeichen haben'" :showHint="userAlreadyExists || (username != '' && !usernameValid)" v-model="username"/>
-          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail" :hint="emailAlreadyExists ? 'Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse' : 'E-Mail-Adresse ist unvollständig'" :showHint="emailAlreadyExists || (email != '' && !emailValid)" v-model="email"/>
-          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Passwort" hint="Passwort muss mind. 8 Zeichen haben" :showHint="password != '' && !passwordValid" v-model="password"/>
-          <button-submit class="register-button" type="submit" text="Registrieren" :disabled="!usernameValid || !emailValid || !passwordValid"/>
+          <input-text class="input-text-wrapper" iconType="person" placeholder="Benutzername"
+                      :hint="userAlreadyExists ? 'Es existiert bereits ein Nutzer mit diesem Namen' : 'Benutzername muss mind. 4 Zeichen haben'"
+                      :showHint="userAlreadyExists || (username !== '' && !usernameValid)" v-model="username"/>
+          <input-text class="input-text-wrapper" iconType="mail" placeholder="E-Mail"
+                      :hint="emailAlreadyExists ? 'Es existiert bereits ein Nutzer mit dieser E-Mail-Adresse' : 'E-Mail-Adresse ist unvollständig'"
+                      :showHint="emailAlreadyExists || (email !== '' && !emailValid)" v-model="email"/>
+          <input-text class="input-text-wrapper" iconType="key" type="password" placeholder="Passwort"
+                      hint="Passwort muss mind. 8 Zeichen haben" :showHint="password !== '' && !passwordValid"
+                      v-model="password"/>
+          <button-submit class="register-button" type="submit" text="Registrieren"
+                         :disabled="!usernameValid || !emailValid || !passwordValid"/>
           <p class="login-text">Du hast schon einen Account?</p>
           <router-link class="login-link" to="/login">Anmelden</router-link>
         </form>
         <div id="result-wrapper" v-else>
           <h3>{{resultTitle}}</h3>
           <p>{{resultMessage}}</p>
-          <icon class="result-icon" :iconType="resultButton === 'Anmelden' ? 'check-circle' : 'error-circle'" iconColor="colorPrimary"/>
-          <button-submit class="result-link" @click="backToForm" to="/login" :type="resultButton === 'Anmelden' ? 'link' : 'button'" :text="resultButton"/>
+          <icon class="result-icon" :iconType="resultButton === 'Anmelden' ? 'check-circle' : 'error-circle'"
+                iconColor="colorPrimary"/>
+          <button-submit class="result-link" @click="backToForm" to="/login"
+                         :type="resultButton === 'Anmelden' ? 'link' : 'button'" :text="resultButton"/>
         </div>
       </transition>
     </section>
@@ -61,36 +70,36 @@
         try {
           await UserService.register(this.username, this.email, this.password);
 
-          this.resultTitle = "Glückwunsch!"
+          this.resultTitle = "Glückwunsch!";
           this.resultMessage = "Du hast dich erfolgreich registriert. Gehe weiter zur Anmeldung.";
           this.resultButton = "Anmelden";
         } catch (err) {
           if (err.status === 409) {
-            err.response.data.dupKey == 'email' ? this.emailAlreadyExists = true : this.userAlreadyExists = true;
+            err.response.data.dupKey === 'email' ? this.emailAlreadyExists = true : this.userAlreadyExists = true;
           } else {
-            this.resultTitle = "Ach herrje!"
+            this.resultTitle = "Ach herrje!";
             this.resultMessage = "Leider ist bei der Registrierung etwas schief gelaufen. Versuche es zu einem später Zeitpunkt noch einmal.";
             this.resultButton = "Zurück";
           }
         }
       },
-      backToForm: function() {
+      backToForm: function () {
         this.resultTitle = "";
         this.resultMessage = "";
         this.resultButton = "";
       }
     },
     watch: {
-      username: function(){
+      username: function () {
         this.userAlreadyExists = false;
         this.usernameValid = this.username.length >= 4;
       },
-      email: function(){
+      email: function () {
         this.emailAlreadyExists = false;
         this.emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        .test(this.email);
+          .test(this.email);
       },
-      password: function(){
+      password: function () {
         this.passwordValid = this.password.length >= 8;
       }
     }
@@ -115,7 +124,7 @@
       display: flex;
       align-items: center;
 
-      #logo{
+      #logo {
         width: 50%;
       }
     }
@@ -127,7 +136,7 @@
       flex-direction: column;
       background-color: $white;
       color: $black;
-      border-radius: 50px 50px 0px 0px;
+      border-radius: 50px 50px 0 0;
       padding: 50px 25px 50px 25px;
       box-shadow: $shadow-dark;
 

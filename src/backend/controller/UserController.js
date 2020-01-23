@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.get('/:id', JWTService.requireJWT(), async (req, res, next) => {
+router.get('/:id', JWTService.requireJWT(), async (req, res) => {
   try {
     const {id} = req.params;
     const user = await UserRepository.getUserById(id);
@@ -124,14 +124,14 @@ router.get('/:id/radius', JWTService.requireJWT(), AuthService.compareId, async 
   }
 });
 
-handleUserDBError = function(res, err){
+function handleUserDBError(res, err) {
   let resBody = {message: err.message};
   if (err.message.includes('duplicate key')) {
-    if (err.message.includes('username_1')){
-      resBody.dupKey= "username";
+    if (err.message.includes('username_1')) {
+      resBody.dupKey = "username";
       res.status(409).json(resBody);
-    }else if(err.message.includes('email_1')){
-      resBody.dupKey= "email";
+    } else if (err.message.includes('email_1')) {
+      resBody.dupKey = "email";
       res.status(409).json(resBody);
     }
   } else {

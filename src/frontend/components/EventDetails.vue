@@ -9,7 +9,7 @@
         <icon class="share" iconType="share" iconColor="primary"/>
       </a>
     </header>
-    <p class="description"><pre>{{ event ? event.description : '...' }}</pre></p>
+    <pre class="description">{{ event ? event.description : '...' }}</pre>
     <div class="fieldContainer">
       <text-field class="detailField" iconType="calendar" iconColor="primary" :value="eventDate"/>
       <text-field class="detailField" iconType="clock" iconColor="primary" :value="eventTime"/>
@@ -75,14 +75,14 @@
       }
     },
     methods: {
-      async editEvent(e) {
+      async editEvent() {
         try {
           await this.$router.push('/event/' + this.event.id + '/edit');
         } catch (err) {
           console.error(err);
         }
       },
-      async signInForEvent(e) {
+      async signInForEvent() {
         try {
           await EventService.signInForEvent(this.event.id);
           this.event.isParticipant = true;
@@ -108,7 +108,7 @@
               url: window.location.href
             });
           } catch (e) {
-            console.log("event couldn't be shared ", e);
+            console.error("event couldn't be shared ", e);
           }
         }
       },
@@ -133,7 +133,7 @@
     background-color: $bg-col-primary;
     color: $font-col-light;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 0px 0px 50px 50px;
+    border-radius: 0 0 50px 50px;
     padding: 5%;
 
     header {
@@ -147,29 +147,25 @@
         margin: 0;
         padding: 0;
       }
-      
+
       .share {
         height: 32px;
         width: 32px;
       }
     }
 
-    p.description {
+    pre.description {
       @include textBody;
       padding: 10px;
       height: 150px;
       background-color: $text-field-col;
       color: $font-col-primary;
       overflow-y: auto;
-
-      pre {
-        margin: 0;
-        white-space: pre-line;
-        hyphens: auto;
-      }
+      white-space: pre-line;
+      hyphens: auto;
     }
 
-    p.error{
+    p.error {
       color: $font-col-error;
     }
 
@@ -179,7 +175,7 @@
       flex-flow: row wrap;
     }
 
-    .detailField{
+    .detailField {
       min-width: 50%;
     }
 
@@ -188,11 +184,11 @@
       align-self: center;
     }
 
-    .hostLink{
+    .hostLink {
       text-decoration: none;
       color: $font-col-active;
 
-      :hover{
+      :hover {
         color: $font-col-active;
       }
     }

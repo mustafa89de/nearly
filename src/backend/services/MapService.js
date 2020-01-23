@@ -1,5 +1,5 @@
-class MapService{
-  createMissingBounds(ne, sw){
+class MapService {
+  createMissingBounds(ne, sw) {
     let se = {
       lat: sw.lat,
       lng: ne.lng

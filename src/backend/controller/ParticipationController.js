@@ -16,7 +16,7 @@ router.post('/', JWTService.requireJWT(), async (req, res) => {
 
     res.status(201).json();
   } catch (err) {
-    console.log(err.status);
+    console.error(err.status);
     res.status(500).json({message: err.message})
   }
 });
@@ -30,7 +30,7 @@ router.delete('/', JWTService.requireJWT(), async (req, res) => {
     }
     res.json();
   } catch (err) {
-    console.log(err.status);
+    console.error(err.status);
     res.status(500).json({message: err.message})
   }
 });
@@ -41,7 +41,7 @@ router.get('/:id', JWTService.requireJWT(), AuthService.compareId, async (req, r
     const participations = await ParticipationRepository.getUserParticipations(userId);
     res.json(participations);
   } catch (err) {
-    console.log(err.status);
+    console.error(err.status);
     res.status(500).json({message: err.message})
   }
 });

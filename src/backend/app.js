@@ -4,7 +4,7 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-const controller = require('./controller');  // imports /controller/index.js with all registered routes
+const controller = require('./controller');
 const DBService = require("./services/DBService");
 const Passport = require('./passport');
 const PushService = require('./services/PushService');
@@ -19,7 +19,7 @@ app.use('*', (req, res, next) => {
   }
 });
 
-app.use('/api', controller); // Path chaining -> /api/...
+app.use('/api', controller);
 
 app.use(express.static('dist'));
 

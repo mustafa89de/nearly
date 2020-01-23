@@ -20,7 +20,7 @@ class AuthService {
         hostId = event.hostId;
       }
       const userId = req.user.id;
-      if(hostId === userId) {
+      if (hostId === userId) {
         next();
       } else {
         return res.status(403).json('userId not equal to hostId')

@@ -36,9 +36,8 @@
           ref.remove();
         });
 
-        if (!this.markers) return; // abort
+        if (!this.markers) return;
 
-        // add and store new ones
         markerRefs = this.markers.map(({lon, lat}, index) => {
           return MapService.addMarker({
             lon,
@@ -60,7 +59,7 @@
       MapService.onZoomEnd(this.handlePositionChange);
       MapService.onClick(this.handleMapClick);
       this.updateMarkers();
-      if(this.showRadius) this.$emit("afterInit");
+      if (this.showRadius) this.$emit("afterInit");
     }
   }
 </script>

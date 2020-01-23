@@ -37,13 +37,13 @@
       }
     },
     watch: {
-      $route(to, from) {
+      $route(to) {
         this.syncNavBarState(to.path);
       }
     },
     created() {
       this.syncNavBarState(this.$route.path);
-      window.addEventListener('offline', (e) => this.$router.push('/offline'))
+      window.addEventListener('offline', () => this.$router.push('/offline'))
     }
   }
 </script>

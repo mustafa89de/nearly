@@ -25,7 +25,7 @@
     },
     methods: {
       closeNotification: function () {
-        this.showNotification = false
+        this.showNotification = false;
         PWAService.setLastTimeClosed()
       }
     }

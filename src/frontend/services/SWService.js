@@ -1,7 +1,7 @@
 class SWService {
-  init(){
+  init() {
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function(){
+      window.addEventListener('load', function () {
         navigator.serviceWorker.register('/worker.js');
       })
     }

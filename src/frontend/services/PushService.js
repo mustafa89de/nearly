@@ -25,7 +25,6 @@ class PushService {
           deviceFingerprint: deviceFingerprint
         });
       }
-      console.log('subscription sent to BE');
       return true;
 
     } catch (err) {
@@ -44,7 +43,7 @@ class PushService {
 
       const subscriptionFromSW = await registration.pushManager.getSubscription();
       await subscriptionFromSW.unsubscribe();
-      console.log('unsubscribed');
+      console.log('Unsubscribed from push');
 
       if (skipServerSync) return;
 
@@ -100,7 +99,7 @@ class PushService {
   urlB64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
-      .replace(/\-/g, '+')
+      .replace(/-/g, '+')
       .replace(/_/g, '/');
 
     const rawData = window.atob(base64);
@@ -164,15 +163,13 @@ class PushService {
     try {
       const permission = await Notification.requestPermission();
       if (permission && permission !== 'granted') {
-        console.log('Notification Permission not granted');
+        console.error('Notification Permission not granted');
         return;
       }
 
       const registration = await navigator.serviceWorker.register('/worker.js', {
         scope: '/'
       });
-
-      console.log('SW registered');
 
       await registration.update();
 

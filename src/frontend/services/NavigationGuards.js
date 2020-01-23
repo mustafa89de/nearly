@@ -19,7 +19,7 @@ export function redirectIfLoggedIn(to, from, next) {
 
 export function checkAuthenticationAndRedirectToMyProfile(to, from, next) {
   if (AuthService.isAuthenticated()) {
-    if(to.path === "/user/" + AuthService.getUser().userId){
+    if (to.path === "/user/" + AuthService.getUser().userId) {
       next("/me");
     } else {
       next();

@@ -2,11 +2,13 @@
   <article>
     <section>
       <h3>Teile dieses Event</h3>
-      <a class="social-container" :href="'http://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(eventURL)" target="_blank" rel="noopener">
+      <a class="social-container" :href="'http://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(eventURL)"
+         target="_blank" rel="noopener">
         <icon iconType="facebook" iconColor="white"/>
         <p>Facebook</p>
       </a>
-      <a class="social-container" :href="'https://twitter.com/intent/tweet?text=' + encodeURIComponent(eventURL)" target="_blank" rel="noopener">
+      <a class="social-container" :href="'https://twitter.com/intent/tweet?text=' + encodeURIComponent(eventURL)"
+         target="_blank" rel="noopener">
         <icon iconType="twitter" iconColor="white"/>
         <p>Twitter</p>
       </a>
@@ -15,11 +17,11 @@
         <p>Link kopieren</p>
       </a>
       <custom-button
-        class="abort-button"
-        bordered
-        type="button"
-        text="Abbrechen"
-        @click="$emit('close')"
+          class="abort-button"
+          bordered
+          type="button"
+          text="Abbrechen"
+          @click="$emit('close')"
       />
     </section>
     <div id="background" @click="$emit('close')"/>
@@ -39,12 +41,12 @@
       'icon': Icon
     },
     methods: {
-      setClipboard: function(){
-        if(navigator.clipboard){
-          try{
+      setClipboard: function () {
+        if (navigator.clipboard) {
+          try {
             navigator.clipboard.writeText(this.eventURL);
-          } catch(e){
-            console.log("couldn't write to clipboard", e);
+          } catch (e) {
+            console.error("couldn't write to clipboard", e);
           }
         }
       }
