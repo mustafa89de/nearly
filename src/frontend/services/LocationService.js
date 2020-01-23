@@ -34,7 +34,7 @@ class LocationService {
             lon: longitude,
             lat: latitude
           });
-        } catch (e) { // f.e. if permission denied
+        } catch (e) {
           console.error(e);
           resolve(FALLBACK_HOME_POSITION);
         }

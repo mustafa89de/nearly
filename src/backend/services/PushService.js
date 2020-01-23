@@ -1,7 +1,6 @@
 const webPush = require('web-push');
 const PushRepository = require('../repositories/PushRepository');
 
-//// generate in terminal with ./node_modules/.bin/web-push generate-vapid-keys
 const publicVapidKey = process.env.PUBLIC_VAPID_KEY;
 const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
 

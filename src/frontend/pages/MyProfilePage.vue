@@ -59,7 +59,7 @@
     },
     methods: {
       async init() {
-        const jwtUser = AuthService.getUser(); // does not contain hostedEvents
+        const jwtUser = AuthService.getUser();
         try {
           this.user = await UserService.getUserByID(jwtUser.userId);
           const participationEvents = await EventService.getEventsByUserId(jwtUser.userId);

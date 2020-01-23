@@ -20,7 +20,7 @@ class MapService {
 
   initMap({bounds, controlPosition, disabled, showRadius}) {
     return new Promise(resolve => {
-      mapboxgl.accessToken = MAPBOX_TOKEN; // Wird beim compilieren durch Webpack Define Plugin ersetzt
+      mapboxgl.accessToken = MAPBOX_TOKEN; // will be replaced by Webpack Define Plugin
 
       this.controlPosition = controlPosition || 'top-right';
 

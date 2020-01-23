@@ -59,7 +59,7 @@
     },
     methods: {
       loadInitialBounds: async function () {
-        const homePosition = await LocationService.getHomePosition(); // will never catch
+        const homePosition = await LocationService.getHomePosition();
         const radius = await UserService.getRadius();
         const bounds = LocationService.toBounds(homePosition, radius);
         MapService.setBounds(bounds);

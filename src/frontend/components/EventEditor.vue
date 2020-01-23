@@ -111,7 +111,7 @@
 
         const [hours, minutes] = time.split(":"); // Format is always hh:mm
 
-        const mergedDateTime = new Date(year || 0, month || 0, day || 0, hours || 0, minutes || 0); // If splitting fails default is 0
+        const mergedDateTime = new Date(year || 0, month || 0, day || 0, hours || 0, minutes || 0);
         this.$emit('change', {key: 'time', value: mergedDateTime.toString()});
       }
     },
@@ -123,7 +123,7 @@
         this.handleDateTimeChange(this.date, newTime)
       },
       event: function (newEvent, oldEvent) {
-        if ((!oldEvent || !oldEvent.time) && newEvent.time) { // after initial time has set
+        if ((!oldEvent || !oldEvent.time) && newEvent.time) {
           this.date = this.formatDate(newEvent.time);
           this.time = this.formatTime(newEvent.time);
         }

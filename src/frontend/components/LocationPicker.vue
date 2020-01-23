@@ -103,7 +103,7 @@
           marker.setDraggable(false);
         }
       },
-      drawRadius: async function (radius) { // this callback function needs to wait for the map to finish loading
+      drawRadius: async function (radius) {
         if (!radius) this.radius = this.propRadius;
         else this.radius = radius;
         MapService.calcRadiusCoords({lon: this.lon, lat: this.lat}, this.radius);

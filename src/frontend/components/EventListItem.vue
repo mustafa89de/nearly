@@ -83,7 +83,7 @@
       }
     },
     async created() {
-      const home = await LocationService.getHomePosition(); // will never catch
+      const home = await LocationService.getHomePosition();
       const distance = LocationService.getDistance({lon: this.lon, lat: this.lat}, {lon: home.lon, lat: home.lat});
 
       if (distance < 1) {

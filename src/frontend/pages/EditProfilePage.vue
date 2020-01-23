@@ -81,7 +81,7 @@
     },
     methods: {
       async init() {
-        const jwtUser = AuthService.getUser(); // does not contain hostedEvents
+        const jwtUser = AuthService.getUser();
         try {
           this.user = await UserService.getUserByID(jwtUser.userId);
           this.username = this.user.username;
