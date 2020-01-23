@@ -17,8 +17,14 @@ export const FALLBACK_HOME_POSITION = {
   lat: 52.50225623
 };
 
+export const MAP_BOX_STYLE = 'mapbox://styles/mapbox/light-v10';
+
 export const GERMANY_BOUNDS = new mapboxgl.LngLat(10.526867, 51.036410).toBounds(500000);
 
+export const ONE_LONG_DEGREE = 111.320;
+export const ONE_LAT_DEGREE = 110.574;
+
+export const EARTH_RADIUS_KM = 6371;
 
 const initialTime = new Date();
 if (initialTime.getHours() > 18) initialTime.setDate(initialTime.getDate() + 1);

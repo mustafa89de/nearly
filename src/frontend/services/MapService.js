@@ -1,7 +1,5 @@
 import mapboxgl from "mapbox-gl";
-import {GERMANY_BOUNDS, MAP_ID} from "../constants";
-
-const STYLE = 'mapbox://styles/mapbox/light-v10';
+import {GERMANY_BOUNDS, MAP_BOX_STYLE, MAP_ID, ONE_LAT_DEGREE, ONE_LONG_DEGREE} from "../constants";
 
 class MapService {
   constructor() {
@@ -26,7 +24,7 @@ class MapService {
 
       let options = {
         container: MAP_ID,
-        style: STYLE,
+        style: MAP_BOX_STYLE,
         attributionControl: false
       };
 
@@ -165,13 +163,11 @@ class MapService {
 
   calcRadiusCoords(lonlat, rad) {
     this.radiusCoords = [];
-    // 1 longitudinal degree is around 111.320 km, depending on the latitude
-    // 1 latitudinal degree is around 110.574 km
     // basically calculates offset distance to start position and goes around
     // in a circle by using cos and sin
     let radius = rad / 1000;
-    const distanceLon = radius / (111.320 * Math.cos((lonlat.lat * Math.PI) / 180));
-    const distanceLat = radius / 110.574;
+    const distanceLon = radius / (ONE_LONG_DEGREE * Math.cos((lonlat.lat * Math.PI) / 180));
+    const distanceLat = radius / ONE_LAT_DEGREE;
     const points = 64;
     let theta, x, y;
 
