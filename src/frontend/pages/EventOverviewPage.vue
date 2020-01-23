@@ -54,7 +54,7 @@
         }
       });
 
-      await PushService.hasSubscribed();
+      await PushService.syncSubscription();
     },
     methods: {
       loadInitialBounds: async function () {
