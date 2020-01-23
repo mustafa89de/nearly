@@ -13,11 +13,7 @@ router.post('/', async (req, res) => {
     await UserRepository.createUser(username, email, password, description);
     res.status(201).json();
   } catch (err) {
-    if (err.message.includes('duplicate key')) {
-      res.status(409).json({message: err.message});
-    } else {
-      res.status(500).json({message: err.message});
-    }
+    handleUserDBError(res, err);
   }
 });
 
@@ -70,18 +66,7 @@ router.put('/:id', JWTService.requireJWT(), AuthService.compareId, async (req, r
     await UserRepository.editUser(userId, username, email, description);
     res.json();
   } catch (err) {
-    let resBody = {message: err.message};
-    if (err.message.includes('duplicate key')) {
-      if (err.message.includes('username_1')) {
-        resBody.dupKey = "username";
-        res.status(409).json(resBody);
-      } else if (err.message.includes('email_1')) {
-        resBody.dupKey = "email";
-        res.status(409).json(resBody);
-      }
-    } else {
-      res.status(500).json(resBody);
-    }
+    handleUserDBError(res, err);
   }
 });
 
@@ -138,5 +123,20 @@ router.get('/:id/radius', JWTService.requireJWT(), AuthService.compareId, async 
     res.status(500).json({message: err.message})
   }
 });
+
+function handleUserDBError(res, err) {
+  let resBody = {message: err.message};
+  if (err.message.includes('duplicate key')) {
+    if (err.message.includes('username_1')) {
+      resBody.dupKey = "username";
+      res.status(409).json(resBody);
+    } else if (err.message.includes('email_1')) {
+      resBody.dupKey = "email";
+      res.status(409).json(resBody);
+    }
+  } else {
+    res.status(500).json(resBody);
+  }
+}
 
 module.exports = router;

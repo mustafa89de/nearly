@@ -10,6 +10,10 @@
       <h3>Benachrichtigung</h3>
       <toggle @onToggle="notificationToggle" :checked="notificationSubscribed"/>
     </section>
+    <p class="toggleDescription">
+      Aktiviere Benachrichtigungen um über neue Events informiert zu werden.
+      So verpasst du keine Events mehr, die innerhalb des Radius deiner Homeposition stattfinden.
+    </p>
     <h3>Meine Home Position</h3>
     <location-picker @save="handleHomePositionChange" show-home-position show-radius
                      :propRadius="user ? user.radius : null"/>
@@ -48,7 +52,7 @@
       "event-list": EventList,
       "location-picker": LocationPicker,
       "toggle": Toggle,
-      "custom-button": Button
+      "custom-button": Button,
     },
     data() {
       return {
@@ -137,6 +141,13 @@
         margin: 0;
         padding: 0;
       }
+    }
+    
+    .toggleDescription{
+      @include textHint;
+      max-width: 75%;
+      padding: 5px 0px;
+      margin: 0 0 0 25px;
     }
 
     .notification {

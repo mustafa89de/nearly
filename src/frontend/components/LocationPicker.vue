@@ -182,6 +182,12 @@
       background: $bg-col-primary;
       z-index: 2;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+
+      @media screen and (min-width: 500px) {
+        margin: auto auto 0;
+      }
 
       > .radius {
         width: 100%;
@@ -214,6 +220,15 @@
 
       > #map {
         margin-bottom: -50px;
+
+        @media screen and (min-width: 500px) {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 56px; // nav bar height
+          flex: initial;
+        }
       }
     }
   }
