@@ -69,7 +69,7 @@
             lon: longitude,
             ...e
           }));
-          this.notificationSubscribed = await PushService.syncSubscription();
+          this.notificationSubscribed = await PushService.hasSubscribed();
         } catch (err) {
           console.error(err);
         }
@@ -98,12 +98,11 @@
             }
           }
           else{
-            await PushService.unsubscribePush(false);
+            await PushService.unsubscribePush();
             this.notificationSubscribed = false;
           }
         } catch(e) {
           console.error("couldn't subscribe to notifications");
-          this.notificationSubscribed = false;
         }
       },
       handleLogout: async function () {
