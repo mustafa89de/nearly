@@ -98,7 +98,7 @@
             }
           }
           else{
-            await PushService.unsubscribePush(true);
+            await PushService.unsubscribePush(false);
             this.notificationSubscribed = false;
           }
         } catch(e) {

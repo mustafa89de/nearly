@@ -46,7 +46,7 @@ class PushService {
       await subscriptionFromSW.unsubscribe();
       console.log('unsubscribed');
 
-      if (!skipServerSync) return;
+      if (skipServerSync) return;
 
       const deviceFingerprint = await this.getDeviceFingerprint();
 
