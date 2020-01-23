@@ -53,8 +53,9 @@
           this.fetchEvents(initialBounds);
         }
       });
-
-      await PushService.syncSubscription();
+    },
+    mounted: async function() {
+      await PushService.subscribeToPush();
     },
     methods: {
       loadInitialBounds: async function () {
