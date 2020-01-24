@@ -79,7 +79,7 @@ class UserRepository {
       await User.findByIdAndUpdate(userId, {
         username: username || user.username,
         email: email || user.email,
-        description: description || user.description
+        description: description !== null ? description : user.description
       });
     } catch (err) {
       console.error('DB Error:', err.message);

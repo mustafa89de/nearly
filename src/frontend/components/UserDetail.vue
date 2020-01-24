@@ -2,7 +2,9 @@
   <section>
     <h2>{{ user ? user.username : '...'}}</h2>
     <p>
-    <pre>{{ user ? user.description: '...' }}</pre>
+    <pre v-if="!user">...</pre>
+    <pre v-else-if="user && user.description">{{user.description }}</pre>
+    <pre v-else class="noDescription">keine Beschreibung vorhanden</pre>
     </p>
     <h3 v-if="own">Meine Veranstaltungen</h3>
     <h3 v-else-if="!user">Events von ...</h3>
@@ -72,6 +74,10 @@
         margin: 0;
         white-space: pre-line;
         hyphens: auto;
+
+        &.noDescription {
+          opacity: 0.4;
+        }
       }
     }
 

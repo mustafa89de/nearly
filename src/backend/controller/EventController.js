@@ -74,6 +74,7 @@ router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
     const username = user ? user.username : null;
 
     const isParticipant = await ParticipationRepository.checkIfParticipant(req.user.id, event.id);
+    const participations = await ParticipationRepository.countParticipations(event.id);
 
     const resData = {
       id,
@@ -84,7 +85,8 @@ router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
       lon: loc.coordinates[0],
       hostId,
       hostName: username,
-      isParticipant: isParticipant
+      isParticipant: isParticipant,
+      participations
     };
 
     res.status(200).json(resData);

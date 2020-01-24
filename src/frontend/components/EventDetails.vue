@@ -20,6 +20,7 @@
     <button-send v-if="isCreator" @click="editEvent" type="button" text="bearbeiten"/>
     <button-send v-if="event && event.isParticipant" bordered @click="signOutForEvent" type="button" text="absagen"/>
     <button-send v-else @click="signInForEvent" type="button" text="mitmachen"/>
+    <span class="participations"><span>{{event && event.participations ? event.participations : 0 }}</span>Teilnehmer</span>
     <p class="error" v-if="error">{{error}}</p>
     <share-modal v-if="showShareModal" :eventURL="getURL" @close="closeShare"/>
   </section>
@@ -190,6 +191,36 @@
 
       :hover {
         color: $font-col-active;
+      }
+    }
+
+    .participations {
+      margin: 15px 0 0;
+
+      color: $bg-col-secondary;
+      font-size: 0.8rem;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      font-family: "Poppins", Arial, Helvetica, sans-serif;
+      text-align: center;
+
+      > span {
+        height: 32px;
+        width: 32px;
+        margin-right: 5px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 16px;
+        font-weight: 800;
+        color: $font-col-secondary;
+        background: #166C72;
+
+        border: 3.2px solid $bg-col-primary;
+        border-radius: 9999px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
       }
     }
   }

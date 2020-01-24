@@ -80,6 +80,15 @@ class ParticipationRepository {
       throw err;
     }
   }
+
+  async countParticipations(eventId) {
+    try {
+      return await Participation.count({eventId});
+    } catch (err) {
+      console.error('DB Error:', err.message);
+      throw err;
+    }
+  }
 }
 
 module.exports = new ParticipationRepository();
