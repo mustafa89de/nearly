@@ -87,6 +87,7 @@
         try {
           await EventService.signInForEvent(this.event.id);
           this.event.isParticipant = true;
+          this.event.participations = this.event.participations + 1
         } catch (err) {
           console.error(err);
           this.error = "Bei der Anmeldung ist leider etwas schief gelaufen.";
@@ -97,6 +98,7 @@
         try {
           await EventService.signOutForEvent(this.event.id);
           this.event.isParticipant = false;
+          this.event.participations = this.event.participations - 1
         } catch (err) {
           console.error(err);
           this.error = "Bei der Abmeldung ist leider etwas schief gelaufen.";
