@@ -1,8 +1,11 @@
 <template>
-  <article>
-    <p class="error" v-if="error">{{error}}</p>
-    <event-details class="eventDetails" :event="event"/>
-    <map-comp hideNumbers="true" controlPosition="bottom-right"/>
+  <article :class="{'not-found' : notFound }">
+    <not-found-comp v-if="notFound"/>
+    <div v-else>
+      <p class="error" v-if="error">{{error}}</p>
+      <event-details class="eventDetails" :event="event"/>
+      <map-comp hideNumbers="true" controlPosition="bottom-right"/>
+    </div>
   </article>
 </template>
 
@@ -12,17 +15,20 @@
   import Map from "../components/Map.vue";
   import MapService from "../services/MapService";
   import LocationService from "../services/LocationService";
+  import NotFound from "../components/NotFound";
 
   export default {
     components: {
       'event-details': EventDetails,
-      'map-comp': Map
+      'map-comp': Map,
+      'not-found-comp': NotFound
     },
 
     data() {
       return {
         error: null,
-        event: null
+        event: null,
+        notFound: false
       }
     },
 
@@ -35,10 +41,10 @@
           MapService.addMarker({lat, lon});
         } catch (err) {
           if (err.status === 404) {
-            this.error = "Das gesuchte Event existiert leider nicht.";
-          } else if(err.response.data.message.includes("Cast to ObjectId failed for value")) {
-            this.$router.push("/404");
-          } else this.error = "Ein unbekannter Fehler ist aufgetreten.";
+            this.notFound = true;
+          } else {
+            this.error = "Ein unbekannter Fehler ist aufgetreten.";
+          }
           console.error(err);
         }
       },
@@ -54,7 +60,12 @@
   @import "../assets/variables";
   @import "../assets/mixins";
 
-  article {
+  .not-found {
+    @include pageCard;
+    padding: 50px 25px;
+  }
+
+  article div{
     position: relative;
     flex: 1;
 

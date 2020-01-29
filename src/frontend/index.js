@@ -85,12 +85,8 @@ export const router = new VueRouter({
       component: OfflinePage
     },
     {
-      path: '/404',
-      component: NotFoundPage
-    },
-    {
       path: '*',
-      redirect: '/404'
+      component: NotFoundPage
     }
   ]
 });

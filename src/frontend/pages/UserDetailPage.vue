@@ -33,8 +33,6 @@
         } catch (err) {
           if (err.status === 404) {
             this.notFound = true;
-          } else if(err.response.data.message.includes("Cast to ObjectId failed for value")) {
-            this.$router.push("/404");
           }
           console.error(err);
         }
