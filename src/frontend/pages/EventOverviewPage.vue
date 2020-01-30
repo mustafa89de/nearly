@@ -47,6 +47,7 @@
       }
     },
     created: async function () {
+      intialMoveDone = false;
       const initialBounds = await this.loadInitialBounds();
 
       MapService.on('moveend', () => {
