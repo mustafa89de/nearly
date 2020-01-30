@@ -53,9 +53,14 @@ router.get('/:id', JWTService.requireJWT(), async (req, res) => {
     }
 
     res.json(userDetails);
-  } catch
-    (err) {
-    res.status(500).json({message: err.message});
+  } catch(err) {
+    console.error(err.status, err);
+    if(err.message.includes("Cast to ObjectId failed")) {
+      res.status(404).json({message: `Requested User does not exist.`});
+    }
+    else {
+      res.status(500).json({message: err.message});
+    }
   }
 });
 

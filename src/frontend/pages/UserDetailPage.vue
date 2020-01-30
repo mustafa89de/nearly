@@ -31,7 +31,9 @@
         try {
           this.user = await UserService.getUserByID(this.$route.params.uid);
         } catch (err) {
-          if (err.status === 404) this.notFound = true;
+          if (err.status === 404) {
+            this.notFound = true;
+          }
           console.error(err);
         }
       }

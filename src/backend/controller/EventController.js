@@ -92,7 +92,12 @@ router.get('/:eid', JWTService.requireJWT(), async (req, res) => {
     res.status(200).json(resData);
   } catch (err) {
     console.error(err.status, err);
-    res.status(500).json({message: err.message});
+    if(err.message.includes("Cast to ObjectId failed")) {
+      res.status(404).json({message: `Requested Event does not exist.`});
+    }
+    else {
+      res.status(500).json({message: err.message});
+    }
   }
 });
 
