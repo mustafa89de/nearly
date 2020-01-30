@@ -60,9 +60,16 @@
     methods: {
       loadInitialBounds: async function () {
         const homePosition = await LocationService.getHomePosition();
-        const radius = await UserService.getRadius();
-        const bounds = LocationService.toBounds(homePosition, radius);
-        MapService.setBounds(this.lastBounds || bounds);
+
+        let bounds;
+        if (this.lastBounds) {
+          bounds = this.lastBounds
+        } else {
+          const radius = await UserService.getRadius();
+          bounds = LocationService.toBounds(homePosition, radius);
+        }
+
+        MapService.setBounds(bounds);
         return bounds;
       },
       handleMarkerClick: function (index) {

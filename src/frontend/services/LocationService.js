@@ -18,28 +18,19 @@ class LocationService {
     })
   }
 
-  getHomePosition() {
-    return new Promise(async (resolve) => {
+  async getHomePosition() {
+    try {
       const homePosition = await UserService.getHomePosition();
-      if (homePosition) {
-        const {latitude, longitude} = homePosition;
-        resolve({
-          lon: longitude,
-          lat: latitude
-        });
-      } else {
-        try {
-          const {latitude, longitude} = await this.getCurrentLocation();
-          resolve({
-            lon: longitude,
-            lat: latitude
-          });
-        } catch (e) {
-          console.error(e);
-          resolve(FALLBACK_HOME_POSITION);
-        }
-      }
-    });
+      const {latitude, longitude} = homePosition || await this.getCurrentLocation();
+
+      return {
+        lon: longitude,
+        lat: latitude
+      };
+    } catch (e) {
+      console.error(e);
+      return FALLBACK_HOME_POSITION;
+    }
   }
 
   getDistance(p1, p2) {
